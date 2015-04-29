@@ -1,7 +1,6 @@
 package com.proyecto.rest.resource.user;
 
-import br.com.caelum.vraptor.Controller;
-
+import org.springframework.stereotype.Controller;
 
 @Controller
 public class UserController {
