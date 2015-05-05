@@ -5,11 +5,10 @@ import com.proyecto.user.domain.InvertarUser;
 
 public class InvertarUserFactory {
 
-	public static InvertarUser create(UserDTO userDTO) {
+	public static InvertarUser create(UserDTO userDTO, Long userId) {
 		
 		
-		
-		return new InvertarUser();
+		return new InvertarUser(userId);
 	}
 
 }
