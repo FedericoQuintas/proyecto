@@ -20,8 +20,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public InvertarUser store(UserDTO userDTO) {
 
-		InvertarUser user = InvertarUserFactory.create(userDTO, userDAO.nextID());
-		
+		InvertarUser user = InvertarUserFactory.create(userDTO,
+				userDAO.nextID());
+
 		return userDAO.store(user);
 	}
 
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			return userDAO.findById(id);
 		} catch (ObjectNotFoundException e) {
-			throw new UserNotFoundException();
+			throw new UserNotFoundException(e);
 		}
 	}
 
