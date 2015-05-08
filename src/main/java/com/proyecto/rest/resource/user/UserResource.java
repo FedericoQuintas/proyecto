@@ -17,7 +17,7 @@ public class UserResource {
 	@Resource
 	private UserService userService;
 
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	@ResponseBody
 	public InvertarUser store(UserDTO userDTO) {
 		return userService.store(userDTO);
