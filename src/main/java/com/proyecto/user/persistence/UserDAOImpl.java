@@ -11,7 +11,7 @@ import com.proyecto.user.domain.InvertarUser;
 @Repository("userDAO")
 public class UserDAOImpl implements UserDAO {
 
-	List<InvertarUser> users = new ArrayList<>();
+	List<InvertarUser> users = new ArrayList<InvertarUser>();
 
 	Long usersSequence = new Long(1);
 
