@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.rest.resource.user.dto.UserDTO;
 import com.proyecto.user.domain.InvertarUser;
-import com.proyecto.user.exception.ApplicationServiceException;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.helper.UserHelper;
 import com.proyecto.user.service.UserService;
@@ -42,15 +41,17 @@ public class UserServiceTest extends SpringBaseTest {
 
 	}
 
-	@Test(expected = ApplicationServiceException.class)
+	@Test
 	public void whenSearchAnUserByIdAndUserDoesNotExistThenUserExceptionIsThrown()
 			throws UserNotFoundException {
 
 		Long NOT_EXISTING_USER_ID = new Long(1000);
 
-		InvertarUser storedUser = userService.findById(NOT_EXISTING_USER_ID);
-
-		Assert.assertTrue(user.getId().equals(storedUser.getId()));
+		try {
+			userService.findById(NOT_EXISTING_USER_ID);
+		} catch (Exception e) {
+			Assert.assertTrue(e.getMessage().contains("not found"));
+		}
 
 	}
 
