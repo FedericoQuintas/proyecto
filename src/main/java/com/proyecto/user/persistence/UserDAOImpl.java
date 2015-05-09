@@ -37,4 +37,10 @@ public class UserDAOImpl implements UserDAO {
 	public Long nextID() {
 		return usersSequence++;
 	}
+
+	@Override
+	public void flush() {
+		users.clear();
+
+	}
 }
