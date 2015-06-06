@@ -1,5 +1,7 @@
 package com.proyecto.rest.resource.asset.dto;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class AssetDTO {
@@ -9,6 +11,17 @@ public class AssetDTO {
 
 	@JsonProperty("description")
 	private String description;
+
+	@JsonProperty("trading_sessions")
+	private List<TradingSessionDTO> tradingSessions;
+
+	public List<TradingSessionDTO> getTradingSessions() {
+		return tradingSessions;
+	}
+
+	public void setTradingSessions(List<TradingSessionDTO> tradingSessions) {
+		this.tradingSessions = tradingSessions;
+	}
 
 	public Long getId() {
 		return this.id;

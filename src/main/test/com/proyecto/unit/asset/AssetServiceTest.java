@@ -14,6 +14,7 @@ import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 import com.proyecto.unit.asset.helper.AssetHelper;
 import com.proyecto.user.exception.UserNotFoundException;
 
@@ -31,8 +32,22 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenCreatesAssetThenAssetIsCreatedWithMandatoryFields() {
-
 		assertAssetHasMandatoryFields();
+	}
+
+	@Test
+	public void whenAddsTradingSessionToAssetThenTradingSessionIsAdded()
+			throws AssetNotFoundException {
+
+		TradingSessionDTO tradingSessionDTO = AssetHelper
+				.createDefaultTradingSession();
+
+		assetService.addTradingSession(assetDTO.getId(), tradingSessionDTO);
+
+		AssetDTO asset = assetService.findById(assetDTO.getId());
+
+		Assert.assertFalse(asset.getTradingSessions().isEmpty());
+
 	}
 
 	@Test

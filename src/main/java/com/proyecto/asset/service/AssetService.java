@@ -1,8 +1,10 @@
 package com.proyecto.asset.service;
 
+import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public interface AssetService {
 
@@ -23,5 +25,24 @@ public interface AssetService {
 	 * @throws AssetNotFoundException
 	 */
 	AssetDTO findById(Long nOT_EXISTING_USER_ID) throws AssetNotFoundException;
+
+	/**
+	 * Adds a TradingSession to Asset TradingSession collection.
+	 * 
+	 * @param id
+	 * @return AssetDTO
+	 * @throws AssetNotFoundException
+	 */
+	void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
+			throws AssetNotFoundException;
+
+	/**
+	 * Adds a TradingSession to Asset TradingSession collection.
+	 * 
+	 * @param id
+	 * @return AssetDTO
+	 * @throws AssetNotFoundException
+	 */
+	void update(Asset asset);
 
 }

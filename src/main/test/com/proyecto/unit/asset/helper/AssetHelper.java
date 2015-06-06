@@ -1,6 +1,7 @@
 package com.proyecto.unit.asset.helper;
 
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetHelper {
 
@@ -13,6 +14,10 @@ public class AssetHelper {
 		assetDTO.setDescription(DEFAULT_DESCRIPTION);
 
 		return assetDTO;
+	}
+
+	public static TradingSessionDTO createDefaultTradingSession() {
+		return new TradingSessionDTO();
 	}
 
 }

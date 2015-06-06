@@ -11,6 +11,7 @@ import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 import com.proyecto.rest.resource.asset.dto.factory.AssetDTOFactory;
 
 @Service("assetService")
@@ -40,4 +41,24 @@ public class AssetServiceImpl implements AssetService {
 			throw new AssetNotFoundException(e);
 		}
 	}
+
+	@Override
+	public void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
+			throws AssetNotFoundException {
+
+		Asset asset;
+		try {
+			asset = assetDAO.findById(id);
+		} catch (ObjectNotFoundException e) {
+			throw new AssetNotFoundException(e);
+		}
+		asset.addTradingSession(tradingSessionDTO);
+		update(asset);
+	}
+
+	@Override
+	public void update(Asset asset) {
+
+	}
+
 }
