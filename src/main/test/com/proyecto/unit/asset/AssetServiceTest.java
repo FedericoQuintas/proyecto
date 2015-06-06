@@ -8,8 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
+import com.proyecto.common.error.InvertarErrorCode;
+import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.unit.asset.helper.AssetHelper;
 import com.proyecto.user.exception.UserNotFoundException;
@@ -22,14 +25,35 @@ public class AssetServiceTest extends SpringBaseTest {
 	private AssetService assetService;
 
 	@Before
-	public void before() {
+	public void before() throws InvalidAssetArgumentException {
 		storeAsset();
 	}
 
 	@Test
-	public void whenCreatesAssetThenAssetIsCreated() {
+	public void whenCreatesAssetThenAssetIsCreatedWithMandatoryFields() {
 
+		assertAssetHasMandatoryFields();
+	}
+
+	@Test
+	public void whenCreatesAssetWithNoDescriptionThenExceptionIsThrown() {
+
+		AssetDTO incompleteAssetDTO = AssetHelper.createDefaultAssetDTO();
+
+		incompleteAssetDTO.setDescription(null);
+
+		try {
+			assetService.store(incompleteAssetDTO);
+		} catch (ApplicationServiceException e) {
+			Assert.assertTrue(e.getErrorCode().equals(
+					InvertarErrorCode.INVALID_ARGUMENT));
+		}
+
+	}
+
+	private void assertAssetHasMandatoryFields() {
 		Assert.assertNotNull(assetDTO.getId());
+		Assert.assertNotNull(assetDTO.getDescription());
 	}
 
 	@Test
@@ -56,7 +80,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	}
 
-	private void storeAsset() {
+	private void storeAsset() throws InvalidAssetArgumentException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 

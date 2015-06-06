@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.proyecto.common.SpringBaseTest;
+import com.proyecto.common.error.InvertarErrorCode;
+import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.unit.user.helper.UserHelper;
 import com.proyecto.user.exception.UserNotFoundException;
@@ -48,8 +50,9 @@ public class UserServiceTest extends SpringBaseTest {
 
 		try {
 			userService.findById(NOT_EXISTING_USER_ID);
-		} catch (Exception e) {
-			Assert.assertTrue(e.getMessage().contains("not found"));
+		} catch (ApplicationServiceException e) {
+			Assert.assertTrue(e.getErrorCode().equals(
+					InvertarErrorCode.OBJECT_NOT_FOUND));
 		}
 
 	}

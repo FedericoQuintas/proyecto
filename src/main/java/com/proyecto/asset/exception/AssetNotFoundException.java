@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.proyecto.common.error.InvertarErrorCode;
-import com.proyecto.user.exception.ApplicationServiceException;
+import com.proyecto.common.exception.ApplicationServiceException;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Asset does not exist.")
 public class AssetNotFoundException extends ApplicationServiceException {

@@ -1,6 +1,7 @@
 package com.proyecto.asset.service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
 public interface AssetService {
@@ -10,8 +11,9 @@ public interface AssetService {
 	 * 
 	 * @param assetDTO
 	 * @return AssetDTO
+	 * @throws InvalidAssetArgumentException
 	 */
-	AssetDTO store(AssetDTO assetDTO);
+	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException;
 
 	/**
 	 * Retrieves the AssetDTO with specified ID

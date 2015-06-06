@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -19,7 +20,8 @@ public class AssetServiceImpl implements AssetService {
 	private AssetDAO assetDAO;
 
 	@Override
-	public AssetDTO store(AssetDTO assetDTO) {
+	public AssetDTO store(AssetDTO assetDTO)
+			throws InvalidAssetArgumentException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 

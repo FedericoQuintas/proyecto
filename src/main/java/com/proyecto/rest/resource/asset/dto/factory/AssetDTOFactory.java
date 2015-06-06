@@ -10,8 +10,8 @@ public class AssetDTOFactory {
 		AssetDTO assetDTO = new AssetDTO();
 
 		assetDTO.setId(asset.getId());
+		assetDTO.setDescription(asset.getDescription());
 
 		return assetDTO;
 	}
-
 }

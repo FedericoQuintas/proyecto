@@ -1,4 +1,4 @@
-package com.proyecto.user.exception;
+package com.proyecto.common.exception;
 
 import com.proyecto.common.error.InvertarErrorCode;
 

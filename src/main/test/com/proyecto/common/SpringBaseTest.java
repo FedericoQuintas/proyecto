@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,11 +30,6 @@ public class SpringBaseTest {
 	@BeforeClass
 	public static void init() {
 		BasicConfigurator.configure();
-	}
-
-	@Before
-	public void before() {
-
 	}
 
 	// TODO (FEDEQ): Solo se hace para restartear cada test. Cuando saquemos

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
-import com.proyecto.user.exception.ApplicationServiceException;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
