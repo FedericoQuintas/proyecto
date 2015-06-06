@@ -40,4 +40,29 @@ public class AssetDAOImpl implements AssetDAO {
 		throw new ObjectNotFoundException("Asset " + id + "not found.");
 	}
 
+	@Override
+	public List<Asset> getAll() {
+		return assets;
+	}
+
+	public void remove(Asset asset) {
+
+		Integer positionToRemove = null;
+
+		for (int i = 0; i < assets.size(); i++) {
+
+			if (assets.get(i).getId().equals(asset.getId())) {
+				positionToRemove = i;
+			}
+		}
+		assets.remove(positionToRemove.intValue());
+
+	}
+
+	@Override
+	public void udpate(Asset asset) {
+		remove(asset);
+		store(asset);
+	}
+
 }

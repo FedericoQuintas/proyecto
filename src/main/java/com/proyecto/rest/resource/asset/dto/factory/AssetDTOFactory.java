@@ -17,6 +17,7 @@ public class AssetDTOFactory {
 		assetDTO.setId(asset.getId());
 		assetDTO.setDescription(asset.getDescription());
 		assetDTO.setTradingSessions(convertToDTOs(asset.getTradingSessions()));
+		assetDTO.setLastTradingPrice(asset.getLastTradingPrice());
 
 		return assetDTO;
 	}
@@ -24,7 +25,7 @@ public class AssetDTOFactory {
 	private static List<TradingSessionDTO> convertToDTOs(
 			List<TradingSession> tradingSessions) {
 
-		List<TradingSessionDTO> tradingSessionsDTO = new ArrayList<>();
+		List<TradingSessionDTO> tradingSessionsDTO = new ArrayList<TradingSessionDTO>();
 
 		for (TradingSession tradingSession : tradingSessions) {
 			tradingSessionsDTO.add(convertToDTO(tradingSession));

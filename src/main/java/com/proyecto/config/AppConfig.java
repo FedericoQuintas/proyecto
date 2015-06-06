@@ -15,6 +15,8 @@ import com.proyecto.user.persistence.UserDAO;
 import com.proyecto.user.persistence.UserDAOImpl;
 import com.proyecto.user.service.UserService;
 import com.proyecto.user.service.UserServiceImpl;
+import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
+import com.proyecto.yahoofinance.service.YahooFinanceInformationServiceImpl;
 
 @Configuration
 public class AppConfig {
@@ -22,6 +24,11 @@ public class AppConfig {
 	@Bean
 	public UserService userService() {
 		return new UserServiceImpl();
+	}
+
+	@Bean
+	public YahooFinanceInformationService yahooFinanceService() {
+		return new YahooFinanceInformationServiceImpl();
 	}
 
 	@Bean

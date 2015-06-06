@@ -16,7 +16,7 @@ import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 import com.proyecto.unit.asset.helper.AssetHelper;
-import com.proyecto.user.exception.UserNotFoundException;
+import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 
 public class AssetServiceTest extends SpringBaseTest {
 
@@ -24,6 +24,9 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Resource
 	private AssetService assetService;
+
+	@Resource
+	private YahooFinanceInformationService yahooFinanceService;
 
 	@Before
 	public void before() throws InvalidAssetArgumentException {
@@ -47,6 +50,18 @@ public class AssetServiceTest extends SpringBaseTest {
 		AssetDTO asset = assetService.findById(assetDTO.getId());
 
 		Assert.assertFalse(asset.getTradingSessions().isEmpty());
+
+	}
+
+	@Test
+	public void whenAskForAssetLastTradingPriceThenLastTradingPriceIsRetrieved()
+			throws AssetNotFoundException, InvalidAssetArgumentException {
+
+		yahooFinanceService.update();
+
+		assetDTO = assetService.findById(assetDTO.getId());
+
+		Assert.assertNotNull(assetDTO.getLastTradingPrice());
 
 	}
 
@@ -82,8 +97,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenSearchAnUserByIdAndUserDoesNotExistThenUserExceptionIsThrown()
-			throws UserNotFoundException {
+	public void whenSearchAnUserByIdAndUserDoesNotExistThenUserExceptionIsThrown() {
 
 		Long NOT_EXISTING_ASSET_ID = new Long(1000);
 
@@ -93,6 +107,12 @@ public class AssetServiceTest extends SpringBaseTest {
 			Assert.assertTrue(e.getMessage().contains("not found"));
 		}
 
+	}
+
+	@Test
+	public void whenAsksForAllTheAssetsThenAllTheAssetsAreRetrieved() {
+
+		Assert.assertNotNull(assetService.getAllAssets());
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException {

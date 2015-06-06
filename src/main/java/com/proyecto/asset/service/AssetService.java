@@ -1,6 +1,7 @@
 package com.proyecto.asset.service;
 
-import com.proyecto.asset.domain.Asset;
+import java.util.List;
+
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -41,8 +42,16 @@ public interface AssetService {
 	 * 
 	 * @param id
 	 * @return AssetDTO
-	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetArgumentException
 	 */
-	void update(Asset asset);
+	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException;
+
+	/**
+	 * Retrieves all de AssetDTOs
+	 * 
+	 * @param id
+	 * @return List<AssetDTO>
+	 */
+	List<AssetDTO> getAllAssets();
 
 }

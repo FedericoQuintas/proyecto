@@ -1,5 +1,8 @@
 package com.proyecto.asset.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -53,12 +56,33 @@ public class AssetServiceImpl implements AssetService {
 			throw new AssetNotFoundException(e);
 		}
 		asset.addTradingSession(tradingSessionDTO);
+
 		update(asset);
 	}
 
-	@Override
-	public void update(Asset asset) {
+	private void update(Asset asset) {
+		assetDAO.udpate(asset);
 
 	}
 
+	@Override
+	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException {
+
+		Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
+		update(asset);
+
+	}
+
+	@Override
+	public List<AssetDTO> getAllAssets() {
+
+		List<AssetDTO> assetDTOs = new ArrayList<>();
+
+		for (Asset asset : assetDAO.getAll()) {
+			assetDTOs.add(AssetDTOFactory.create(asset));
+		}
+
+		return assetDTOs;
+
+	}
 }

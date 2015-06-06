@@ -15,6 +15,9 @@ public class AssetDTO {
 	@JsonProperty("trading_sessions")
 	private List<TradingSessionDTO> tradingSessions;
 
+	@JsonProperty("last_trading_price")
+	private Long lastTradingPrice;
+
 	public List<TradingSessionDTO> getTradingSessions() {
 		return tradingSessions;
 	}
@@ -37,6 +40,15 @@ public class AssetDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+
+	}
+
+	public Long getLastTradingPrice() {
+		return this.lastTradingPrice;
+	}
+
+	public void setLastTradingPrice(Long lastTradingPrice) {
+		this.lastTradingPrice = lastTradingPrice;
 
 	}
 
