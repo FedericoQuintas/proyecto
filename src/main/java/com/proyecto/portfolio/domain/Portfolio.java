@@ -1,6 +1,5 @@
 package com.proyecto.portfolio.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.proyecto.userasset.domain.UserAsset;

@@ -29,11 +29,11 @@ public class PortfolioServiceTest extends SpringBaseTest {
 
 		Assert.assertNotNull(portfolio.getId());
 	}
-	
-	@Test
-	public void whenCreatesPortfolioThenPortfolioIsCreatedWithAListOfUserActives() {
 
-		Assert.assertNotNull(portfolio.getUserActives());
+	@Test
+	public void whenCreatesPortfolioThenPortfolioIsCreatedWithAListOfAssets() {
+
+		Assert.assertNotNull(portfolio.getCurrentAssets());
 	}
 
 	private void storePortfolio() {

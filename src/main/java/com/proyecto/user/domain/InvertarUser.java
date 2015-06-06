@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.proyecto.portfolio.domain.Portfolio;
-import com.proyecto.userasset.domain.UserAsset;
 
 public class InvertarUser {
 
