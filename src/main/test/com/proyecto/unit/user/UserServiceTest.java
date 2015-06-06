@@ -8,9 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.proyecto.common.SpringBaseTest;
-import com.proyecto.rest.resource.user.dto.UserDTO;
+import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.unit.user.helper.UserHelper;
-import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.service.UserService;
 
@@ -18,7 +17,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Resource
 	private UserService userService;
-	private InvertarUser user;
+	private InvertarUserDTO userDTO;
 
 	@Before
 	public void before() {
@@ -28,16 +27,16 @@ public class UserServiceTest extends SpringBaseTest {
 	@Test
 	public void whenCreatesUserThenUserIsCreatedWithId() {
 
-		Assert.assertNotNull(user.getId());
+		Assert.assertNotNull(userDTO.getId());
 	}
 
 	@Test
 	public void whenSearchAnUserByIdThenUserIsRetrieved()
 			throws UserNotFoundException {
 
-		InvertarUser storedUser = userService.findById(user.getId());
+		InvertarUserDTO storedUserDTO = userService.findById(userDTO.getId());
 
-		Assert.assertTrue(user.getId().equals(storedUser.getId()));
+		Assert.assertTrue(userDTO.getId().equals(storedUserDTO.getId()));
 
 	}
 
@@ -55,18 +54,11 @@ public class UserServiceTest extends SpringBaseTest {
 
 	}
 
-	@Test
-	public void whenUserIsCreatedThenUserHasPortfolios() {
-
-		Assert.assertNotNull(user.getPortfolios());
-
-	}
-
 	private void storeUser() {
 
-		UserDTO userDTO = UserHelper.createDefaultUserDTO();
+		userDTO = UserHelper.createDefaultUserDTO();
 
-		user = userService.store(userDTO);
+		userDTO = userService.store(userDTO);
 	}
 
 }

@@ -3,6 +3,10 @@ package com.proyecto.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.proyecto.asset.persistence.AssetDAO;
+import com.proyecto.asset.persistence.AssetDAOImpl;
+import com.proyecto.asset.service.AssetService;
+import com.proyecto.asset.service.AssetServiceImpl;
 import com.proyecto.portfolio.persistence.PortfolioDAO;
 import com.proyecto.portfolio.persistence.PortfolioDAOImpl;
 import com.proyecto.portfolio.service.PortfolioService;
@@ -23,6 +27,16 @@ public class AppConfig {
 	@Bean
 	public UserDAO userDAO() {
 		return new UserDAOImpl();
+	}
+
+	@Bean
+	public AssetService assetService() {
+		return new AssetServiceImpl();
+	}
+
+	@Bean
+	public AssetDAO assetDAO() {
+		return new AssetDAOImpl();
 	}
 
 	@Bean

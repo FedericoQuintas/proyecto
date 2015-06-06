@@ -5,7 +5,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.common.exception.ObjectNotFoundException;
-import com.proyecto.rest.resource.user.dto.UserDTO;
+import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
 import com.proyecto.user.exception.UserNotFoundException;
@@ -18,18 +19,23 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Override
-	public InvertarUser store(UserDTO userDTO) {
+	public InvertarUserDTO store(InvertarUserDTO userDTO) {
 
 		InvertarUser user = InvertarUserFactory.create(userDTO,
 				userDAO.nextID());
 
-		return userDAO.store(user);
+		InvertarUser storedUser = userDAO.store(user);
+
+		return InvertarUserDTOFactory.create(storedUser);
+
 	}
 
 	@Override
-	public InvertarUser findById(Long id) throws UserNotFoundException {
+	public InvertarUserDTO findById(Long id) throws UserNotFoundException {
 		try {
-			return userDAO.findById(id);
+			InvertarUser user = userDAO.findById(id);
+
+			return InvertarUserDTOFactory.create(user);
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
 		}

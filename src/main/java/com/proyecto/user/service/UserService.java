@@ -1,26 +1,25 @@
 package com.proyecto.user.service;
 
-import com.proyecto.rest.resource.user.dto.UserDTO;
-import com.proyecto.user.domain.InvertarUser;
+import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.user.exception.UserNotFoundException;
 
 public interface UserService {
 
 	/**
-	 * Stores the User specified and retrieves it with new Id assigned.
+	 * Stores the UserDTO specified and retrieves it with new Id assigned.
 	 * 
 	 * @param userDTO
-	 * @return InvertarUser
+	 * @return InvertarUserDTO
 	 */
-	InvertarUser store(UserDTO userDTO);
+	InvertarUserDTO store(InvertarUserDTO userDTO);
 
 	/**
-	 * Retrieves the User with specified ID
+	 * Retrieves the InvertarUserDTO with specified ID
 	 * 
 	 * @param id
-	 * @return InvertarUser
+	 * @return InvertarUserDTO
 	 * @throws UserNotFoundException
 	 */
-	InvertarUser findById(Long id) throws UserNotFoundException;
+	InvertarUserDTO findById(Long id) throws UserNotFoundException;
 
 }

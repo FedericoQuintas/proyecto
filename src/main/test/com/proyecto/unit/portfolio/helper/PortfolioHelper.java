@@ -1,6 +1,6 @@
 package com.proyecto.unit.portfolio.helper;
 
-import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.portfolio.dto.PortfolioDTO;
 
 public class PortfolioHelper {
 

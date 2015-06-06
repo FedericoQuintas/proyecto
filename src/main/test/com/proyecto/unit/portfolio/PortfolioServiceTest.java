@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.portfolio.domain.Portfolio;
 import com.proyecto.portfolio.service.PortfolioService;
-import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.portfolio.dto.PortfolioDTO;
 import com.proyecto.unit.portfolio.helper.PortfolioHelper;
 
 public class PortfolioServiceTest extends SpringBaseTest {

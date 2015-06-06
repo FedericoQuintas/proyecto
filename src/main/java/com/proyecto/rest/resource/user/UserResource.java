@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.proyecto.rest.resource.user.dto.UserDTO;
-import com.proyecto.user.domain.InvertarUser;
+import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.user.exception.ApplicationServiceException;
 import com.proyecto.user.service.UserService;
 
@@ -22,13 +21,13 @@ public class UserResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUser store(UserDTO userDTO) {
+	public InvertarUserDTO store(InvertarUserDTO userDTO) {
 		return userService.store(userDTO);
 	}
 
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	public InvertarUser findUserById(@PathVariable("userId") Long userId)
+	public InvertarUserDTO findUserById(@PathVariable("userId") Long userId)
 			throws ApplicationServiceException {
 		return userService.findById(userId);
 	}

@@ -29,7 +29,7 @@ public class UserDAOImpl implements UserDAO {
 				return user;
 			}
 		}
-		throw new ObjectNotFoundException("User" + id + "not found.");
+		throw new ObjectNotFoundException("User " + id + "not found.");
 
 	}
 

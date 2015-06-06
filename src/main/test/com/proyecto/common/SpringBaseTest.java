@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.config.AppConfig;
 import com.proyecto.portfolio.persistence.PortfolioDAO;
 import com.proyecto.user.persistence.UserDAO;
@@ -20,6 +21,9 @@ public class SpringBaseTest {
 
 	@Resource
 	private PortfolioDAO portfolioDAO;
+
+	@Resource
+	private AssetDAO assetDAO;
 
 	@Resource
 	private UserDAO userDAO;
@@ -42,6 +46,7 @@ public class SpringBaseTest {
 	public void after() {
 		portfolioDAO.flush();
 		userDAO.flush();
+		assetDAO.flush();
 	}
 
 }
