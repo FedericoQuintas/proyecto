@@ -13,8 +13,8 @@ public class AssetFactory {
 
 		validateMandatoryFields(assetDTO);
 
-		Asset asset = new Asset(id, assetDTO.getDescription());
-		
+		Asset asset = new Asset(id, assetDTO.getDescription(), assetDTO.getTicker());
+
 		asset.setLastTradingPrice(assetDTO.getLastTradingPrice());
 
 		return asset;
@@ -25,6 +25,7 @@ public class AssetFactory {
 
 		try {
 			FieldValidator.validateEmptyOrNull(assetDTO.getDescription());
+			FieldValidator.validateEmptyOrNull(assetDTO.getTicker());
 		} catch (InvalidArgumentException e) {
 			throw new InvalidAssetArgumentException(e);
 		}

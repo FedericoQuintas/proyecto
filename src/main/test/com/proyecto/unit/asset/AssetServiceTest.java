@@ -81,9 +81,26 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	}
 
+	@Test
+	public void whenCreatesAssetWithNoTickerThenExceptionIsThrown() {
+
+		AssetDTO incompleteAssetDTO = AssetHelper.createDefaultAssetDTO();
+
+		incompleteAssetDTO.setTicker(null);
+
+		try {
+			assetService.store(incompleteAssetDTO);
+		} catch (ApplicationServiceException e) {
+			Assert.assertTrue(e.getErrorCode().equals(
+					InvertarErrorCode.INVALID_ARGUMENT));
+		}
+
+	}
+
 	private void assertAssetHasMandatoryFields() {
 		Assert.assertNotNull(assetDTO.getId());
 		Assert.assertNotNull(assetDTO.getDescription());
+		Assert.assertNotNull(assetDTO.getTicker());
 	}
 
 	@Test

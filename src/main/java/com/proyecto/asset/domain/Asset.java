@@ -13,11 +13,17 @@ public class Asset {
 	private String description;
 	private List<TradingSession> tradingSessions;
 	private Long lastTradingPrice;
+	private String ticker;
 
-	public Asset(Long id, String description) {
+	public Asset(Long id, String description, String ticker) {
 		this.id = id;
 		this.description = description;
+		this.ticker = ticker;
 		tradingSessions = new ArrayList<TradingSession>();
+	}
+
+	public String getTicker() {
+		return ticker;
 	}
 
 	public String getDescription() {

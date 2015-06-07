@@ -30,13 +30,18 @@ public class YahooFinanceInformationServiceImpl implements
 
 		for (AssetDTO assetDTO : allAssets) {
 
-			Stock stock = YahooFinance.get("INTC");
+			Stock stock = obtainStockInformation(assetDTO);
 			BigDecimal price = stock.getQuote(true).getPrice();
 			assetDTO.setLastTradingPrice(price.longValue());
 			assetService.update(assetDTO);
 
 		}
 
+	}
+
+	private Stock obtainStockInformation(AssetDTO assetDTO) {
+		Stock stock = YahooFinance.get(assetDTO.getTicker());
+		return stock;
 	}
 
 }
