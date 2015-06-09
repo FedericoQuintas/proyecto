@@ -1,4 +1,4 @@
-package com.proyecto.rest.resource.user;
+package com.proyecto.rest.resource.asset;
 
 import javax.annotation.Resource;
 
@@ -9,27 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
-import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
-import com.proyecto.user.service.UserService;
+import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
-@Controller("userResource")
-@RequestMapping("/users")
-public class UserResource {
+@Controller("assetResource")
+@RequestMapping("/assets")
+public class AssetResource {
 
 	@Resource
-	private UserService userService;
+	private AssetService assetService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUserDTO store(@RequestBody InvertarUserDTO userDTO) {
-		return userService.store(userDTO);
+	public AssetDTO store(@RequestBody AssetDTO assetDTO)
+			throws ApplicationServiceException {
+		return assetService.store(assetDTO);
 	}
 
-	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{assetId}", method = RequestMethod.GET)
 	@ResponseBody
-	public InvertarUserDTO findUserById(@PathVariable("userId") Long userId)
+	public AssetDTO findUserById(@PathVariable("assetId") Long userId)
 			throws ApplicationServiceException {
-		return userService.findById(userId);
+		return assetService.findById(userId);
 	}
 }

@@ -76,7 +76,7 @@ public class AssetServiceImpl implements AssetService {
 	@Override
 	public List<AssetDTO> getAllAssets() {
 
-		List<AssetDTO> assetDTOs = new ArrayList<>();
+		List<AssetDTO> assetDTOs = new ArrayList<AssetDTO>();
 
 		for (Asset asset : assetDAO.getAll()) {
 			assetDTOs.add(AssetDTOFactory.create(asset));

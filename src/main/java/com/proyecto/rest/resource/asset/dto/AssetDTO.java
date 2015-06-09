@@ -18,6 +18,7 @@ public class AssetDTO {
 	@JsonProperty("last_trading_price")
 	private Long lastTradingPrice;
 
+	@JsonProperty("ticker")
 	private String ticker;
 
 	public List<TradingSessionDTO> getTradingSessions() {
