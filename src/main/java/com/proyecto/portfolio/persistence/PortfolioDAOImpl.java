@@ -3,6 +3,7 @@ package com.proyecto.portfolio.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.portfolio.domain.Portfolio;
 
 public class PortfolioDAOImpl implements PortfolioDAO {
@@ -27,7 +28,18 @@ public class PortfolioDAOImpl implements PortfolioDAO {
 	@Override
 	public void flush() {
 		portfolios.clear();
-		
+
+	}
+
+	@Override
+	public Portfolio findById(Long id) throws ObjectNotFoundException {
+		for (Portfolio portfolio : portfolios) {
+			if (portfolio.getId().equals(id)) {
+				return portfolio;
+			}
+		}
+		throw new ObjectNotFoundException("Portfolio " + id + "not found.");
+
 	}
 
 }
