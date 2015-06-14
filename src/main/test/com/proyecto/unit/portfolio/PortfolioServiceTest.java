@@ -42,6 +42,12 @@ public class PortfolioServiceTest extends SpringBaseTest {
 	}
 
 	@Test
+	public void whenAskForPortfolioMarketValueThenPortfolioMarketValueIsRetrieved() {
+
+		Assert.assertNotNull(portfolioDTO.getMarketValue());
+	}
+
+	@Test
 	public void whenCreatesPortfolioThenPortfolioIsCreatedWithName() {
 
 		PortfolioDTO incompletePortfolioDTO = PortfolioHelper

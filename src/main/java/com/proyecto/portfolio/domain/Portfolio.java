@@ -26,6 +26,7 @@ public class Portfolio {
 		this.id = portfolioID;
 		this.name = name;
 		this.currentAssets = new ArrayList<>();
+		this.marketValue = new Long(0);
 	}
 
 	public Long getId() {

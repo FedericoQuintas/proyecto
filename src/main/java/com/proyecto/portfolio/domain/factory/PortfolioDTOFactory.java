@@ -18,6 +18,7 @@ public class PortfolioDTOFactory {
 		portfolioDTO.setName(portfolio.getName());
 		portfolioDTO.setCurrentAssets(convertToDTOs(portfolio
 				.getCurrentAssets()));
+		portfolioDTO.setMarketValue(portfolio.getMarketValue());
 
 		return portfolioDTO;
 
