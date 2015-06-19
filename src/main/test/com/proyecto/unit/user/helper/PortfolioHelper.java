@@ -1,4 +1,4 @@
-package com.proyecto.unit.portfolio.helper;
+package com.proyecto.unit.user.helper;
 
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 
@@ -8,6 +8,7 @@ public class PortfolioHelper {
 
 	public static PortfolioDTO createDefaultDTO() {
 		PortfolioDTO portfolioDTO = new PortfolioDTO();
+
 		portfolioDTO.setName(DEFAULT_NAME);
 		return portfolioDTO;
 	}

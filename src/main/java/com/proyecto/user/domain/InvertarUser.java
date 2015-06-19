@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.proyecto.portfolio.domain.Portfolio;
 
 public class InvertarUser {
 
@@ -13,7 +12,6 @@ public class InvertarUser {
 	private String mail;
 	private String name;
 	private Date dateOfBirth;
-
 
 	public String getMail() {
 		return mail;
@@ -49,6 +47,10 @@ public class InvertarUser {
 
 	public List<Portfolio> getPortfolios() {
 		return this.portfolios;
+	}
+
+	public void addPortfolio(Portfolio portfolio) {
+		this.portfolios.add(portfolio);
 	}
 
 }

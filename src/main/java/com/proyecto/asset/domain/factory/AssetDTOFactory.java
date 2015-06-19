@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
-import com.proyecto.userasset.domain.TradingSession;
 
 public class AssetDTOFactory {
 

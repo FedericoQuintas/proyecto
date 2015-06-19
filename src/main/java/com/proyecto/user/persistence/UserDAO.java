@@ -10,4 +10,8 @@ public interface UserDAO extends GenericDAO {
 
 	public InvertarUser findById(Long id) throws ObjectNotFoundException;
 
+	public void update(InvertarUser invertarUser);
+
+	public Long nextPortfolioID();
+
 }

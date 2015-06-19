@@ -1,17 +1,11 @@
-package com.proyecto.portfolio.domain;
+package com.proyecto.user.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.proyecto.userasset.domain.UserAsset;
 
 public class Portfolio {
 
 	private Long id;
 	private String portfolioName;
 	private Long marketValue;
-	private List<UserAsset> currentAssets;
-	private List<UserAsset> historicalAssets;
 	private String name;
 
 	public String getName() {
@@ -25,7 +19,6 @@ public class Portfolio {
 	public Portfolio(Long portfolioID, String name) {
 		this.id = portfolioID;
 		this.name = name;
-		this.currentAssets = new ArrayList<>();
 		this.marketValue = new Long(0);
 	}
 
@@ -35,14 +28,6 @@ public class Portfolio {
 
 	public String getPortfolioName() {
 		return portfolioName;
-	}
-
-	public List<UserAsset> getCurrentAssets() {
-		return currentAssets;
-	}
-
-	public List<UserAsset> getHistoricalAssets() {
-		return historicalAssets;
 	}
 
 }

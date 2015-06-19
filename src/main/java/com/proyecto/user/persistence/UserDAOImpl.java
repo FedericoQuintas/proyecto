@@ -15,6 +15,8 @@ public class UserDAOImpl implements UserDAO {
 
 	Long usersSequence = new Long(1);
 
+	Long portfoliosSequence = new Long(1);
+
 	public InvertarUser store(InvertarUser user) {
 
 		users.add(user);
@@ -42,5 +44,22 @@ public class UserDAOImpl implements UserDAO {
 	public void flush() {
 		users.clear();
 
+	}
+
+	@Override
+	public void update(InvertarUser invertarUser) {
+		int positionToRemove = 0;
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getId().equals(invertarUser.getId())) {
+				positionToRemove = i;
+			}
+		}
+		users.remove(positionToRemove);
+		users.add(invertarUser);
+	}
+
+	@Override
+	public Long nextPortfolioID() {
+		return portfoliosSequence++;
 	}
 }

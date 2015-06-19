@@ -1,5 +1,7 @@
 package com.proyecto.unit.user;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import junit.framework.Assert;
@@ -7,10 +9,13 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.unit.user.helper.PortfolioHelper;
 import com.proyecto.unit.user.helper.UserHelper;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.service.UserService;
@@ -30,6 +35,50 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenCreatesUserThenUserIsCreatedWithId() {
 
 		Assert.assertNotNull(userDTO.getId());
+	}
+
+	@Test
+	public void whenCreatesUserThenUserIsCreatedWithPortfolios() {
+
+		Assert.assertNotNull(userDTO.getPortfolios());
+	}
+
+	@Test
+	public void whenAsksForUserPortfoliosThenPortfoliosAreRetrieved()
+			throws UserNotFoundException {
+
+		List<PortfolioDTO> portfolios = userService.getPortfolios(userDTO
+				.getId());
+
+		Assert.assertNotNull(portfolios);
+	}
+
+	@Test
+	public void whenAddsAPortfolioToAUserCollectionThenPortfolioIsAdded()
+			throws InvalidAssetArgumentException, UserNotFoundException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		InvertarUserDTO user = userService.findById(userDTO.getId());
+
+		Assert.assertFalse(user.getPortfolios().isEmpty());
+	}
+
+	@Test
+	public void whenAskForSpecificPortfolioThenPortfolioIsRetrieved()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertTrue(retrievedPortfolioDTO.getId().equals(
+				portfolioDTO.getId()));
 	}
 
 	@Test
@@ -61,7 +110,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 		userDTO = UserHelper.createDefaultUserDTO();
 
-		userDTO = userService.store(userDTO);
+		userDTO = userService.store();
 	}
 
 }

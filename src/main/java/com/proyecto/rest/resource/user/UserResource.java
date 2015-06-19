@@ -1,5 +1,7 @@
 package com.proyecto.rest.resource.user;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
@@ -22,14 +25,39 @@ public class UserResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUserDTO store(@RequestBody InvertarUserDTO userDTO) {
-		return userService.store(userDTO);
+	public InvertarUserDTO store() {
+		return userService.store();
 	}
 
-	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
 	@ResponseBody
 	public InvertarUserDTO findUserById(@PathVariable("userId") Long userId)
 			throws ApplicationServiceException {
 		return userService.findById(userId);
 	}
+
+	@RequestMapping(value = "/{user_id}/portfolios", method = RequestMethod.GET)
+	@ResponseBody
+	public List<PortfolioDTO> getUserPortfolios(
+			@PathVariable("user_id") Long userId)
+			throws ApplicationServiceException {
+		return userService.getPortfolios(userId);
+	}
+
+	@RequestMapping(value = "/{user_id}/portfolios", method = RequestMethod.POST)
+	@ResponseBody
+	public PortfolioDTO store(@RequestBody PortfolioDTO portfolioDTO,
+			@PathVariable("user_id") Long userId)
+			throws ApplicationServiceException {
+		return userService.addPortfolio(portfolioDTO, userId);
+	}
+
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}", method = RequestMethod.GET)
+	@ResponseBody
+	public PortfolioDTO getUserPortfolio(@PathVariable("user_id") Long userId,
+			@PathVariable("portfolio_id") Long portfolioId)
+			throws ApplicationServiceException {
+		return userService.findPortfolioById(userId, portfolioId);
+	}
+
 }

@@ -1,10 +1,10 @@
-package com.proyecto.portfolio.domain.factory;
+package com.proyecto.user.domain.factory;
 
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.common.exception.InvalidArgumentException;
 import com.proyecto.common.validator.FieldValidator;
-import com.proyecto.portfolio.domain.Portfolio;
-import com.proyecto.rest.resource.portfolio.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.user.domain.Portfolio;
 
 public class PortfolioFactory {
 

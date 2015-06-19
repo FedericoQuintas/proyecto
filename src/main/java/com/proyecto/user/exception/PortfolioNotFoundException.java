@@ -1,4 +1,4 @@
-package com.proyecto.portfolio.exception;
+package com.proyecto.user.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -13,6 +13,10 @@ public class PortfolioNotFoundException extends ApplicationServiceException {
 
 	public PortfolioNotFoundException(Throwable throwable) {
 		super(throwable.getMessage(), InvertarErrorCode.OBJECT_NOT_FOUND);
+	}
+
+	public PortfolioNotFoundException() {
+		super("Portfolio does not exist.", InvertarErrorCode.OBJECT_NOT_FOUND);
 	}
 
 }
