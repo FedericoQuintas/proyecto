@@ -12,7 +12,8 @@ public interface UserService {
 
 	/**
 	 * Stores the UserDTO specified and retrieves it with new Id assigned.
-	 * @param userDTO 
+	 * 
+	 * @param userDTO
 	 * 
 	 * @return InvertarUserDTO
 	 */
@@ -80,5 +81,14 @@ public interface UserService {
 	 */
 	Double getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException;
+
+	/**
+	 * Calculates and retrieves the Portfolio Market Value
+	 * 
+	 * @return Long
+	 * @throws UserNotFoundException
+	 * @throws PortfolioNotFoundException
+	 */
+	Long getPortfolioMarketValue(Long userId, Long portfolioId) throws UserNotFoundException, PortfolioNotFoundException;
 
 }

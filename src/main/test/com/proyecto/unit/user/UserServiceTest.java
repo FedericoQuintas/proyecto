@@ -149,7 +149,7 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAsksForAPortfolioThenPortfolioLastSessionPerformance()
+	public void whenAsksForAPortfolioThenPortfolioHasLastSessionPerformance()
 			throws UserNotFoundException, PortfolioNotFoundException,
 			InvalidPortfolioArgumentException {
 
@@ -217,6 +217,20 @@ public class UserServiceTest extends SpringBaseTest {
 			Assert.assertTrue(e.getErrorCode().equals(
 					InvertarErrorCode.OBJECT_NOT_FOUND));
 		}
+
+	}
+
+	@Test
+	public void whenAskForPortfolioMarketValueThenMarketValueIsRetrieved()
+			throws UserNotFoundException, InvalidPortfolioArgumentException,
+			PortfolioNotFoundException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		userService.getPortfolioMarketValue(userDTO.getId(),
+				portfolioDTO.getId());
 
 	}
 

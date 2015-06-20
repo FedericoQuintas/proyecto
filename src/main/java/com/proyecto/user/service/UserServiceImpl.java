@@ -152,4 +152,21 @@ public class UserServiceImpl implements UserService {
 		return InvertarUserDTOFactory.create(storedUser);
 
 	}
+
+	@Override
+	public Long getPortfolioMarketValue(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException {
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			Portfolio portfolio = user.getPortfolio(portfolioId);
+			return calculateMarketValue(portfolio);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+
+	}
+
+	private Long calculateMarketValue(Portfolio portfolio) {
+		return null;
+	}
 }
