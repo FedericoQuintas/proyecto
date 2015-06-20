@@ -7,14 +7,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class UserAssetDTO {
 
 	@JsonProperty("id")
-	private Long id;	
+	private Long id;
 	@JsonProperty("asset")
 	private long asset_id;
 	@JsonProperty("cumulativePayments")
-	private float cumulativePayments;	
+	private float cumulativePayments;
 	@JsonProperty("transactions")
 	private List<TransactionDTO> transactions;
-	
+
 	public float getCumulativePayments() {
 		return cumulativePayments;
 	}
@@ -22,7 +22,7 @@ public class UserAssetDTO {
 	public void setCumulativePayments(float cumulativePayments) {
 		this.cumulativePayments = cumulativePayments;
 	}
-	
+
 	public long getAsset_id() {
 		return asset_id;
 	}
@@ -34,17 +34,17 @@ public class UserAssetDTO {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public List<TransactionDTO> getTransactions() {
 		return transactions;
 	}
-	
+
 	public void setTransactions(List<TransactionDTO> transactions) {
 		this.transactions = transactions;
 	}
-	
+
 }
