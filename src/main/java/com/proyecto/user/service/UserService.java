@@ -2,9 +2,9 @@ package com.proyecto.user.service;
 
 import java.util.List;
 
-import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 
@@ -42,11 +42,11 @@ public interface UserService {
 	 * @param userId
 	 * @param portfolioDTO
 	 * @return PortfolioDTO
-	 * @throws InvalidAssetArgumentException
 	 * @throws UserNotFoundException
+	 * @throws InvalidPortfolioArgumentException
 	 */
 	PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws InvalidAssetArgumentException, UserNotFoundException;
+			throws UserNotFoundException, InvalidPortfolioArgumentException;
 
 	/**
 	 * Retrieves specified Portfolio
@@ -58,6 +58,7 @@ public interface UserService {
 	 * @throws PortfolioNotFoundException
 	 */
 
-	PortfolioDTO findPortfolioById(Long userId, Long portfolioId) throws UserNotFoundException, PortfolioNotFoundException;
+	PortfolioDTO findPortfolioById(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException;
 
 }

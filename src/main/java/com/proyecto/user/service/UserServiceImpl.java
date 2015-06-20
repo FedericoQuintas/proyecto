@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
@@ -16,6 +15,7 @@ import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
 import com.proyecto.user.domain.factory.PortfolioDTOFactory;
 import com.proyecto.user.domain.factory.PortfolioFactory;
+import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.persistence.UserDAO;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws InvalidAssetArgumentException, UserNotFoundException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException {
 
 		InvertarUser user = obtainUser(userId);
 

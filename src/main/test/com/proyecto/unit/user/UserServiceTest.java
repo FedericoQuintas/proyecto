@@ -9,7 +9,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
@@ -17,6 +16,8 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.unit.user.helper.PortfolioHelper;
 import com.proyecto.unit.user.helper.UserHelper;
+import com.proyecto.user.exception.InvalidPortfolioArgumentException;
+import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.service.UserService;
 
@@ -24,6 +25,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Resource
 	private UserService userService;
+
 	private InvertarUserDTO userDTO;
 
 	@Before
@@ -55,7 +57,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenAddsAPortfolioToAUserCollectionThenPortfolioIsAdded()
-			throws InvalidAssetArgumentException, UserNotFoundException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -88,6 +90,22 @@ public class UserServiceTest extends SpringBaseTest {
 		InvertarUserDTO storedUserDTO = userService.findById(userDTO.getId());
 
 		Assert.assertTrue(userDTO.getId().equals(storedUserDTO.getId()));
+
+	}
+
+	@Test
+	public void whenAsksForAPortfolioThenPortfolioHasPerformance()
+			throws UserNotFoundException, PortfolioNotFoundException,
+			InvalidPortfolioArgumentException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertNotNull(retrievedPortfolioDTO.getPerformance());
 
 	}
 

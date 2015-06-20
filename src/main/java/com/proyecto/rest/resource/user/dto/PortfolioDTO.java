@@ -10,6 +10,12 @@ public class PortfolioDTO {
 	private String name;
 	@JsonProperty("market_value")
 	private Long marketValue;
+	@JsonProperty("performance")
+	private Double performance;
+
+	public void setPerformance(Double performance) {
+		this.performance = performance;
+	}
 
 	public void setMarketValue(Long marketValue) {
 		this.marketValue = marketValue;
@@ -33,6 +39,10 @@ public class PortfolioDTO {
 
 	public Long getMarketValue() {
 		return this.marketValue;
+	}
+
+	public Double getPerformance() {
+		return this.performance;
 	}
 
 }

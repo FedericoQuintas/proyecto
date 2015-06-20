@@ -31,7 +31,7 @@ public class UserResource {
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
 	@ResponseBody
-	public InvertarUserDTO findUserById(@PathVariable("userId") Long userId)
+	public InvertarUserDTO findUserById(@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
 		return userService.findById(userId);
 	}
