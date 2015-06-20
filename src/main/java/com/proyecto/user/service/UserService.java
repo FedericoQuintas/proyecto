@@ -12,10 +12,11 @@ public interface UserService {
 
 	/**
 	 * Stores the UserDTO specified and retrieves it with new Id assigned.
+	 * @param userDTO 
 	 * 
 	 * @return InvertarUserDTO
 	 */
-	InvertarUserDTO store();
+	InvertarUserDTO store(InvertarUserDTO userDTO);
 
 	/**
 	 * Retrieves the InvertarUserDTO with specified ID
@@ -59,6 +60,25 @@ public interface UserService {
 	 */
 
 	PortfolioDTO findPortfolioById(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException;
+
+	/**
+	 * Calculates and retrieves de Performance of all the User Portfolios
+	 * 
+	 * @return Double
+	 * @throws UserNotFoundException
+	 */
+
+	Double getPortfoliosPerformance(Long id) throws UserNotFoundException;
+
+	/**
+	 * Calculates and retrieves de Performance of the specified User Portfolio
+	 * 
+	 * @return Double
+	 * @throws UserNotFoundException
+	 * @throws PortfolioNotFoundException
+	 */
+	Double getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException;
 
 }

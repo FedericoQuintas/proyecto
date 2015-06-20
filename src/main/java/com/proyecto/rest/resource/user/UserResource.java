@@ -25,8 +25,8 @@ public class UserResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUserDTO store() {
-		return userService.store();
+	public InvertarUserDTO store(@RequestBody InvertarUserDTO invertarUserDTO) {
+		return userService.store(invertarUserDTO);
 	}
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)

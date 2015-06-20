@@ -5,7 +5,10 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 public class UserHelper {
 
 	public static InvertarUserDTO createDefaultUserDTO() {
-		return new InvertarUserDTO();
+		InvertarUserDTO invertarUserDTO = new InvertarUserDTO();
+		invertarUserDTO.setUsername("Default Name");
+		invertarUserDTO.setMail("default@mail.com");
+		return invertarUserDTO;
 	}
 
 }

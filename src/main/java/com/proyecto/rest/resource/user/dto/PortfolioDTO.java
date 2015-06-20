@@ -12,6 +12,8 @@ public class PortfolioDTO {
 	private Long marketValue;
 	@JsonProperty("performance")
 	private Double performance;
+	@JsonProperty("last_session_performance")
+	private Double lastSessionPerformance;
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;
@@ -43,6 +45,14 @@ public class PortfolioDTO {
 
 	public Double getPerformance() {
 		return this.performance;
+	}
+
+	public Double getLastSessionPerformance() {
+		return lastSessionPerformance;
+	}
+
+	public void setLastSessionPerformance(Double lastSessionPerformance) {
+		this.lastSessionPerformance = lastSessionPerformance;
 	}
 
 }

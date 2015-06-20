@@ -6,6 +6,7 @@ public class Portfolio {
 	private Long marketValue;
 	private String name;
 	private Double performance;
+	private Double lastSessionPerformance;
 
 	public String getName() {
 		return name;
@@ -20,6 +21,11 @@ public class Portfolio {
 		this.name = name;
 		this.marketValue = new Long(0);
 		this.performance = new Double(0);
+		this.lastSessionPerformance = new Double(0);
+	}
+
+	public Double getLastSessionPerformance() {
+		return lastSessionPerformance;
 	}
 
 	public Long getId() {

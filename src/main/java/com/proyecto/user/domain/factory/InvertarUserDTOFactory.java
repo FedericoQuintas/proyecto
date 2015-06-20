@@ -14,6 +14,8 @@ public class InvertarUserDTOFactory {
 		InvertarUserDTO invertarUserDTO = new InvertarUserDTO();
 
 		invertarUserDTO.setId(storedUser.getId());
+		invertarUserDTO.setUsername(storedUser.getUsername());
+		invertarUserDTO.setMail(storedUser.getMail());
 		invertarUserDTO.setPortfolios(convertToDTOs(storedUser));
 
 		return invertarUserDTO;

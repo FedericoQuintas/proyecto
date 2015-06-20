@@ -27,21 +27,9 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Override
-	public InvertarUserDTO store() {
-
-		InvertarUser user = InvertarUserFactory.create(userDAO.nextID());
-
-		InvertarUser storedUser = userDAO.store(user);
-
-		return InvertarUserDTOFactory.create(storedUser);
-
-	}
-
-	@Override
 	public InvertarUserDTO findById(Long id) throws UserNotFoundException {
 		try {
 			InvertarUser user = userDAO.findById(id);
-
 			return InvertarUserDTOFactory.create(user);
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
@@ -61,29 +49,25 @@ public class UserServiceImpl implements UserService {
 	public PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
 			throws UserNotFoundException, InvalidPortfolioArgumentException {
 
-		InvertarUser user = obtainUser(userId);
+		try {
+			InvertarUser user = userDAO.findById(userId);
 
-		Portfolio portfolio = PortfolioFactory.create(portfolioDTO,
-				userDAO.nextPortfolioID());
+			Portfolio portfolio = PortfolioFactory.create(portfolioDTO,
+					userDAO.nextPortfolioID());
 
-		user.addPortfolio(portfolio);
+			user.addPortfolio(portfolio);
 
-		updateUser(user);
+			updateUser(user);
 
-		return PortfolioDTOFactory.create(portfolio);
+			return PortfolioDTOFactory.create(portfolio);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+
 	}
 
 	private void updateUser(InvertarUser invertarUser) {
 		userDAO.update(invertarUser);
-	}
-
-	private InvertarUser obtainUser(Long userId) throws UserNotFoundException {
-
-		InvertarUserDTO userDTO = findById(userId);
-
-		InvertarUser user = InvertarUserFactory.create(userDTO.getId());
-
-		return user;
 	}
 
 	@Override
@@ -118,5 +102,54 @@ public class UserServiceImpl implements UserService {
 		if (portfolioDTO == null) {
 			throw new PortfolioNotFoundException();
 		}
+	}
+
+	@Override
+	public Double getPortfoliosPerformance(Long userId)
+			throws UserNotFoundException {
+
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			Double portfoliosPerformance = new Double(0);
+
+			for (Portfolio portfolio : user.getPortfolios()) {
+				portfoliosPerformance += calculatePerformance(portfolio);
+			}
+
+			return portfoliosPerformance;
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+
+	}
+
+	private Double calculatePerformance(Portfolio portfolio) {
+
+		return new Double(0);
+	}
+
+	@Override
+	public Double getPortfolioPerformance(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException {
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			Portfolio portfolio = user.getPortfolio(portfolioId);
+			return calculatePerformance(portfolio);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+
+	}
+
+	@Override
+	public InvertarUserDTO store(InvertarUserDTO userDTO) {
+
+		InvertarUser user = InvertarUserFactory.create(userDAO.nextID(),
+				userDTO.getUsername(), userDTO.getMail());
+
+		InvertarUser storedUser = userDAO.store(user);
+
+		return InvertarUserDTOFactory.create(storedUser);
+
 	}
 }

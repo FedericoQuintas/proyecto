@@ -40,6 +40,18 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
+	public void whenCreatesUserThenUserIsCreatedWithName() {
+
+		Assert.assertNotNull(userDTO.getUsername());
+	}
+	
+	@Test
+	public void whenCreatesUserThenUserIsCreatedWithMail() {
+
+		Assert.assertNotNull(userDTO.getMail());
+	}
+
+	@Test
 	public void whenCreatesUserThenUserIsCreatedWithPortfolios() {
 
 		Assert.assertNotNull(userDTO.getPortfolios());
@@ -74,7 +86,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
-		userService.addPortfolio(portfolioDTO, userDTO.getId());
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
 				userDTO.getId(), portfolioDTO.getId());
@@ -110,6 +122,63 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
+	public void whenAsksForAPortfolioThenPortfolioLastSessionPerformance()
+			throws UserNotFoundException, PortfolioNotFoundException,
+			InvalidPortfolioArgumentException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertNotNull(retrievedPortfolioDTO.getLastSessionPerformance());
+
+	}
+
+	@Test
+	public void whenAsksForAUserPortfolioPerformanceThenUserPortfolioPerformanceIsRetrieved()
+			throws UserNotFoundException, InvalidPortfolioArgumentException,
+			PortfolioNotFoundException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		Double portfolioPerformance = userService.getPortfolioPerformance(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertTrue(portfolioPerformance.equals(portfolioDTO
+				.getPerformance()));
+
+	}
+
+	@Test
+	public void whenAsksForAUserPortfoliosPerformanceThenUserPortfoliosPerformanceIsRetrieved()
+			throws UserNotFoundException, InvalidPortfolioArgumentException {
+
+		PortfolioDTO firstPortfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		firstPortfolioDTO = userService.addPortfolio(firstPortfolioDTO,
+				userDTO.getId());
+
+		PortfolioDTO secondPortfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		secondPortfolioDTO.setName("Second Portfolio Name");
+
+		secondPortfolioDTO = userService.addPortfolio(secondPortfolioDTO,
+				userDTO.getId());
+
+		Double portfoliosPerformance = userService
+				.getPortfoliosPerformance(userDTO.getId());
+
+		Assert.assertTrue(portfoliosPerformance.equals(firstPortfolioDTO
+				.getPerformance() + secondPortfolioDTO.getPerformance()));
+
+	}
+
+	@Test
 	public void whenSearchAnUserByIdAndUserDoesNotExistThenUserExceptionIsThrown()
 			throws UserNotFoundException {
 
@@ -128,7 +197,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 		userDTO = UserHelper.createDefaultUserDTO();
 
-		userDTO = userService.store();
+		userDTO = userService.store(userDTO);
 	}
 
 }
