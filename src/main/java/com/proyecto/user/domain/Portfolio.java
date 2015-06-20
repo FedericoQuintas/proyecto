@@ -1,10 +1,8 @@
 package com.proyecto.user.domain;
 
-
 public class Portfolio {
 
 	private Long id;
-	private String portfolioName;
 	private Long marketValue;
 	private String name;
 
@@ -24,10 +22,6 @@ public class Portfolio {
 
 	public Long getId() {
 		return this.id;
-	}
-
-	public String getPortfolioName() {
-		return portfolioName;
 	}
 
 }
