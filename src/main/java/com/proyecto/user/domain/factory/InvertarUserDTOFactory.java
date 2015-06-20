@@ -23,7 +23,7 @@ public class InvertarUserDTOFactory {
 
 	private static List<PortfolioDTO> convertToDTOs(InvertarUser storedUser) {
 
-		List<PortfolioDTO> portfoliosDTO = new ArrayList<>();
+		List<PortfolioDTO> portfoliosDTO = new ArrayList<PortfolioDTO>();
 
 		for (Portfolio portfolio : storedUser.getPortfolios()) {
 			portfoliosDTO.add(PortfolioDTOFactory.create(portfolio));

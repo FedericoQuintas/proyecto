@@ -44,7 +44,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 		Assert.assertNotNull(userDTO.getUsername());
 	}
-	
+
 	@Test
 	public void whenCreatesUserThenUserIsCreatedWithMail() {
 
@@ -71,9 +71,7 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAddsAPortfolioToAUserCollectionThenPortfolioIsAdded()
 			throws UserNotFoundException, InvalidPortfolioArgumentException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
-
-		userService.addPortfolio(portfolioDTO, userDTO.getId());
+		addPortfolioToUser();
 
 		InvertarUserDTO user = userService.findById(userDTO.getId());
 
@@ -84,15 +82,44 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAskForSpecificPortfolioThenPortfolioIsRetrieved()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
-
-		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+		PortfolioDTO portfolioDTO = addPortfolioToUser();
 
 		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
 				userDTO.getId(), portfolioDTO.getId());
 
 		Assert.assertTrue(retrievedPortfolioDTO.getId().equals(
 				portfolioDTO.getId()));
+	}
+
+	@Test
+	public void whenAddsAPortfolioThenPortfolioIsAddedWithName()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = addPortfolioToUser();
+
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertNotNull(retrievedPortfolioDTO.getName());
+	}
+
+	@Test
+	public void whenAddsAPortfolioThenPortfolioIsAddedWithMarketValue()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = addPortfolioToUser();
+
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Assert.assertNotNull(retrievedPortfolioDTO.getMarketValue());
+	}
+
+	private PortfolioDTO addPortfolioToUser() throws UserNotFoundException,
+			InvalidPortfolioArgumentException {
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		return userService.addPortfolio(portfolioDTO, userDTO.getId());
 	}
 
 	@Test
