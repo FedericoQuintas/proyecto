@@ -1,5 +1,8 @@
 package com.proyecto.user.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Portfolio {
 
 	private Long id;
@@ -7,6 +10,7 @@ public class Portfolio {
 	private String name;
 	private Double performance;
 	private Double lastSessionPerformance;
+	private List<UserAsset> userAssets = new ArrayList<UserAsset>();
 
 	public String getName() {
 		return name;
@@ -38,6 +42,14 @@ public class Portfolio {
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;
+	}
+
+	public List<UserAsset> getUserAssets() {
+		return userAssets;
+	}
+
+	public void setUserAssets(List<UserAsset> userAssets) {
+		this.userAssets = userAssets;
 	}
 
 }

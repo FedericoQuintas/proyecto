@@ -1,5 +1,7 @@
 package com.proyecto.rest.resource.user.dto;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class PortfolioDTO {
@@ -14,9 +16,19 @@ public class PortfolioDTO {
 	private Double performance;
 	@JsonProperty("last_session_performance")
 	private Double lastSessionPerformance;
+	@JsonProperty("userAssets")
+	private List<UserAssetDTO> userAssets;
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;
+	}
+
+	public List<UserAssetDTO> getUserAssets() {
+		return userAssets;
+	}
+
+	public void setUserAssets(List<UserAssetDTO> userAssets) {
+		this.userAssets = userAssets;
 	}
 
 	public void setMarketValue(Long marketValue) {
