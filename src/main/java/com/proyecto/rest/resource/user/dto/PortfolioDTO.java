@@ -1,5 +1,7 @@
 package com.proyecto.rest.resource.user.dto;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class PortfolioDTO {
@@ -10,6 +12,16 @@ public class PortfolioDTO {
 	private String name;
 	@JsonProperty("market_value")
 	private Long marketValue;
+	@JsonProperty("userAssets")
+	private List<UserAssetDTO> userAssets;
+
+	public List<UserAssetDTO> getUserAssets() {
+		return userAssets;
+	}
+
+	public void setUserAssets(List<UserAssetDTO> userAssets) {
+		this.userAssets = userAssets;
+	}
 
 	public void setMarketValue(Long marketValue) {
 		this.marketValue = marketValue;
