@@ -9,13 +9,19 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
+import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.unit.asset.helper.AssetHelper;
 import com.proyecto.unit.user.helper.PortfolioHelper;
 import com.proyecto.unit.user.helper.UserHelper;
+import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
@@ -25,6 +31,9 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Resource
 	private UserService userService;
+
+	@Resource
+	private AssetService assetService;
 
 	private InvertarUserDTO userDTO;
 
@@ -223,15 +232,30 @@ public class UserServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAskForPortfolioMarketValueThenMarketValueIsRetrieved()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
-			PortfolioNotFoundException {
+			PortfolioNotFoundException, AssetNotFoundException,
+			InvalidAssetArgumentException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
+		AssetDTO assetDTO = storeAsset();
+		
+		assetService.update(assetDTO);
+
+		portfolioDTO.getUserAssets().get(0).setAssetId(assetDTO.getId());
+
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
-		userService.getPortfolioMarketValue(userDTO.getId(),
-				portfolioDTO.getId());
+		List<MarketValueVO> portfolioMarketValues = userService
+				.getPortfolioMarketValue(userDTO.getId(), portfolioDTO.getId());
 
+		Assert.assertNotNull(portfolioMarketValues);
+
+	}
+
+	private AssetDTO storeAsset() throws InvalidAssetArgumentException {
+		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTO();
+		AssetDTO asset = assetService.store(assetDTO);
+		return asset;
 	}
 
 	private void storeUser() {

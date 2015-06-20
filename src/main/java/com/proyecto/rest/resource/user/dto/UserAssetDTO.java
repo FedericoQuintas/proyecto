@@ -23,11 +23,11 @@ public class UserAssetDTO {
 		this.cumulativePayments = cumulativePayments;
 	}
 
-	public long getAsset_id() {
+	public long getAssetId() {
 		return asset_id;
 	}
 
-	public void setAsset_id(long asset_id) {
+	public void setAssetId(long asset_id) {
 		this.asset_id = asset_id;
 	}
 

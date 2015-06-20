@@ -2,7 +2,7 @@ package com.proyecto.common.error;
 
 public enum InvertarErrorCode {
 
-	OBJECT_NOT_FOUND(404), INVALID_ARGUMENT(405);
+	OBJECT_NOT_FOUND(404), INVALID_ARGUMENT(405), NO_TRANSACTIONS_FOUND(406);
 
 	private Integer code;
 

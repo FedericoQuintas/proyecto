@@ -1,5 +1,6 @@
 package com.proyecto.rest.resource.user.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -17,7 +18,7 @@ public class PortfolioDTO {
 	@JsonProperty("last_session_performance")
 	private Double lastSessionPerformance;
 	@JsonProperty("userAssets")
-	private List<UserAssetDTO> userAssets;
+	private List<UserAssetDTO> userAssets = new ArrayList<UserAssetDTO>();
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;

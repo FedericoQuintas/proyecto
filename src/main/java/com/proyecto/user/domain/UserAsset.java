@@ -6,7 +6,7 @@ import java.util.List;
 public class UserAsset {
 
 	private Long id;
-	private long asset_id;
+	private Long assetId;
 	private float cumulativePayments; // Pueden ser: Dividendos (Acciones),
 										// Pagos de Amortizaci�n o Renta
 										// (Bonos), o Redondeos en caso de Split
@@ -37,12 +37,12 @@ public class UserAsset {
 		this.cumulativePayments = cumulativePayments;
 	}
 
-	public long getAsset_id() {
-		return asset_id;
+	public long getAssetId() {
+		return assetId;
 	}
 
-	public void setAsset_id(long asset_id) {
-		this.asset_id = asset_id;
+	public void setAssetId(Long assetId) {
+		this.assetId = assetId;
 	}
 
 }

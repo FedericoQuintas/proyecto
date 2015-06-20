@@ -14,7 +14,7 @@ public class UserAssetDTOFactory {
 		UserAssetDTO userAssetDTO = new UserAssetDTO();
 		
 		userAssetDTO.setId(userAsset.getId());
-		userAssetDTO.setAsset_id(userAsset.getAsset_id());
+		userAssetDTO.setAssetId(userAsset.getAssetId());
 		userAssetDTO.setTransactions(convertToDTOs(userAsset));
 		userAssetDTO.setCumulativePayments(userAsset.getCumulativePayments());
 		return userAssetDTO;

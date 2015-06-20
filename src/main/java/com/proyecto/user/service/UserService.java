@@ -2,8 +2,10 @@ package com.proyecto.user.service;
 
 import java.util.List;
 
+import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
@@ -85,10 +87,12 @@ public interface UserService {
 	/**
 	 * Calculates and retrieves the Portfolio Market Value
 	 * 
-	 * @return Long
+	 * @return List<MarketValue>
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
+	 * @throws AssetNotFoundException
 	 */
-	Long getPortfolioMarketValue(Long userId, Long portfolioId) throws UserNotFoundException, PortfolioNotFoundException;
+	List<MarketValueVO> getPortfolioMarketValue(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException, AssetNotFoundException;
 
 }

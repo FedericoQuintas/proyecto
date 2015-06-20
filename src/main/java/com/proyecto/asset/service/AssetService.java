@@ -25,7 +25,7 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws AssetNotFoundException
 	 */
-	AssetDTO findById(Long nOT_EXISTING_USER_ID) throws AssetNotFoundException;
+	AssetDTO findById(Long assetID) throws AssetNotFoundException;
 
 	/**
 	 * Adds a TradingSession to Asset TradingSession collection.

@@ -9,7 +9,6 @@ public class TransactionDTOFactory {
 		TransactionDTO transactionDTO = new TransactionDTO();
 		
 		transactionDTO.setId(transaction.getId());
-		transactionDTO.setPriceSold(transaction.getPriceSold());
 		transactionDTO.setPricePaid(transaction.getPricePaid());
 		transactionDTO.setTradingDate(transaction.getTradingDate());
 		transactionDTO.setQuantity(transaction.getQuantity());
