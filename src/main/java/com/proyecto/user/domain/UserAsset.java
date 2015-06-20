@@ -8,7 +8,8 @@ import com.proyecto.asset.domain.Asset;
 public class UserAsset {
 	
 	private Long id;
-	private Asset asset;
+	private long asset_id;
+	private float cumulativePayments; // Pueden ser: Dividendos (Acciones), Pagos de Amortización o Renta (Bonos), o Redondeos en caso de Split (Acciones)
 	private List<Transaction> transactions = new ArrayList<Transaction>();
 	
 	public Long getId() {
@@ -19,20 +20,28 @@ public class UserAsset {
 		this.id = id;
 	}
 	
-	public Asset getAsset() {
-		return asset;
-	}
-	
-	public void setAsset(Asset asset) {
-		this.asset = asset;
-	}
-	
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 	
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
+	}
+
+	public float getCumulativePayments() {
+		return cumulativePayments;
+	}
+
+	public void setCumulativePayments(float cumulativePayments) {
+		this.cumulativePayments = cumulativePayments;
+	}
+
+	public long getAsset_id() {
+		return asset_id;
+	}
+
+	public void setAsset_id(long asset_id) {
+		this.asset_id = asset_id;
 	}
 	
 }
