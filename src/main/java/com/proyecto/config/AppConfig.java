@@ -7,12 +7,12 @@ import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.asset.service.AssetServiceImpl;
+import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
+import com.proyecto.user.domain.service.PortfolioDomainService;
+import com.proyecto.user.domain.service.UserAssetDomainService;
+import com.proyecto.user.domain.service.UserAssetDomainServiceImpl;
 import com.proyecto.user.persistence.UserDAO;
 import com.proyecto.user.persistence.UserDAOImpl;
-import com.proyecto.user.service.PortfilioServiceImpl;
-import com.proyecto.user.service.PortfolioService;
-import com.proyecto.user.service.UserAssetService;
-import com.proyecto.user.service.UserAssetServiceImpl;
 import com.proyecto.user.service.UserService;
 import com.proyecto.user.service.UserServiceImpl;
 import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
@@ -27,13 +27,13 @@ public class AppConfig {
 	}
 
 	@Bean
-	public UserAssetService userAssetService() {
-		return new UserAssetServiceImpl();
+	public UserAssetDomainService userAssetService() {
+		return new UserAssetDomainServiceImpl();
 	}
 
 	@Bean
-	public PortfolioService portfolioService() {
-		return new PortfilioServiceImpl();
+	public PortfolioDomainService portfolioService() {
+		return new PortfolioDomainServiceImpl();
 	}
 
 	@Bean

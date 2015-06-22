@@ -1,4 +1,4 @@
-package com.proyecto.user.service;
+package com.proyecto.user.domain.service;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import com.proyecto.user.domain.Transaction;
 import com.proyecto.user.domain.UserAsset;
 
 @Service("userAssetService")
-public class UserAssetServiceImpl implements UserAssetService {
+public class UserAssetDomainServiceImpl implements UserAssetDomainService {
 
 	@Override
 	public Transaction obtainLastTransaction(UserAsset userAsset) {

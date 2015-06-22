@@ -21,6 +21,8 @@ import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
 import com.proyecto.user.domain.factory.PortfolioDTOFactory;
 import com.proyecto.user.domain.factory.PortfolioFactory;
+import com.proyecto.user.domain.service.PortfolioDomainService;
+import com.proyecto.user.domain.service.UserAssetDomainService;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -34,10 +36,10 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Resource
-	private PortfolioService portfolioService;
+	private PortfolioDomainService portfolioService;
 
 	@Resource
-	private UserAssetService userAssetService;
+	private UserAssetDomainService userAssetService;
 
 	@Resource
 	private AssetService assetService;
