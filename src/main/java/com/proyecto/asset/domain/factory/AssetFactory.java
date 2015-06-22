@@ -16,6 +16,8 @@ public class AssetFactory {
 		Asset asset = new Asset(id, assetDTO.getDescription(), assetDTO.getTicker());
 
 		asset.setLastTradingPrice(assetDTO.getLastTradingPrice());
+		
+		asset.setIndustry(assetDTO.getIndustry());
 
 		return asset;
 	}

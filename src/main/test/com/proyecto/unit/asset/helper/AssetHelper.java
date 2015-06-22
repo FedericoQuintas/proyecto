@@ -5,8 +5,9 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetHelper {
 
-	private static final String DEFAULT_DESCRIPTION = "Asset default description";
-	private static final String DEFAULT_TICKER = "INTC";
+	public static final String DEFAULT_DESCRIPTION = "Asset default description";
+	public static final String DEFAULT_TICKER = "INTC";
+	public static final String DEFAULT_INDUSTRY = "Automotriz";
 
 	public static AssetDTO createDefaultAssetDTO() {
 
@@ -14,6 +15,7 @@ public class AssetHelper {
 
 		assetDTO.setDescription(DEFAULT_DESCRIPTION);
 		assetDTO.setTicker(DEFAULT_TICKER);
+		assetDTO.setIndustry(DEFAULT_INDUSTRY);
 
 		return assetDTO;
 	}
