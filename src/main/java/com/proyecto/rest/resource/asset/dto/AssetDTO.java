@@ -20,6 +20,9 @@ public class AssetDTO {
 
 	@JsonProperty("ticker")
 	private String ticker;
+	
+	@JsonProperty("industry")
+	private String industry;
 
 	public List<TradingSessionDTO> getTradingSessions() {
 		return tradingSessions;
@@ -61,6 +64,14 @@ public class AssetDTO {
 
 	public void setTicker(String ticker) {
 		this.ticker = ticker;
+	}
+
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
 	}
 
 }

@@ -13,6 +13,7 @@ public class Asset {
 	private List<TradingSession> tradingSessions;
 	private Long lastTradingPrice;
 	private String ticker;
+	private String industry;
 
 	public Asset(Long id, String description, String ticker) {
 		this.id = id;
@@ -57,6 +58,14 @@ public class Asset {
 
 	public Long getLastTradingPrice() {
 		return lastTradingPrice;
+	}
+
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
 	}
 
 }

@@ -37,6 +37,13 @@ public class AssetServiceTest extends SpringBaseTest {
 	public void whenCreatesAssetThenAssetIsCreatedWithMandatoryFields() {
 		assertAssetHasMandatoryFields();
 	}
+	
+	@Test
+	public void whenCreatesAssetThenAssetIsPersistedWithOriginalFieldsContents() {
+		Assert.assertEquals(AssetHelper.DEFAULT_INDUSTRY, assetDTO.getIndustry());
+		Assert.assertEquals(AssetHelper.DEFAULT_DESCRIPTION, assetDTO.getDescription());
+		Assert.assertEquals(AssetHelper.DEFAULT_TICKER, assetDTO.getTicker());
+	}
 
 	@Test
 	public void whenAddsTradingSessionToAssetThenTradingSessionIsAdded()
