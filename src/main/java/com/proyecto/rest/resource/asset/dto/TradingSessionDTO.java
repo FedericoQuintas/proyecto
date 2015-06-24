@@ -7,39 +7,39 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class TradingSessionDTO {
 
 	@JsonProperty("closingPrice")
-	private Long closingPrice;
+	private Double closingPrice;
 	@JsonProperty("openingPrice")
-	private Long openingPrice;
+	private Double openingPrice;
 	@JsonProperty("maxPrice")
-	private Long maxPrice;
+	private Double maxPrice;
 	@JsonProperty("minPrice")
-	private Long minPrice;
+	private Double minPrice;
 	@JsonProperty("tradingDate")
 	private Date tradingDate;
 	@JsonProperty("volume")
 	private Integer volume;
-	public Long getClosingPrice() {
+	public Double getClosingPrice() {
 		return closingPrice;
 	}
-	public void setClosingPrice(Long closingPrice) {
+	public void setClosingPrice(Double closingPrice) {
 		this.closingPrice = closingPrice;
 	}
-	public Long getOpeningPrice() {
+	public Double getOpeningPrice() {
 		return openingPrice;
 	}
-	public void setOpeningPrice(Long openingPrice) {
+	public void setOpeningPrice(Double openingPrice) {
 		this.openingPrice = openingPrice;
 	}
-	public Long getMaxPrice() {
+	public Double getMaxPrice() {
 		return maxPrice;
 	}
-	public void setMaxPrice(Long maxPrice) {
+	public void setMaxPrice(Double maxPrice) {
 		this.maxPrice = maxPrice;
 	}
-	public Long getMinPrice() {
+	public Double getMinPrice() {
 		return minPrice;
 	}
-	public void setMinPrice(Long minPrice) {
+	public void setMinPrice(Double minPrice) {
 		this.minPrice = minPrice;
 	}
 	public Date getTradingDate() {

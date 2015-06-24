@@ -4,35 +4,35 @@ import java.util.Date;
 
 public class TradingSession {
 	
-	private Long closingPrice;
-	private Long openingPrice;
-	private Long maxPrice;
-	private Long minPrice;
+	private Double closingPrice;
+	private Double openingPrice;
+	private Double maxPrice;
+	private Double minPrice;
 	private Date tradingDate;
 	private Integer volume;
 	
-	public Long getMaxPrice() {
+	public Double getMaxPrice() {
 		return maxPrice;
 	}
-	public void setMaxPrice(Long maxPrice) {
+	public void setMaxPrice(Double maxPrice) {
 		this.maxPrice = maxPrice;
 	}
-	public Long getMinPrice() {
+	public Double getMinPrice() {
 		return minPrice;
 	}
-	public void setMinPrice(Long minPrice) {
+	public void setMinPrice(Double minPrice) {
 		this.minPrice = minPrice;
 	}	
-	public Long getOpeningPrice() {
+	public Double getOpeningPrice() {
 		return openingPrice;
 	}
-	public void setOpeningPrice(Long openingPrice) {
+	public void setOpeningPrice(Double openingPrice) {
 		this.openingPrice = openingPrice;
 	}
-	public Long getClosingPrice() {
+	public Double getClosingPrice() {
 		return closingPrice;
 	}
-	public void setClosingPrice(Long closingPrice) {
+	public void setClosingPrice(Double closingPrice) {
 		this.closingPrice = closingPrice;
 	}	
 	public Date getTradingDate() {
