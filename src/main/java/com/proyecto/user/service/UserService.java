@@ -3,8 +3,10 @@ package com.proyecto.user.service;
 import java.util.List;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -58,12 +60,11 @@ public interface UserService {
 	 * @param userId
 	 * @param portfolioId
 	 * @return PortfolioDTO
-	 * @throws UserNotFoundException
-	 * @throws PortfolioNotFoundException
+	 * @throws ApplicationServiceException
 	 */
 
 	PortfolioDTO findPortfolioById(Long userId, Long portfolioId)
-			throws UserNotFoundException, PortfolioNotFoundException;
+			throws ApplicationServiceException;
 
 	/**
 	 * Calculates and retrieves de Performance of all the User Portfolios
@@ -93,6 +94,23 @@ public interface UserService {
 	 * @throws AssetNotFoundException
 	 */
 	List<MarketValueVO> getPortfolioMarketValue(Long userId, Long portfolioId)
-			throws UserNotFoundException, PortfolioNotFoundException, AssetNotFoundException;
+			throws UserNotFoundException, PortfolioNotFoundException,
+			AssetNotFoundException;
+
+	/**
+	 * Tracks and retrieves a Transaction
+	 * 
+	 * @param transactionDTO
+	 * @param userAssetId
+	 * @param portfolioId
+	 * @return TransactionDTO
+	 * @throws UserNotFoundException
+	 * @throws PortfolioNotFoundException
+	 * @throws ApplicationServiceException
+	 */
+
+	TransactionDTO buyUserAsset(TransactionDTO transactionDTO, Long userId,
+			Long portfolioId) throws UserNotFoundException,
+			PortfolioNotFoundException, ApplicationServiceException;
 
 }

@@ -10,17 +10,16 @@ import com.proyecto.user.domain.UserAsset;
 
 public class UserAssetDTOFactory {
 
-	public static UserAssetDTO create(UserAsset userAsset){
+	public static UserAssetDTO create(UserAsset userAsset) {
 		UserAssetDTO userAssetDTO = new UserAssetDTO();
-		
-		userAssetDTO.setId(userAsset.getId());
+
 		userAssetDTO.setAssetId(userAsset.getAssetId());
 		userAssetDTO.setTransactions(convertToDTOs(userAsset));
 		userAssetDTO.setCumulativePayments(userAsset.getCumulativePayments());
 		return userAssetDTO;
-		
+
 	}
-	
+
 	private static List<TransactionDTO> convertToDTOs(UserAsset userAsset) {
 
 		List<TransactionDTO> transactionsDTO = new ArrayList<TransactionDTO>();

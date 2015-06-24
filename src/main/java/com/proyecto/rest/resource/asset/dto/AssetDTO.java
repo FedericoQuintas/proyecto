@@ -20,7 +20,7 @@ public class AssetDTO {
 
 	@JsonProperty("ticker")
 	private String ticker;
-	
+
 	@JsonProperty("industry")
 	private String industry;
 

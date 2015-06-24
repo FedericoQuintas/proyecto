@@ -1,6 +1,5 @@
 package com.proyecto.user.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,21 +7,19 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
-import com.proyecto.asset.service.AssetService;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.exception.ApplicationServiceException;
+import com.proyecto.common.exception.DomainException;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.Portfolio;
-import com.proyecto.user.domain.Transaction;
-import com.proyecto.user.domain.UserAsset;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
 import com.proyecto.user.domain.factory.PortfolioDTOFactory;
 import com.proyecto.user.domain.factory.PortfolioFactory;
 import com.proyecto.user.domain.service.PortfolioDomainService;
-import com.proyecto.user.domain.service.UserAssetDomainService;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -36,13 +33,7 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Resource
-	private PortfolioDomainService portfolioService;
-
-	@Resource
-	private UserAssetDomainService userAssetService;
-
-	@Resource
-	private AssetService assetService;
+	private PortfolioDomainService portfolioDomainService;
 
 	@Override
 	public InvertarUserDTO findById(Long id) throws UserNotFoundException {
@@ -90,36 +81,20 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PortfolioDTO findPortfolioById(Long userId, Long portfolioId)
-			throws UserNotFoundException, PortfolioNotFoundException {
+			throws ApplicationServiceException {
 
-		InvertarUserDTO userDTO = findById(userId);
+		InvertarUser user;
+		try {
+			user = userDAO.findById(userId);
+			Portfolio portfolio = portfolioDomainService
+					.obtainSpecifiedPortfolio(portfolioId, user.getPortfolios());
 
-		PortfolioDTO portfolioDTO = obtainSpecifiedPortfolio(portfolioId,
-				userDTO);
-
-		return portfolioDTO;
-
-	}
-
-	private PortfolioDTO obtainSpecifiedPortfolio(Long portfolioId,
-			InvertarUserDTO userDTO) throws PortfolioNotFoundException {
-		PortfolioDTO portfolioDTO = null;
-
-		for (PortfolioDTO userPortfolioDTO : userDTO.getPortfolios()) {
-			if (userPortfolioDTO.getId().equals(portfolioId)) {
-				portfolioDTO = userPortfolioDTO;
-			}
+			return PortfolioDTOFactory.create(portfolio);
+		} catch (ObjectNotFoundException e) {
+			throw new ApplicationServiceException(e.getMessage(),
+					e.getErrorCode());
 		}
 
-		validateResult(portfolioDTO);
-		return portfolioDTO;
-	}
-
-	private void validateResult(PortfolioDTO portfolioDTO)
-			throws PortfolioNotFoundException {
-		if (portfolioDTO == null) {
-			throw new PortfolioNotFoundException();
-		}
 	}
 
 	@Override
@@ -131,7 +106,8 @@ public class UserServiceImpl implements UserService {
 			Double portfoliosPerformance = new Double(0);
 
 			for (Portfolio portfolio : user.getPortfolios()) {
-				portfoliosPerformance += calculatePerformance(portfolio);
+				portfoliosPerformance += portfolioDomainService
+						.calculatePerformance(portfolio);
 			}
 
 			return portfoliosPerformance;
@@ -141,18 +117,13 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	private Double calculatePerformance(Portfolio portfolio) {
-
-		return new Double(0);
-	}
-
 	@Override
 	public Double getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);
-			return calculatePerformance(portfolio);
+			return portfolioDomainService.calculatePerformance(portfolio);
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
 		}
@@ -178,112 +149,31 @@ public class UserServiceImpl implements UserService {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);
-			return calculateMarketValue(portfolio);
+			return portfolioDomainService.calculateMarketValue(portfolio);
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
 		}
 
 	}
 
-	private List<MarketValueVO> calculateMarketValue(Portfolio portfolio)
-			throws AssetNotFoundException {
+	@Override
+	public TransactionDTO buyUserAsset(TransactionDTO transactionDTO,
+			Long userId, Long portfolioId) throws ApplicationServiceException {
 
-		List<MarketValueVO> marketValues = new ArrayList<MarketValueVO>();
-
-		for (UserAsset userAsset : portfolio.getUserAssets()) {
-
-			Transaction lastTransaction = userAssetService
-					.obtainLastTransaction(userAsset);
-
-			evaluateLastTransaction(marketValues, lastTransaction, userAsset);
-
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			portfolioDomainService.sellUserAsset(transactionDTO, user,
+					portfolioId);
+			updateUser(user);
+			return transactionDTO;
+		} catch (DomainException e) {
+			throw new ApplicationServiceException(e.getMessage(),
+					e.getErrorCode());
+		} catch (ObjectNotFoundException e) {
+			throw new ApplicationServiceException(e.getMessage(),
+					e.getErrorCode());
 		}
 
-		return marketValues;
 	}
 
-	private void evaluateLastTransaction(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, UserAsset userAsset)
-			throws AssetNotFoundException {
-
-		if (lastTransaction != null) {
-
-			Long lastTradingPrice = obtainLastTradingPrice(userAsset
-					.getAssetId());
-
-			generateMarketValues(marketValues, lastTransaction,
-					lastTradingPrice);
-
-		}
-	}
-
-	private void generateMarketValues(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Long lastTradingPrice) {
-		for (MarketValueVO marketValue : marketValues) {
-
-			if (marketValuesHasCurrency(marketValue.getCurrency(), marketValues)) {
-
-				calculateMarketValue(marketValues, lastTradingPrice,
-						marketValue);
-
-			} else {
-
-				generateMarketValue(marketValues, lastTransaction,
-						lastTradingPrice);
-
-			}
-
-		}
-	}
-
-	private void calculateMarketValue(List<MarketValueVO> marketValues,
-			Long lastTradingPrice, MarketValueVO marketValue) {
-
-		MarketValueVO marketValueWithCurrency = obtainMarketValueWithCurrency(
-				marketValue.getCurrency(), marketValues);
-
-		marketValueWithCurrency.calculate(lastTradingPrice);
-	}
-
-	private void generateMarketValue(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Long lastTradingPrice) {
-		marketValues.add(new MarketValueVO(lastTransaction.getCurrency(),
-				lastTradingPrice));
-	}
-
-	private Long obtainLastTradingPrice(Long assetId)
-			throws AssetNotFoundException {
-		return assetService.findById(assetId).getLastTradingPrice();
-	}
-
-	private MarketValueVO obtainMarketValueWithCurrency(
-			InvertarCurrency invertarCurrency, List<MarketValueVO> marketValues) {
-
-		return null;
-	}
-
-	private Boolean marketValuesHasCurrency(InvertarCurrency currency,
-			List<MarketValueVO> marketValues) {
-
-		Boolean hasCurrency = Boolean.FALSE;
-
-		List<InvertarCurrency> currencies = obtainMarketValuesCurrencies(marketValues);
-
-		if (currencies.contains(currency)) {
-
-			hasCurrency = Boolean.TRUE;
-		}
-
-		return hasCurrency;
-	}
-
-	private List<InvertarCurrency> obtainMarketValuesCurrencies(
-			List<MarketValueVO> marketValues) {
-
-		List<InvertarCurrency> currencies = new ArrayList<InvertarCurrency>();
-		for (MarketValueVO marketValue : marketValues) {
-			currencies.add(marketValue.getCurrency());
-		}
-		return currencies;
-	}
 }

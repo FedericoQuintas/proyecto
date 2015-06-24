@@ -7,10 +7,8 @@ import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.asset.service.AssetServiceImpl;
-import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
 import com.proyecto.user.domain.service.PortfolioDomainService;
-import com.proyecto.user.domain.service.UserAssetDomainService;
-import com.proyecto.user.domain.service.UserAssetDomainServiceImpl;
+import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
 import com.proyecto.user.persistence.UserDAO;
 import com.proyecto.user.persistence.UserDAOImpl;
 import com.proyecto.user.service.UserService;
@@ -24,11 +22,6 @@ public class AppConfig {
 	@Bean
 	public UserService userService() {
 		return new UserServiceImpl();
-	}
-
-	@Bean
-	public UserAssetDomainService userAssetService() {
-		return new UserAssetDomainServiceImpl();
 	}
 
 	@Bean

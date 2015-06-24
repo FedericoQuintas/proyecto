@@ -20,13 +20,12 @@ public class Portfolio {
 		return marketValue;
 	}
 
-	public Portfolio(Long portfolioID, String name, List<UserAsset> userAssets) {
+	public Portfolio(Long portfolioID, String name) {
 		this.id = portfolioID;
 		this.name = name;
 		this.marketValue = new Long(0);
 		this.performance = new Double(0);
 		this.lastSessionPerformance = new Double(0);
-		this.userAssets = userAssets;
 	}
 
 	public Double getLastSessionPerformance() {
@@ -51,6 +50,10 @@ public class Portfolio {
 
 	public void setUserAssets(List<UserAsset> userAssets) {
 		this.userAssets = userAssets;
+	}
+
+	public void addUsserAsset(UserAsset newUserAsset) {
+		this.userAssets.add(newUserAsset);
 	}
 
 }

@@ -5,15 +5,14 @@ import com.proyecto.user.domain.Transaction;
 
 public class TransactionDTOFactory {
 
-	public static TransactionDTO create(Transaction transaction){
+	public static TransactionDTO create(Transaction transaction) {
 		TransactionDTO transactionDTO = new TransactionDTO();
-		
-		transactionDTO.setId(transaction.getId());
+
 		transactionDTO.setPricePaid(transaction.getPricePaid());
 		transactionDTO.setTradingDate(transaction.getTradingDate());
 		transactionDTO.setQuantity(transaction.getQuantity());
-		
+
 		return transactionDTO;
 	}
-	
+
 }

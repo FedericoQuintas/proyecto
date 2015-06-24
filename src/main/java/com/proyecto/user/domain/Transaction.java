@@ -11,45 +11,35 @@ public class Transaction {
 	private Date tradingDate;
 	private Integer quantity;
 	private InvertarCurrency currency;
+	private Long assetId;
 
-	public Transaction(InvertarCurrency currency, Float price, Integer quantity) {
+	public Transaction(InvertarCurrency currency, Float price,
+			Integer quantity, Date tradingDate, Long assetId) {
 		this.currency = currency;
-		this.tradingDate = new Date();
+		this.tradingDate = tradingDate;
 		this.pricePaid = price;
 		this.quantity = quantity;
+		this.assetId = assetId;
+	}
 
+	public Long getAssetId() {
+		return assetId;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public float getPricePaid() {
 		return pricePaid;
-	}
-
-	public void setPricePaid(float pricePaid) {
-		this.pricePaid = pricePaid;
 	}
 
 	public Date getTradingDate() {
 		return tradingDate;
 	}
 
-	public void setTradingDate(Date tradingDate) {
-		this.tradingDate = tradingDate;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	public InvertarCurrency getCurrency() {

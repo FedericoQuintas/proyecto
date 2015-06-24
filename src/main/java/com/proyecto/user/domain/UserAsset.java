@@ -1,25 +1,18 @@
 package com.proyecto.user.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserAsset {
 
-	private Long id;
 	private Long assetId;
-	private float cumulativePayments; // Pueden ser: Dividendos (Acciones),
-										// Pagos de Amortizaci�n o Renta
-										// (Bonos), o Redondeos en caso de Split
-										// (Acciones)
+	private Float cumulativePayments; // Pueden ser: Dividendos (Acciones),
+
+	// Pagos de Amortizaci�n o Renta
+	// (Bonos), o Redondeos en caso de Split
+	// (Acciones)
 	private List<Transaction> transactions = new ArrayList<Transaction>();
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public List<Transaction> getTransactions() {
 		return transactions;
@@ -29,15 +22,7 @@ public class UserAsset {
 		this.transactions = transactions;
 	}
 
-	public float getCumulativePayments() {
-		return cumulativePayments;
-	}
-
-	public void setCumulativePayments(float cumulativePayments) {
-		this.cumulativePayments = cumulativePayments;
-	}
-
-	public long getAssetId() {
+	public Long getAssetId() {
 		return assetId;
 	}
 
@@ -45,4 +30,43 @@ public class UserAsset {
 		this.assetId = assetId;
 	}
 
+	public Transaction obtainLastTransaction() {
+
+		Transaction lastTransaction = null;
+
+		if (!getTransactions().isEmpty()) {
+
+			lastTransaction = calculateLastTransaction();
+
+		}
+
+		return lastTransaction;
+
+	}
+
+	private Transaction calculateLastTransaction() {
+		Date lastDate = getTransactions().get(0).getTradingDate();
+		Transaction lastTransaction = null;
+
+		for (Transaction transaction : getTransactions()) {
+			if (transaction.getTradingDate().after(lastDate)) {
+				lastDate = transaction.getTradingDate();
+				lastTransaction = transaction;
+			}
+
+		}
+		return lastTransaction;
+	}
+
+	public void addTransactions(Transaction transaction) {
+		this.transactions.add(transaction);
+	}
+
+	public Float getCumulativePayments() {
+		return cumulativePayments;
+	}
+
+	public void setCumulativePayments(Float cumulativePayments) {
+		this.cumulativePayments = cumulativePayments;
+	}
 }

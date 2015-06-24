@@ -5,38 +5,27 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class UserAssetDTO {
-
-	@JsonProperty("id")
-	private Long id;
 	@JsonProperty("asset")
-	private long asset_id;
+	private Long asset_id;
 	@JsonProperty("cumulativePayments")
-	private float cumulativePayments;
+	private Float cumulativePayments;
 	@JsonProperty("transactions")
 	private List<TransactionDTO> transactions;
 
-	public float getCumulativePayments() {
+	public Float getCumulativePayments() {
 		return cumulativePayments;
 	}
 
-	public void setCumulativePayments(float cumulativePayments) {
+	public void setCumulativePayments(Float cumulativePayments) {
 		this.cumulativePayments = cumulativePayments;
 	}
 
-	public long getAssetId() {
+	public Long getAssetId() {
 		return asset_id;
 	}
 
-	public void setAssetId(long asset_id) {
+	public void setAssetId(Long asset_id) {
 		this.asset_id = asset_id;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public List<TransactionDTO> getTransactions() {
