@@ -20,6 +20,7 @@ public class AssetDAOImpl implements AssetDAO {
 	@Override
 	public void flush() {
 		assets.clear();
+		assetsSequence = new Long(1);
 
 	}
 

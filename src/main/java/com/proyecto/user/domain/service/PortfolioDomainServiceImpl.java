@@ -12,6 +12,7 @@ import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.Portfolio;
 import com.proyecto.user.domain.Transaction;
+import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.UserAsset;
 import com.proyecto.user.domain.factory.TransactionFactory;
 import com.proyecto.user.domain.factory.UserAssetFactory;
@@ -139,9 +140,9 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	@Override
-	public void sellUserAsset(TransactionDTO transactionDTO, InvertarUser user,
-			Long portfolioId) throws PortfolioNotFoundException,
-			UserAssetNotFoundException {
+	public void storeUserAsset(TransactionDTO transactionDTO,
+			InvertarUser user, Long portfolioId)
+			throws PortfolioNotFoundException, UserAssetNotFoundException {
 
 		Transaction transaction = TransactionFactory.create(transactionDTO);
 
@@ -149,42 +150,56 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 				user.getPortfolios());
 
 		fillUserAssetWithTransaction(transaction, portfolio);
-		
 
 	}
 
 	private void fillUserAssetWithTransaction(Transaction transaction,
-			Portfolio portfolio) {
+			Portfolio portfolio) throws UserAssetNotFoundException {
 
-		Boolean userAssetExists = Boolean.FALSE;
+		if (userAssetExists(transaction, portfolio)) {
+			addTransactionToUserAsset(transaction, portfolio);
+		} else {
 
-		userAssetExists = addTransactionToExistingUserAsset(transaction,
-				portfolio, userAssetExists);
-
-		if (!userAssetExists) {
 			generateNewUserAsset(transaction, portfolio);
 		}
 
 	}
 
-	private void generateNewUserAsset(Transaction transaction, Portfolio portfolio) {
-		UserAsset newUserAsset = UserAssetFactory.create(transaction
-				.getAssetId());
-		newUserAsset.addTransactions(transaction);
-		portfolio.addUsserAsset(newUserAsset);
+	private void generateNewUserAsset(Transaction transaction,
+			Portfolio portfolio) throws UserAssetNotFoundException {
+		if (transaction.getType().equals(TransactionType.PURCHASE)) {
+			UserAsset newUserAsset = UserAssetFactory.create(transaction
+					.getAssetId());
+			newUserAsset.addTransactions(transaction);
+			portfolio.addUsserAsset(newUserAsset);
+		} else {
+			throw new UserAssetNotFoundException();
+		}
 	}
 
-	private Boolean addTransactionToExistingUserAsset(Transaction transaction,
-			Portfolio portfolio, Boolean userAssetExists) {
+	private Boolean userAssetExists(Transaction transaction, Portfolio portfolio) {
+		Boolean userAssetExists = Boolean.FALSE;
+
 		for (UserAsset userAsset : portfolio.getUserAssets()) {
 			if (userAsset.getAssetId().equals(transaction.getAssetId())) {
 
-				userAsset.addTransactions(transaction);
-				userAssetExists = Boolean.TRUE;
+				return Boolean.TRUE;
 
 			}
 		}
 		return userAssetExists;
+	}
+
+	private void addTransactionToUserAsset(Transaction transaction,
+			Portfolio portfolio) {
+
+		for (UserAsset userAsset : portfolio.getUserAssets()) {
+			if (userAsset.getAssetId().equals(transaction.getAssetId())) {
+
+				userAsset.addTransactions(transaction);
+
+			}
+		}
 	}
 
 	@Override

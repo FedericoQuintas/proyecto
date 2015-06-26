@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.TransactionType;
 
 public class TransactionHelper {
 
@@ -18,6 +19,7 @@ public class TransactionHelper {
 		transactionDTO.setTradingDate(new Date());
 		transactionDTO.setCurrency(InvertarCurrency.US);
 		transactionDTO.setAssetId(new Long(1));
+		transactionDTO.setType(TransactionType.PURCHASE);
 		return transactionDTO;
 	}
 

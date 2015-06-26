@@ -12,14 +12,21 @@ public class Transaction {
 	private Integer quantity;
 	private InvertarCurrency currency;
 	private Long assetId;
+	private TransactionType type;
 
 	public Transaction(InvertarCurrency currency, Float price,
-			Integer quantity, Date tradingDate, Long assetId) {
+			Integer quantity, Date tradingDate, Long assetId,
+			TransactionType transactionType) {
 		this.currency = currency;
 		this.tradingDate = tradingDate;
 		this.pricePaid = price;
 		this.quantity = quantity;
 		this.assetId = assetId;
+		this.type = transactionType;
+	}
+
+	public TransactionType getType() {
+		return type;
 	}
 
 	public Long getAssetId() {

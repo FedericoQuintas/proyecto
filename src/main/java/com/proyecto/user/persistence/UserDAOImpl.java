@@ -43,6 +43,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void flush() {
 		users.clear();
+		usersSequence = new Long(1);
 
 	}
 

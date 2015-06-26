@@ -19,11 +19,11 @@ import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
-import com.proyecto.rest.resource.user.dto.UserAssetDTO;
 import com.proyecto.unit.asset.helper.AssetHelper;
 import com.proyecto.unit.user.helper.PortfolioHelper;
 import com.proyecto.unit.user.helper.TransactionHelper;
 import com.proyecto.unit.user.helper.UserHelper;
+import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -40,9 +40,12 @@ public class UserServiceTest extends SpringBaseTest {
 
 	private InvertarUserDTO userDTO;
 
+	private AssetDTO assetDTO;
+
 	@Before
-	public void before() {
+	public void before() throws InvalidAssetArgumentException {
 		storeUser();
+		storeAsset();
 	}
 
 	@Test
@@ -238,8 +241,6 @@ public class UserServiceTest extends SpringBaseTest {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
-		AssetDTO assetDTO = storeAsset();
-
 		assetService.update(assetDTO);
 
 		portfolioDTO.getUserAssets().get(0).setAssetId(assetDTO.getId());
@@ -259,16 +260,15 @@ public class UserServiceTest extends SpringBaseTest {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
-		AssetDTO assetDTO = storeAsset();
-
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
 				.createDefaultTransactionDTO();
+		transactionDTO.setAssetId(assetDTO.getId());
 
-		userService.buyUserAsset(transactionDTO, userDTO.getId(),
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
 		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
@@ -284,8 +284,6 @@ public class UserServiceTest extends SpringBaseTest {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
-		AssetDTO assetDTO = storeAsset();
-
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
@@ -293,7 +291,7 @@ public class UserServiceTest extends SpringBaseTest {
 		TransactionDTO transactionDTO = TransactionHelper
 				.createDefaultTransactionDTO();
 
-		userService.buyUserAsset(transactionDTO, userDTO.getId(),
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
 		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
@@ -305,37 +303,108 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAUserSellsAUserAssetThenATransactionIsCreated()
+	public void whenAUserBuysAUserAssetForFirstTimeThenAUserAssetIsAddedToPortfolioWithAPurchaseTransaction()
 			throws ApplicationServiceException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
-		AssetDTO assetDTO = storeAsset();
-
 		assetService.update(assetDTO);
-
-		UserAssetDTO usserAssetDTO = portfolioDTO.getUserAssets().get(0);
-
-		usserAssetDTO.setAssetId(assetDTO.getId());
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
 				.createDefaultTransactionDTO();
 
-		userService.buyUserAsset(transactionDTO, userDTO.getId(),
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
 		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
 				portfolioDTO.getId());
 
-		Assert.assertFalse(usserAssetDTO.getTransactions().isEmpty());
+		TransactionDTO storedTransactionDTO = portfolioDTO.getUserAssets()
+				.get(0).getTransactions().get(0);
+		Assert.assertTrue(storedTransactionDTO.getType().equals(
+				TransactionType.PURCHASE));
+
 	}
 
-	private AssetDTO storeAsset() throws InvalidAssetArgumentException {
-		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTO();
-		AssetDTO asset = assetService.store(assetDTO);
-		return asset;
+	@Test
+	public void whenAUserSellsAUserAssetThatDoesNotHaveThenExceptionIsThrown()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		assetService.update(assetDTO);
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		transactionDTO.setType(TransactionType.SELL);
+
+		try {
+			userService.storeUserAsset(transactionDTO, userDTO.getId(),
+					portfolioDTO.getId());
+		} catch (ApplicationServiceException e) {
+			Assert.assertTrue(e.getErrorCode().equals(
+					InvertarErrorCode.OBJECT_NOT_FOUND));
+		}
+
+	}
+
+	@Test
+	public void whenAUserBuysAUserAssetForSecondTimeThenUserAssetHasTwoTransactions()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		assetService.update(assetDTO);
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
+				portfolioDTO.getId());
+
+		Integer transactionsSize = portfolioDTO.getUserAssets().get(0)
+				.getTransactions().size();
+		Assert.assertTrue(transactionsSize.equals(new Integer(2)));
+
+	}
+
+	@Test(expected = AssetNotFoundException.class)
+	public void whenAUserBuysAUserAssetThatDoesNotExistThenExceptionIsThrown()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		assetService.update(assetDTO);
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		Long invalidAssetId = new Long(1000);
+		transactionDTO.setAssetId(invalidAssetId);
+
+		userService.storeUserAsset(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+	}
+
+	private void storeAsset() throws InvalidAssetArgumentException {
+		assetDTO = AssetHelper.createDefaultAssetDTO();
+		assetDTO = assetService.store(assetDTO);
 	}
 
 	private void storeUser() {
@@ -343,6 +412,7 @@ public class UserServiceTest extends SpringBaseTest {
 		userDTO = UserHelper.createDefaultUserDTO();
 
 		userDTO = userService.store(userDTO);
+
 	}
 
 }

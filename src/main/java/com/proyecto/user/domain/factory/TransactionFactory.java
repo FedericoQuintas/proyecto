@@ -9,7 +9,8 @@ public class TransactionFactory {
 
 		Transaction transaction = new Transaction(transactionDTO.getCurrency(),
 				transactionDTO.getPricePaid(), transactionDTO.getQuantity(),
-				transactionDTO.getTradingDate(), transactionDTO.getAssetId());
+				transactionDTO.getTradingDate(), transactionDTO.getAssetId(),
+				transactionDTO.getType());
 
 		return transaction;
 	}

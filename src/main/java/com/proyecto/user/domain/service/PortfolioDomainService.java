@@ -16,7 +16,7 @@ public interface PortfolioDomainService {
 
 	Double calculatePerformance(Portfolio portfolio);
 
-	void sellUserAsset(TransactionDTO transactionDTO, InvertarUser user,
+	void storeUserAsset(TransactionDTO transactionDTO, InvertarUser user,
 			Long portfolioId) throws PortfolioNotFoundException,
 			UserAssetNotFoundException;
 

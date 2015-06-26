@@ -5,6 +5,7 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.user.domain.TransactionType;
 
 public class TransactionDTO {
 
@@ -18,6 +19,12 @@ public class TransactionDTO {
 	private InvertarCurrency currency;
 	@JsonProperty("asset_id")
 	private Long assetId;
+	@JsonProperty("type")
+	private TransactionType type;
+
+	public void setType(TransactionType type) {
+		this.type = type;
+	}
 
 	public float getPricePaid() {
 		return pricePaid;
@@ -58,6 +65,10 @@ public class TransactionDTO {
 
 	public Long getAssetId() {
 		return assetId;
+	}
+
+	public TransactionType getType() {
+		return this.type;
 	}
 
 }

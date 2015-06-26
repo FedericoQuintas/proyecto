@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.common.exception.DomainException;
 import com.proyecto.common.exception.ObjectNotFoundException;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private PortfolioDomainService portfolioDomainService;
+	
+	@Resource
+	private AssetService assetService;
 
 	@Override
 	public InvertarUserDTO findById(Long id) throws UserNotFoundException {
@@ -60,7 +64,6 @@ public class UserServiceImpl implements UserService {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
-
 			Portfolio portfolio = PortfolioFactory.create(portfolioDTO,
 					userDAO.nextPortfolioID());
 
@@ -157,12 +160,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TransactionDTO buyUserAsset(TransactionDTO transactionDTO,
+	public TransactionDTO storeUserAsset(TransactionDTO transactionDTO,
 			Long userId, Long portfolioId) throws ApplicationServiceException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
-			portfolioDomainService.sellUserAsset(transactionDTO, user,
+			assetService.findById(transactionDTO.getAssetId());
+			portfolioDomainService.storeUserAsset(transactionDTO, user,
 					portfolioId);
 			updateUser(user);
 			return transactionDTO;
