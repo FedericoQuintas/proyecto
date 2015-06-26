@@ -1,7 +1,9 @@
 package com.proyecto.asset.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -84,5 +86,19 @@ public class AssetServiceImpl implements AssetService {
 
 		return assetDTOs;
 
+	}
+	
+	@Override
+	public Map<Date,Double> getPercantageOfChange(long assetId,Date startDate,Date endDate) 
+			throws AssetNotFoundException{
+		
+		try {
+			Asset asset = assetDAO.findById(assetId);
+			return asset.getPercentageOfChange(startDate, endDate);
+		} catch (ObjectNotFoundException e) {
+			throw new AssetNotFoundException(e);
+		}
+
+		
 	}
 }

@@ -65,9 +65,8 @@ public class Asset {
 		return lastTradingPrice;
 	}
 	
-	public Map<Date,Double> calculatePercentageOfChange(Date startDate,Date endDate){
-		//[(Precio Cierre Actual - Precio Cierre de Rueda Inicial del Período)/Precio Cierre Anterior ] * 100
-	
+	public Map<Date,Double> getPercentageOfChange(Date startDate,Date endDate){
+		
 		Map<Date,TradingSession> selectedTradingSessions = new HashMap<Date,TradingSession>();
 		
 		for(TradingSession tradingSession : this.getTradingSessions() ){

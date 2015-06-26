@@ -1,6 +1,8 @@
 package com.proyecto.asset.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
@@ -45,6 +47,8 @@ public interface AssetService {
 	 * @throws InvalidAssetArgumentException
 	 */
 	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException;
+	
+	Map<Date, Double> getPercantageOfChange(long assetId, Date startDate, Date endDate) throws AssetNotFoundException;
 
 	/**
 	 * Retrieves all de AssetDTOs
@@ -52,6 +56,9 @@ public interface AssetService {
 	 * @param id
 	 * @return List<AssetDTO>
 	 */
+
 	List<AssetDTO> getAllAssets();
+
+	
 
 }
