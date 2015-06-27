@@ -2,21 +2,15 @@ package com.proyecto.asset.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import javax.naming.InitialContext;
-
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
-
-import org.apache.commons.lang3.time.DateUtils;
 
 public class Asset {
 
@@ -85,8 +79,6 @@ public class Asset {
 		Map<Long,Double> resultantPercentagesOfChange = new HashMap<Long,Double>();
 		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
 		
-		BigDecimal previousClosingPrice = initialClosingPrice;
-		
 		for(Long currentDate : selectedTradingSessions.navigableKeySet()){
 			BigDecimal currentClosingPrice = BigDecimal.valueOf(
 					selectedTradingSessions.get(currentDate).getClosingPrice()).setScale(SCALE);
@@ -94,11 +86,10 @@ public class Asset {
 					currentDate, 
 					currentClosingPrice
 						.subtract(initialClosingPrice)
-						.divide(previousClosingPrice, SCALE, RoundingMode.DOWN)
+						.divide(initialClosingPrice, SCALE, RoundingMode.DOWN)
 						.multiply(BigDecimal.valueOf(100L))
 						.setScale(2, RoundingMode.DOWN)
 						.doubleValue());
-			previousClosingPrice = currentClosingPrice;
 		}
 		
 		return resultantPercentagesOfChange;

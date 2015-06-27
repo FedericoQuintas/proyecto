@@ -12,7 +12,7 @@ public class AssetHelper {
 
 	private static final String DEFAULT_DESCRIPTION = "Tenaris S.A.,fabrica y provee cañerias de acero y servicios relacionados para el sector energetico y otros usos industriales";
 	private static final String DEFAULT_TICKER = "TS.BA";
-	private static SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+	public static SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 
 	public static AssetDTO createDefaultAssetDTO() {
 
@@ -87,9 +87,7 @@ public class AssetHelper {
 	}
 
 	public static TradingSessionDTO createDefaultTradingSession() throws ParseException {
-		TradingSessionDTO tradingSession = new TradingSessionDTO();
-		tradingSession.setTradingDate(sf.parse("08/06/2015"));
-		return tradingSession;
+		return new TradingSessionDTO();
 	}
 
 }

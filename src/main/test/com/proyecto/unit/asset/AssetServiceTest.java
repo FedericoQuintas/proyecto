@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.proyecto.asset.domain.Asset;
@@ -51,6 +52,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		TradingSessionDTO tradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
+		tradingSessionDTO.setTradingDate(AssetHelper.sf.parse("08/06/2015"));
 
 		assetService.addTradingSession(assetDTO.getId(), tradingSessionDTO);
 
@@ -86,6 +88,14 @@ public class AssetServiceTest extends SpringBaseTest {
 					InvertarErrorCode.INVALID_ARGUMENT));
 		}
 
+	}
+	
+	@Test(expected=InvalidTradingSessionArgumentException.class)
+	public void whenCreatesTradingSessionWithNullOrVoidDateThenExceptionIsThrown() throws ParseException, AssetNotFoundException, InvalidAssetArgumentException, InvalidTradingSessionArgumentException{
+		TradingSessionDTO incompleteTradingSessionDTO = AssetHelper.createDefaultTradingSession();
+		Asset asset = AssetFactory.create(assetDTO, new Long(1));
+		asset.addTradingSession(incompleteTradingSessionDTO);
+		
 	}
 
 	@Test
@@ -144,16 +154,39 @@ public class AssetServiceTest extends SpringBaseTest {
 		
 		Map<Long,Double> percentagesOfChanges = asset.getPercentageOfChange(sf.parse("26/05/2015"), sf.parse("08/06/2015"));
 		
-		Assert.assertEquals(0.0,percentagesOfChanges.get(sf.parse("26/05/2015").getTime()));
-		Assert.assertEquals(0.35,percentagesOfChanges.get(sf.parse("27/05/2015").getTime()));
-		Assert.assertEquals(-0.24,percentagesOfChanges.get(sf.parse("28/05/2015").getTime()));
-		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("29/05/2015").getTime()));
-		Assert.assertEquals(-2.01,percentagesOfChanges.get(sf.parse("01/06/2015").getTime()));
-		Assert.assertEquals(3.01,percentagesOfChanges.get(sf.parse("02/06/2015").getTime()));
-		Assert.assertEquals(2.57,percentagesOfChanges.get(sf.parse("03/06/2015").getTime()));
-		Assert.assertEquals(-0.38,percentagesOfChanges.get(sf.parse("04/06/2015").getTime()));
-		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("05/06/2015").getTime()));
-		Assert.assertEquals(-0.53,percentagesOfChanges.get(sf.parse("08/06/2015").getTime()));
+		Assert.assertEquals(0.0,percentagesOfChanges.get(sf.parse("26/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(0.35,percentagesOfChanges.get(sf.parse("27/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.24,percentagesOfChanges.get(sf.parse("28/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("29/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-2.01,percentagesOfChanges.get(sf.parse("01/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(3.01,percentagesOfChanges.get(sf.parse("02/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(2.65,percentagesOfChanges.get(sf.parse("03/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.38,percentagesOfChanges.get(sf.parse("04/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("05/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.53,percentagesOfChanges.get(sf.parse("08/06/2015").getTime()), 2e-2);
+		
+	}
+	
+	@Test 
+	public void whenGetsPercentageOfChangesTheRightResultsAreReturned2() throws ParseException, InvalidAssetArgumentException, InvalidTradingSessionArgumentException{
+		
+		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTOWithTradingSessions();
+		
+		Asset asset = AssetFactory.create(assetDTO, new Long(1));		
+
+		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Map<Long,Double> percentagesOfChanges = asset.getPercentageOfChange(sf.parse("27/05/2015"), sf.parse("08/06/2015"));
+		
+		Assert.assertEquals(0.00,percentagesOfChanges.get(sf.parse("27/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.59,percentagesOfChanges.get(sf.parse("28/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-1.18,percentagesOfChanges.get(sf.parse("29/05/2015").getTime()), 2e-2);
+		Assert.assertEquals(-2.35,percentagesOfChanges.get(sf.parse("01/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(2.65,percentagesOfChanges.get(sf.parse("02/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(2.29,percentagesOfChanges.get(sf.parse("03/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.74,percentagesOfChanges.get(sf.parse("04/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-1.18,percentagesOfChanges.get(sf.parse("05/06/2015").getTime()), 2e-2);
+		Assert.assertEquals(-0.88,percentagesOfChanges.get(sf.parse("08/06/2015").getTime()), 2e-2);
 		
 	}
 
