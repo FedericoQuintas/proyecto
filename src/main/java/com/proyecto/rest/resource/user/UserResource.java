@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
@@ -58,6 +60,24 @@ public class UserResource {
 			@PathVariable("portfolio_id") Long portfolioId)
 			throws ApplicationServiceException {
 		return userService.findPortfolioById(userId, portfolioId);
+	}
+
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/marketValue", method = RequestMethod.GET)
+	@ResponseBody
+	public List<MarketValueVO> getUserPortfolioMarketValue(
+			@PathVariable("user_id") Long userId,
+			@PathVariable("portfolio_id") Long portfolioId)
+			throws ApplicationServiceException {
+		return userService.getPortfolioMarketValue(userId, portfolioId);
+	}
+
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/transactions", method = RequestMethod.POST)
+	@ResponseBody
+	public TransactionDTO addTransaction(@PathVariable("user_id") Long userId,
+			@PathVariable("portfolio_id") Long portfolioId,
+			@RequestBody TransactionDTO transactionDTO)
+			throws ApplicationServiceException {
+		return userService.addTransaction(transactionDTO, userId, portfolioId);
 	}
 
 }

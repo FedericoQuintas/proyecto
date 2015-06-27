@@ -1,10 +1,14 @@
 package com.proyecto.user.domain.valueobject;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.proyecto.common.currency.InvertarCurrency;
 
 public class MarketValueVO {
 
+	@JsonProperty("currency")
 	private InvertarCurrency currency;
+	@JsonProperty("value")
 	private Float value;
 
 	public Float getValue() {
