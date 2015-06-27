@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
@@ -43,7 +44,7 @@ public class UserServiceTest extends SpringBaseTest {
 	private AssetDTO assetDTO;
 
 	@Before
-	public void before() throws InvalidAssetArgumentException {
+	public void before() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 		storeUser();
 		storeAsset();
 	}
@@ -237,7 +238,7 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAskForPortfolioMarketValueThenMarketValueIsRetrieved()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
 			PortfolioNotFoundException, AssetNotFoundException,
-			InvalidAssetArgumentException {
+			InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -402,9 +403,9 @@ public class UserServiceTest extends SpringBaseTest {
 
 	}
 
-	private void storeAsset() throws InvalidAssetArgumentException {
-		assetDTO = AssetHelper.createDefaultAssetDTO();
-		assetDTO = assetService.store(assetDTO);
+	private void storeAsset() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTO();
+		AssetDTO asset = assetService.store(assetDTO);
 	}
 
 	private void storeUser() {

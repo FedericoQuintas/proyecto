@@ -13,5 +13,11 @@ public class FieldValidator {
 		}
 
 	}
+	
+	public static <T> void validateNull(T field) throws InvalidArgumentException{
+		if(field == null){
+			throw new InvalidArgumentException();
+		}
+	}
 
 }
