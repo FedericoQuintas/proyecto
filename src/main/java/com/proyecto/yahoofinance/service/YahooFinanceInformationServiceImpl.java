@@ -32,7 +32,7 @@ public class YahooFinanceInformationServiceImpl implements
 
 			Stock stock = obtainStockInformation(assetDTO);
 			BigDecimal price = stock.getQuote(true).getPrice();
-			assetDTO.setLastTradingPrice(price.longValue());
+			assetDTO.setLastTradingPrice(price.floatValue());
 			assetService.update(assetDTO);
 
 		}

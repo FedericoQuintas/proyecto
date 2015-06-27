@@ -109,7 +109,7 @@ public interface UserService {
 	 * @throws ApplicationServiceException
 	 */
 
-	TransactionDTO storeUserAsset(TransactionDTO transactionDTO, Long userId,
+	TransactionDTO addTransaction(TransactionDTO transactionDTO, Long userId,
 			Long portfolioId) throws UserNotFoundException,
 			PortfolioNotFoundException, ApplicationServiceException;
 

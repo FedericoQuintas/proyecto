@@ -1,7 +1,7 @@
 package com.proyecto.common.currency;
 
 public enum InvertarCurrency {
-	US("U$S", new Integer(1));
+	US("U$S", new Integer(1)), ARS("ARS$", new Integer(2));
 
 	private Integer code;
 

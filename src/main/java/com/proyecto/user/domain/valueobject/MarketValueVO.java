@@ -5,17 +5,17 @@ import com.proyecto.common.currency.InvertarCurrency;
 public class MarketValueVO {
 
 	private InvertarCurrency currency;
-	private Long value;
+	private Float value;
 
-	public Long getValue() {
+	public Float getValue() {
 		return value;
 	}
 
-	public void setValue(Long value) {
+	public void setValue(Float value) {
 		this.value = value;
 	}
 
-	public MarketValueVO(InvertarCurrency currency, Long initialValue) {
+	public MarketValueVO(InvertarCurrency currency, Float initialValue) {
 		this.currency = currency;
 		this.value = initialValue;
 	}
@@ -28,7 +28,7 @@ public class MarketValueVO {
 		return this.currency;
 	}
 
-	public void calculate(Long lastTradingPrice) {
+	public void calculate(Float lastTradingPrice) {
 		this.value = +lastTradingPrice;
 
 	}

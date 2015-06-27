@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TransactionDTO storeUserAsset(TransactionDTO transactionDTO,
+	public TransactionDTO addTransaction(TransactionDTO transactionDTO,
 			Long userId, Long portfolioId) throws ApplicationServiceException {
 
 		try {

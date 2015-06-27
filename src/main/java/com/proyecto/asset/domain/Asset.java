@@ -11,7 +11,7 @@ public class Asset {
 	private Long id;
 	private String description;
 	private List<TradingSession> tradingSessions;
-	private Long lastTradingPrice;
+	private Float lastTradingPrice;
 	private String ticker;
 	private String industry;
 
@@ -51,12 +51,12 @@ public class Asset {
 		return this.tradingSessions;
 	}
 
-	public void setLastTradingPrice(Long lastTradingPrice) {
+	public void setLastTradingPrice(Float lastTradingPrice) {
 		this.lastTradingPrice = lastTradingPrice;
 
 	}
 
-	public Long getLastTradingPrice() {
+	public Float getLastTradingPrice() {
 		return lastTradingPrice;
 	}
 

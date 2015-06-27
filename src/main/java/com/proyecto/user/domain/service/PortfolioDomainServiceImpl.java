@@ -47,7 +47,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 		if (lastTransaction != null) {
 
-			Long lastTradingPrice = obtainLastTradingPrice(userAsset
+			Float lastTradingPrice = obtainLastTradingPrice(userAsset
 					.getAssetId());
 
 			generateMarketValues(marketValues, lastTransaction,
@@ -57,40 +57,35 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateMarketValues(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Long lastTradingPrice) {
-		for (MarketValueVO marketValue : marketValues) {
+			Transaction lastTransaction, Float lastTradingPrice) {
 
-			if (marketValuesHasCurrency(marketValue.getCurrency(), marketValues)) {
+			if (marketValuesHasCurrency(lastTransaction.getCurrency(), marketValues)) {
 
-				calculateMarketValue(marketValues, lastTradingPrice,
-						marketValue);
+				calculateMarketValue(marketValues, lastTradingPrice, lastTransaction.getCurrency());
 
 			} else {
 
 				generateMarketValue(marketValues, lastTransaction,
 						lastTradingPrice);
-
-			}
-
 		}
 	}
 
 	private void calculateMarketValue(List<MarketValueVO> marketValues,
-			Long lastTradingPrice, MarketValueVO marketValue) {
+			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency) {
 
 		MarketValueVO marketValueWithCurrency = obtainMarketValueWithCurrency(
-				marketValue.getCurrency(), marketValues);
+				lastTransactionCurrency, marketValues);
 
 		marketValueWithCurrency.calculate(lastTradingPrice);
 	}
 
 	private void generateMarketValue(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Long lastTradingPrice) {
+			Transaction lastTransaction, Float lastTradingPrice) {
 		marketValues.add(new MarketValueVO(lastTransaction.getCurrency(),
 				lastTradingPrice));
 	}
 
-	private Long obtainLastTradingPrice(Long assetId)
+	private Float obtainLastTradingPrice(Long assetId)
 			throws AssetNotFoundException {
 		return assetService.findById(assetId).getLastTradingPrice();
 	}

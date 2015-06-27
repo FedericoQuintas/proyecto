@@ -45,8 +45,9 @@ public class UserAsset {
 	}
 
 	private Transaction calculateLastTransaction() {
-		Date lastDate = getTransactions().get(0).getTradingDate();
-		Transaction lastTransaction = null;
+		Transaction firstTransaction = getTransactions().get(0);
+		Date lastDate = firstTransaction.getTradingDate();
+		Transaction lastTransaction = firstTransaction;
 
 		for (Transaction transaction : getTransactions()) {
 			if (transaction.getTradingDate().after(lastDate)) {

@@ -10,7 +10,7 @@ import com.proyecto.user.domain.TransactionType;
 public class TransactionDTO {
 
 	@JsonProperty("pricePaid")
-	private float pricePaid;
+	private Float pricePaid;
 	@JsonProperty("tradingDate")
 	private Date tradingDate;
 	@JsonProperty("quantity")
@@ -26,11 +26,11 @@ public class TransactionDTO {
 		this.type = type;
 	}
 
-	public float getPricePaid() {
+	public Float getPricePaid() {
 		return pricePaid;
 	}
 
-	public void setPricePaid(float pricePaid) {
+	public void setPricePaid(Float pricePaid) {
 		this.pricePaid = pricePaid;
 	}
 
