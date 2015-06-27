@@ -404,8 +404,8 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
-		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTO();
-		AssetDTO asset = assetService.store(assetDTO);
+		assetDTO = AssetHelper.createDefaultAssetDTO();
+		assetDTO = assetService.store(assetDTO);
 	}
 
 	private void storeUser() {
