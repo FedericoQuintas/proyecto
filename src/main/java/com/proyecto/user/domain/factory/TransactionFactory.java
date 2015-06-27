@@ -7,7 +7,7 @@ public class TransactionFactory {
 
 	public static Transaction create(TransactionDTO transactionDTO) {
 
-		Transaction transaction = new Transaction(transactionDTO.getCurrency(),
+		Transaction transaction = new Transaction(
 				transactionDTO.getPricePaid(), transactionDTO.getQuantity(),
 				transactionDTO.getTradingDate(), transactionDTO.getAssetId(),
 				transactionDTO.getType());

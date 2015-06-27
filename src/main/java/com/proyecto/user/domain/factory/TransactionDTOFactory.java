@@ -12,7 +12,6 @@ public class TransactionDTOFactory {
 		transactionDTO.setTradingDate(transaction.getTradingDate());
 		transactionDTO.setQuantity(transaction.getQuantity());
 		transactionDTO.setAssetId(transaction.getAssetId());
-		transactionDTO.setCurrency(transaction.getCurrency());
 		transactionDTO.setType(transaction.getType());
 
 		return transactionDTO;

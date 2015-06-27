@@ -1,5 +1,6 @@
 package com.proyecto.unit.asset.helper;
 
+import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -16,6 +17,7 @@ public class AssetHelper {
 		assetDTO.setDescription(DEFAULT_DESCRIPTION);
 		assetDTO.setTicker(DEFAULT_TICKER);
 		assetDTO.setIndustry(DEFAULT_INDUSTRY);
+		assetDTO.setCurrency(InvertarCurrency.US);
 
 		return assetDTO;
 	}

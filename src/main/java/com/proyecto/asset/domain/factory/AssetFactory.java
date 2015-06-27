@@ -13,12 +13,12 @@ public class AssetFactory {
 
 		validateMandatoryFields(assetDTO);
 
-		Asset asset = new Asset(id, assetDTO.getDescription(), assetDTO.getTicker());
+		Asset asset = new Asset(id, assetDTO.getDescription(), assetDTO.getTicker(), assetDTO.getCurrency());
 
 		asset.setLastTradingPrice(assetDTO.getLastTradingPrice());
 		
 		asset.setIndustry(assetDTO.getIndustry());
-
+		
 		return asset;
 	}
 

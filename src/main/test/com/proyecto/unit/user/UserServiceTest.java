@@ -370,10 +370,47 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
+	public void whenAUserAddsATransactionInAnIncorrectCurrencyThenExceptionIsThrown()
+			throws ApplicationServiceException {
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		yahooService.update();
+
+		AssetDTO updatedAssetDTO = assetService.findById(assetDTO.getId());
+
+		assetService.update(updatedAssetDTO);
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		transactionDTO.setPricePaid(updatedAssetDTO.getLastTradingPrice());
+
+		userService.addTransaction(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
+				portfolioDTO.getId());
+
+		List<MarketValueVO> portfolioMarketValue = userService
+				.getPortfolioMarketValue(userDTO.getId(), portfolioDTO.getId());
+
+		TransactionDTO storedTransactionDTO = portfolioDTO.getUserAssets()
+				.get(0).getTransactions().get(0);
+
+		Assert.assertTrue(storedTransactionDTO.getPricePaid().equals(
+				portfolioMarketValue.get(0).getValue()));
+
+	}
+
+	@Test
 	public void whenAUserHasTwoUserAssetsThenPortfolioMarketValueIsTheSumOfTheirLastPrice()
 			throws ApplicationServiceException {
 
 		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
+		secondAssetDTO.setCurrency(InvertarCurrency.ARS);
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
@@ -406,8 +443,6 @@ public class UserServiceTest extends SpringBaseTest {
 
 		secondTransactionDTO.setPricePaid(updatedSecondAssetDTO
 				.getLastTradingPrice());
-
-		secondTransactionDTO.setCurrency(InvertarCurrency.ARS);
 
 		userService.addTransaction(secondTransactionDTO, userDTO.getId(),
 				portfolioDTO.getId());

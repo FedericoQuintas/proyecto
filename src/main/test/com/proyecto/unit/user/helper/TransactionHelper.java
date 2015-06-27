@@ -2,7 +2,6 @@ package com.proyecto.unit.user.helper;
 
 import java.util.Date;
 
-import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.TransactionType;
 
@@ -17,7 +16,6 @@ public class TransactionHelper {
 		transactionDTO.setPricePaid(DEFAULT_PRICE_PAID);
 		transactionDTO.setQuantity(new Integer(DEFAULT_QUANTITY));
 		transactionDTO.setTradingDate(new Date());
-		transactionDTO.setCurrency(InvertarCurrency.US);
 		transactionDTO.setAssetId(new Long(1));
 		transactionDTO.setType(TransactionType.PURCHASE);
 		return transactionDTO;

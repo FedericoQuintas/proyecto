@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
+import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class Asset {
@@ -14,12 +15,18 @@ public class Asset {
 	private Float lastTradingPrice;
 	private String ticker;
 	private String industry;
+	private InvertarCurrency currency;
 
-	public Asset(Long id, String description, String ticker) {
+	public Asset(Long id, String description, String ticker, InvertarCurrency invertarCurrency) {
 		this.id = id;
 		this.description = description;
 		this.ticker = ticker;
+		this.currency = invertarCurrency;
 		tradingSessions = new ArrayList<TradingSession>();
+	}
+
+	public InvertarCurrency getCurrency() {
+		return currency;
 	}
 
 	public String getTicker() {

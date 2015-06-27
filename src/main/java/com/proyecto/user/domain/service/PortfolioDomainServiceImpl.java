@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.Portfolio;
@@ -47,26 +48,24 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 		if (lastTransaction != null) {
 
-			Float lastTradingPrice = obtainLastTradingPrice(userAsset
-					.getAssetId());
+			AssetDTO assetDTO = obtainAsset(userAsset.getAssetId());
 
-			generateMarketValues(marketValues, lastTransaction,
-					lastTradingPrice);
+			generateMarketValues(marketValues, assetDTO.getLastTradingPrice(),
+					assetDTO.getCurrency());
 
 		}
 	}
 
 	private void generateMarketValues(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Float lastTradingPrice) {
+			Float lastTradingPrice, InvertarCurrency currency) {
 
-			if (marketValuesHasCurrency(lastTransaction.getCurrency(), marketValues)) {
+		if (marketValuesHasCurrency(currency, marketValues)) {
 
-				calculateMarketValue(marketValues, lastTradingPrice, lastTransaction.getCurrency());
+			calculateMarketValue(marketValues, lastTradingPrice, currency);
 
-			} else {
+		} else {
 
-				generateMarketValue(marketValues, lastTransaction,
-						lastTradingPrice);
+			generateMarketValue(marketValues, currency, lastTradingPrice);
 		}
 	}
 
@@ -80,14 +79,12 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateMarketValue(List<MarketValueVO> marketValues,
-			Transaction lastTransaction, Float lastTradingPrice) {
-		marketValues.add(new MarketValueVO(lastTransaction.getCurrency(),
-				lastTradingPrice));
+			InvertarCurrency currency, Float lastTradingPrice) {
+		marketValues.add(new MarketValueVO(currency, lastTradingPrice));
 	}
 
-	private Float obtainLastTradingPrice(Long assetId)
-			throws AssetNotFoundException {
-		return assetService.findById(assetId).getLastTradingPrice();
+	private AssetDTO obtainAsset(Long assetId) throws AssetNotFoundException {
+		return assetService.findById(assetId);
 	}
 
 	private MarketValueVO obtainMarketValueWithCurrency(

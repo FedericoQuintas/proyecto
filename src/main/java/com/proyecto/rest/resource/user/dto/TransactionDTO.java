@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.user.domain.TransactionType;
 
 public class TransactionDTO {
@@ -15,8 +14,6 @@ public class TransactionDTO {
 	private Date tradingDate;
 	@JsonProperty("quantity")
 	private Integer quantity;
-	@JsonProperty("currency")
-	private InvertarCurrency currency;
 	@JsonProperty("asset_id")
 	private Long assetId;
 	@JsonProperty("type")
@@ -48,15 +45,6 @@ public class TransactionDTO {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
-	}
-
-	public void setCurrency(InvertarCurrency currency) {
-		this.currency = currency;
-
-	}
-
-	public InvertarCurrency getCurrency() {
-		return currency;
 	}
 
 	public void setAssetId(Long assetId) {
