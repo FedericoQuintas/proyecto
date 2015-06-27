@@ -2,6 +2,7 @@ package com.proyecto.asset.domain.factory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
 
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.TradingSession;
@@ -24,11 +25,11 @@ public class AssetDTOFactory {
 	}
 
 	private static List<TradingSessionDTO> convertToDTOs(
-			List<TradingSession> tradingSessions) {
+			NavigableMap<Long, TradingSession> tradingSessions) {
 
 		List<TradingSessionDTO> tradingSessionsDTO = new ArrayList<TradingSessionDTO>();
 
-		for (TradingSession tradingSession : tradingSessions) {
+		for (TradingSession tradingSession : tradingSessions.values()) {
 			tradingSessionsDTO.add(convertToDTO(tradingSession));
 		}
 		return tradingSessionsDTO;

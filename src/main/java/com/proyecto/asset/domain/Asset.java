@@ -1,12 +1,19 @@
 package com.proyecto.asset.domain;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import javax.naming.InitialContext;
 
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -15,16 +22,17 @@ public class Asset {
 
 	private Long id;
 	private String description;
-	private List<TradingSession> tradingSessions;
+	private NavigableMap<Long, TradingSession> tradingSessions;
 	private Long lastTradingPrice;
 	private String ticker;
+	private static int SCALE = 10;
 	
 
 	public Asset(Long id, String description, String ticker) {
 		this.id = id;
 		this.description = description;
 		this.ticker = ticker;
-		tradingSessions = new ArrayList<TradingSession>();
+		tradingSessions = new TreeMap<Long, TradingSession>();
 	}
 
 	public String getTicker() {
@@ -43,16 +51,17 @@ public class Asset {
 		return this.id;
 	}
 
-	public void addTradingSession(TradingSessionDTO tradingSessionDTO) {
+	public void addTradingSession(TradingSessionDTO tradingSessionDTO) 
+			throws InvalidTradingSessionArgumentException {
 
 		TradingSession tradingSession = TradingSessionFactory
 				.create(tradingSessionDTO);
 
-		this.tradingSessions.add(tradingSession);
+		this.tradingSessions.put(tradingSession.getTradingDate().getTime(), tradingSession);
 
 	}
 
-	public List<TradingSession> getTradingSessions() {
+	public NavigableMap<Long, TradingSession> getTradingSessions() {
 		return this.tradingSessions;
 	}
 
@@ -65,27 +74,31 @@ public class Asset {
 		return lastTradingPrice;
 	}
 	
-	public Map<Date,Double> getPercentageOfChange(Date startDate,Date endDate){
+	public Map<Long,Double> getPercentageOfChange(Date startDate,Date endDate){
 		
-		Map<Date,TradingSession> selectedTradingSessions = new HashMap<Date,TradingSession>();
+		NavigableMap<Long,TradingSession> selectedTradingSessions = 
+				this.getTradingSessions().subMap(startDate.getTime(), false, endDate.getTime(), true);
 		
-		for(TradingSession tradingSession : this.getTradingSessions() ){
-			if((tradingSession.getTradingDate().after(startDate) || tradingSession.getTradingDate().equals(startDate))
-			&& (tradingSession.getTradingDate().before(endDate)|| tradingSession.getTradingDate().equals(startDate))){
-				selectedTradingSessions.put(tradingSession.getTradingDate(), tradingSession);
-			}
-		}
+		BigDecimal initialClosingPrice = BigDecimal.valueOf(
+				this.getTradingSessions().get(startDate.getTime()).getClosingPrice()).setScale(SCALE);
+
+		Map<Long,Double> resultantPercentagesOfChange = new HashMap<Long,Double>();
+		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
 		
-		Double initialClosingPrice = selectedTradingSessions.get(startDate).getClosingPrice();
-		Date currentDate = startDate;
-		Map<Date,Double> resultantPercentagesOfChange = new HashMap<Date,Double>();
-		resultantPercentagesOfChange.put(startDate, 0d);
+		BigDecimal previousClosingPrice = initialClosingPrice;
 		
-		while(currentDate.getTime()<=endDate.getTime()){
-			Double previousClosingPrice = selectedTradingSessions.get(currentDate).getClosingPrice();
-			currentDate = DateUtils.addDays(currentDate, 1);
-			Double currentClosingPrice =selectedTradingSessions.get(currentDate).getClosingPrice();
-			resultantPercentagesOfChange.put(currentDate, ((currentClosingPrice - initialClosingPrice)/previousClosingPrice)*100);
+		for(Long currentDate : selectedTradingSessions.navigableKeySet()){
+			BigDecimal currentClosingPrice = BigDecimal.valueOf(
+					selectedTradingSessions.get(currentDate).getClosingPrice()).setScale(SCALE);
+			resultantPercentagesOfChange.put(
+					currentDate, 
+					currentClosingPrice
+						.subtract(initialClosingPrice)
+						.divide(previousClosingPrice, SCALE, RoundingMode.DOWN)
+						.multiply(BigDecimal.valueOf(100L))
+						.setScale(2, RoundingMode.DOWN)
+						.doubleValue());
+			previousClosingPrice = currentClosingPrice;
 		}
 		
 		return resultantPercentagesOfChange;

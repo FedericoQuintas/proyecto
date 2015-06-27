@@ -10,5 +10,9 @@ public class InvalidArgumentException extends DomainException {
 	public InvalidArgumentException(String field) {
 		super(INVALID_ARGUMENT, InvertarErrorCode.INVALID_ARGUMENT);
 	}
+	
+	public InvalidArgumentException() {
+		super(INVALID_ARGUMENT, InvertarErrorCode.INVALID_ARGUMENT);
+	}
 
 }

@@ -2,7 +2,6 @@ package com.proyecto.unit.asset;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,6 +15,7 @@ import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
 import com.proyecto.common.error.InvertarErrorCode;
@@ -36,7 +36,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	private YahooFinanceInformationService yahooFinanceService;
 
 	@Before
-	public void before() throws InvalidAssetArgumentException {
+	public void before() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 		storeAsset();
 	}
 
@@ -47,7 +47,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenAddsTradingSessionToAssetThenTradingSessionIsAdded()
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidTradingSessionArgumentException, ParseException {
 
 		TradingSessionDTO tradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
@@ -62,7 +62,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenAskForAssetLastTradingPriceThenLastTradingPriceIsRetrieved()
-			throws AssetNotFoundException, InvalidAssetArgumentException {
+			throws AssetNotFoundException, InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 
 		yahooFinanceService.update();
 
@@ -134,7 +134,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 	
 	@Test 
-	public void whenGetsPercentageOfChangesTheRightResultsAreReturned() throws ParseException, InvalidAssetArgumentException{
+	public void whenGetsPercentageOfChangesTheRightResultsAreReturned() throws ParseException, InvalidAssetArgumentException, InvalidTradingSessionArgumentException{
 		
 		AssetDTO assetDTO = AssetHelper.createDefaultAssetDTOWithTradingSessions();
 		
@@ -142,18 +142,18 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Map<Date,Double> percentagesOfChanges = asset.getPercentageOfChange(sf.parse("26/05/2015"), sf.parse("08/06/2015"));
+		Map<Long,Double> percentagesOfChanges = asset.getPercentageOfChange(sf.parse("26/05/2015"), sf.parse("08/06/2015"));
 		
-		Assert.assertEquals(0.0,percentagesOfChanges.get(sf.parse("26/05/2015")));
-		Assert.assertEquals(0.35,percentagesOfChanges.get(sf.parse("27/05/2015")));
-		Assert.assertEquals(-0.24,percentagesOfChanges.get(sf.parse("28/05/2015")));
-		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("29/05/2015")));
-		Assert.assertEquals(-2.01,percentagesOfChanges.get(sf.parse("01/06/2015")));
-		Assert.assertEquals(3.01,percentagesOfChanges.get(sf.parse("02/06/2015")));
-		Assert.assertEquals(2.66,percentagesOfChanges.get(sf.parse("03/06/2015")));
-		Assert.assertEquals(-0.38,percentagesOfChanges.get(sf.parse("04/06/2015")));
-		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("05/06/2015")));
-		Assert.assertEquals(-0.53,percentagesOfChanges.get(sf.parse("08/06/2015")));
+		Assert.assertEquals(0.0,percentagesOfChanges.get(sf.parse("26/05/2015").getTime()));
+		Assert.assertEquals(0.35,percentagesOfChanges.get(sf.parse("27/05/2015").getTime()));
+		Assert.assertEquals(-0.24,percentagesOfChanges.get(sf.parse("28/05/2015").getTime()));
+		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("29/05/2015").getTime()));
+		Assert.assertEquals(-2.01,percentagesOfChanges.get(sf.parse("01/06/2015").getTime()));
+		Assert.assertEquals(3.01,percentagesOfChanges.get(sf.parse("02/06/2015").getTime()));
+		Assert.assertEquals(2.57,percentagesOfChanges.get(sf.parse("03/06/2015").getTime()));
+		Assert.assertEquals(-0.38,percentagesOfChanges.get(sf.parse("04/06/2015").getTime()));
+		Assert.assertEquals(-0.83,percentagesOfChanges.get(sf.parse("05/06/2015").getTime()));
+		Assert.assertEquals(-0.53,percentagesOfChanges.get(sf.parse("08/06/2015").getTime()));
 		
 	}
 
@@ -163,7 +163,7 @@ public class AssetServiceTest extends SpringBaseTest {
 		Assert.assertNotNull(assetService.getAllAssets());
 	}
 
-	private void storeAsset() throws InvalidAssetArgumentException {
+	private void storeAsset() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 

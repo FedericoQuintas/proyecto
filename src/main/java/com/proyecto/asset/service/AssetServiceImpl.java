@@ -14,6 +14,7 @@ import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -27,7 +28,7 @@ public class AssetServiceImpl implements AssetService {
 
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
-			throws InvalidAssetArgumentException {
+			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 
@@ -49,7 +50,7 @@ public class AssetServiceImpl implements AssetService {
 
 	@Override
 	public void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidTradingSessionArgumentException {
 
 		Asset asset;
 		try {
@@ -68,7 +69,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException {
+	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
 		update(asset);
@@ -89,7 +90,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 	
 	@Override
-	public Map<Date,Double> getPercantageOfChange(long assetId,Date startDate,Date endDate) 
+	public Map<Long,Double> getPercentageOfChange(long assetId,Date startDate,Date endDate) 
 			throws AssetNotFoundException{
 		
 		try {

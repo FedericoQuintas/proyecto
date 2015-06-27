@@ -11,6 +11,10 @@ public class TradingSession {
 	private Date tradingDate;
 	private Integer volume;
 	
+	public TradingSession(Date date) {
+		this.tradingDate = date;
+	}
+	
 	public Double getMaxPrice() {
 		return maxPrice;
 	}
@@ -37,9 +41,6 @@ public class TradingSession {
 	}	
 	public Date getTradingDate() {
 		return tradingDate;
-	}
-	public void setTradingDate(Date tradingDate) {
-		this.tradingDate = tradingDate;
 	}
 	public Integer getVolume() {
 		return volume;

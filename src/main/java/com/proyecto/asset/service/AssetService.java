@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -18,7 +19,7 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
 	 */
-	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException;
+	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException;
 
 	/**
 	 * Retrieves the AssetDTO with specified ID
@@ -37,7 +38,7 @@ public interface AssetService {
 	 * @throws AssetNotFoundException
 	 */
 	void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
-			throws AssetNotFoundException;
+			throws AssetNotFoundException, InvalidTradingSessionArgumentException;
 
 	/**
 	 * Adds a TradingSession to Asset TradingSession collection.
@@ -46,9 +47,9 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
 	 */
-	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException;
+	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException;
 	
-	Map<Date, Double> getPercantageOfChange(long assetId, Date startDate, Date endDate) throws AssetNotFoundException;
+	Map<Long, Double> getPercentageOfChange(long assetId, Date startDate, Date endDate) throws AssetNotFoundException;
 
 	/**
 	 * Retrieves all de AssetDTOs
