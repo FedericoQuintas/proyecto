@@ -1,5 +1,6 @@
 package com.proyecto.rest.resource.asset.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -15,7 +16,7 @@ public class AssetDTO {
 	private String description;
 
 	@JsonProperty("trading_sessions")
-	private List<TradingSessionDTO> tradingSessions;
+	private List<TradingSessionDTO> tradingSessions = new ArrayList<TradingSessionDTO>();
 
 	@JsonProperty("last_trading_price")
 	private Float lastTradingPrice;

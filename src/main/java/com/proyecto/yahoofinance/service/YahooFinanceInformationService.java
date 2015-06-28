@@ -2,6 +2,7 @@ package com.proyecto.yahoofinance.service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 
 public interface YahooFinanceInformationService {
 
@@ -11,8 +12,9 @@ public interface YahooFinanceInformationService {
 	 * 
 	 * @throws InvalidAssetArgumentException
 	 * @throws AssetNotFoundException
+	 * @throws InvalidTradingSessionArgumentException 
 	 * 
 	 */
-	void update() throws AssetNotFoundException, InvalidAssetArgumentException;
+	void update() throws AssetNotFoundException, InvalidAssetArgumentException, InvalidTradingSessionArgumentException;
 
 }

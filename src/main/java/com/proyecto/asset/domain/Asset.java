@@ -1,9 +1,15 @@
 package com.proyecto.asset.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
+import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -11,18 +17,20 @@ public class Asset {
 
 	private Long id;
 	private String description;
-	private List<TradingSession> tradingSessions;
 	private Float lastTradingPrice;
 	private String ticker;
 	private String industry;
 	private InvertarCurrency currency;
+	private NavigableMap<Long, TradingSession> tradingSessions;
+	private static int SCALE = 10;
 
-	public Asset(Long id, String description, String ticker, InvertarCurrency invertarCurrency) {
+	public Asset(Long id, String description, String ticker,
+			InvertarCurrency invertarCurrency) {
 		this.id = id;
 		this.description = description;
 		this.ticker = ticker;
 		this.currency = invertarCurrency;
-		tradingSessions = new ArrayList<TradingSession>();
+		tradingSessions = new TreeMap<Long, TradingSession>();
 	}
 
 	public InvertarCurrency getCurrency() {
@@ -45,16 +53,18 @@ public class Asset {
 		return this.id;
 	}
 
-	public void addTradingSession(TradingSessionDTO tradingSessionDTO) {
+	public void addTradingSession(TradingSessionDTO tradingSessionDTO)
+			throws InvalidTradingSessionArgumentException {
 
 		TradingSession tradingSession = TradingSessionFactory
 				.create(tradingSessionDTO);
 
-		this.tradingSessions.add(tradingSession);
+		this.tradingSessions.put(tradingSession.getTradingDate().getTime(),
+				tradingSession);
 
 	}
 
-	public List<TradingSession> getTradingSessions() {
+	public NavigableMap<Long, TradingSession> getTradingSessions() {
 		return this.tradingSessions;
 	}
 
@@ -65,6 +75,36 @@ public class Asset {
 
 	public Float getLastTradingPrice() {
 		return lastTradingPrice;
+	}
+
+	public Map<Long, Double> getPercentageOfChange(Date startDate, Date endDate) {
+
+		NavigableMap<Long, TradingSession> selectedTradingSessions = this
+				.getTradingSessions().subMap(startDate.getTime(), false,
+						endDate.getTime(), true);
+
+		BigDecimal initialClosingPrice = BigDecimal.valueOf(
+				this.getTradingSessions().get(startDate.getTime())
+						.getClosingPrice()).setScale(SCALE);
+
+		Map<Long, Double> resultantPercentagesOfChange = new HashMap<Long, Double>();
+		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
+
+		for (Long currentDate : selectedTradingSessions.navigableKeySet()) {
+			BigDecimal currentClosingPrice = BigDecimal.valueOf(
+					selectedTradingSessions.get(currentDate).getClosingPrice())
+					.setScale(SCALE);
+			resultantPercentagesOfChange.put(
+					currentDate,
+					currentClosingPrice
+							.subtract(initialClosingPrice)
+							.divide(initialClosingPrice, SCALE,
+									RoundingMode.DOWN)
+							.multiply(BigDecimal.valueOf(100L))
+							.setScale(2, RoundingMode.DOWN).doubleValue());
+		}
+
+		return resultantPercentagesOfChange;
 	}
 
 	public String getIndustry() {
