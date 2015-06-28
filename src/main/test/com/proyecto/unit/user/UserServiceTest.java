@@ -49,7 +49,8 @@ public class UserServiceTest extends SpringBaseTest {
 	private AssetDTO assetDTO;
 
 	@Before
-	public void before() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+	public void before() throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
 		storeUser();
 		storeAsset();
 	}
@@ -243,7 +244,8 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAskForPortfolioMarketValueThenMarketValueIsRetrieved()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
 			PortfolioNotFoundException, AssetNotFoundException,
-			InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+			InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -335,7 +337,7 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAUserHasOneUserAssetThenPortfolioMarketValueIsTheAssetLastPrice()
+	public void whenAUserHasOneUserAssetThenPortfolioMarketValueIsTheAssetLastPriceMultipliedByTheQuantityHeOwns()
 			throws ApplicationServiceException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
@@ -365,44 +367,10 @@ public class UserServiceTest extends SpringBaseTest {
 		TransactionDTO storedTransactionDTO = portfolioDTO.getUserAssets()
 				.get(0).getTransactions().get(0);
 
-		Assert.assertTrue(storedTransactionDTO.getPricePaid().equals(
-				portfolioMarketValue.get(0).getValue()));
-
-	}
-
-	@Test
-	public void whenAUserAddsATransactionInAnIncorrectCurrencyThenExceptionIsThrown()
-			throws ApplicationServiceException {
-
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
-
-		yahooService.update();
-
-		AssetDTO updatedAssetDTO = assetService.findById(assetDTO.getId());
-
-		assetService.update(updatedAssetDTO);
-
-		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
-
-		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
-
-		transactionDTO.setPricePaid(updatedAssetDTO.getLastTradingPrice());
-
-		userService.addTransaction(transactionDTO, userDTO.getId(),
-				portfolioDTO.getId());
-
-		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
-				portfolioDTO.getId());
-
-		List<MarketValueVO> portfolioMarketValue = userService
-				.getPortfolioMarketValue(userDTO.getId(), portfolioDTO.getId());
-
-		TransactionDTO storedTransactionDTO = portfolioDTO.getUserAssets()
-				.get(0).getTransactions().get(0);
-
-		Assert.assertTrue(storedTransactionDTO.getPricePaid().equals(
-				portfolioMarketValue.get(0).getValue()));
+		Float pricePaid = storedTransactionDTO.getPricePaid();
+		Float value = pricePaid * storedTransactionDTO.getQuantity().floatValue();
+		Assert.assertTrue(value.equals(portfolioMarketValue.get(0)
+				.getValue()));
 
 	}
 
@@ -532,7 +500,9 @@ public class UserServiceTest extends SpringBaseTest {
 
 	}
 
-	private void storeAsset() throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+	private void storeAsset() throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
+
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 		assetDTO = assetService.store(assetDTO);
 	}

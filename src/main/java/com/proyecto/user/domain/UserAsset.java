@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.proyecto.user.exception.InvalidUserAssetTransactionException;
+
 public class UserAsset {
 
 	private Long assetId;
@@ -13,6 +15,7 @@ public class UserAsset {
 	// (Bonos), o Redondeos en caso de Split
 	// (Acciones)
 	private List<Transaction> transactions = new ArrayList<Transaction>();
+	private Long ownedQuantity = new Long(0);
 
 	public List<Transaction> getTransactions() {
 		return transactions;
@@ -59,8 +62,26 @@ public class UserAsset {
 		return lastTransaction;
 	}
 
-	public void addTransactions(Transaction transaction) {
+	public void addTransactions(Transaction transaction)
+			throws InvalidUserAssetTransactionException {
 		this.transactions.add(transaction);
+		calculateQuantity(transaction);
+	}
+
+	private void calculateQuantity(Transaction transaction)
+			throws InvalidUserAssetTransactionException {
+
+		Long newOwnedQuantity = this.ownedQuantity + transaction.getQuantity();
+		if (newOwnedQuantity >= 0) {
+			this.ownedQuantity = newOwnedQuantity;
+		} else {
+			throw new InvalidUserAssetTransactionException();
+
+		}
+	}
+
+	public Long getOwnedQuantity() {
+		return ownedQuantity;
 	}
 
 	public Float getCumulativePayments() {

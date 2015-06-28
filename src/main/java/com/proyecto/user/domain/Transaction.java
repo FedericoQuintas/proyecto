@@ -7,11 +7,11 @@ public class Transaction {
 	private Long id;
 	private Float pricePaid;
 	private Date tradingDate;
-	private Integer quantity;
+	private Long quantity;
 	private Long assetId;
 	private TransactionType type;
 
-	public Transaction(Float price, Integer quantity, Date tradingDate,
+	public Transaction(Float price, Long quantity, Date tradingDate,
 			Long assetId, TransactionType transactionType) {
 		this.tradingDate = tradingDate;
 		this.pricePaid = price;
@@ -40,7 +40,7 @@ public class Transaction {
 		return tradingDate;
 	}
 
-	public Integer getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 

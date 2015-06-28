@@ -7,6 +7,7 @@ import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.Portfolio;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
+import com.proyecto.user.exception.InvalidUserAssetTransactionException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 
 public interface PortfolioDomainService {
@@ -18,7 +19,7 @@ public interface PortfolioDomainService {
 
 	void storeUserAsset(TransactionDTO transactionDTO, InvertarUser user,
 			Long portfolioId) throws PortfolioNotFoundException,
-			UserAssetNotFoundException;
+			UserAssetNotFoundException, InvalidUserAssetTransactionException;
 
 	Portfolio obtainSpecifiedPortfolio(Long portfolioId,
 			List<Portfolio> portfolios) throws PortfolioNotFoundException;

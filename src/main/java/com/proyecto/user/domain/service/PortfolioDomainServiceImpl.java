@@ -18,6 +18,7 @@ import com.proyecto.user.domain.UserAsset;
 import com.proyecto.user.domain.factory.TransactionFactory;
 import com.proyecto.user.domain.factory.UserAssetFactory;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
+import com.proyecto.user.exception.InvalidUserAssetTransactionException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 
 public class PortfolioDomainServiceImpl implements PortfolioDomainService {
@@ -51,36 +52,39 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 			AssetDTO assetDTO = obtainAsset(userAsset.getAssetId());
 
 			generateMarketValues(marketValues, assetDTO.getLastTradingPrice(),
-					assetDTO.getCurrency());
+					assetDTO.getCurrency(), userAsset.getOwnedQuantity());
 
 		}
 	}
 
 	private void generateMarketValues(List<MarketValueVO> marketValues,
-			Float lastTradingPrice, InvertarCurrency currency) {
+			Float lastTradingPrice, InvertarCurrency currency,
+			Long ownedQuantity) {
 
 		if (marketValuesHasCurrency(currency, marketValues)) {
 
-			calculateMarketValue(marketValues, lastTradingPrice, currency);
+			calculateMarketValue(marketValues, lastTradingPrice, currency,
+					ownedQuantity);
 
 		} else {
 
-			generateMarketValue(marketValues, currency, lastTradingPrice);
+			generateMarketValue(marketValues, currency, lastTradingPrice,
+					ownedQuantity);
 		}
 	}
 
 	private void calculateMarketValue(List<MarketValueVO> marketValues,
-			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency) {
+			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency, Long ownedQuantity) {
 
 		MarketValueVO marketValueWithCurrency = obtainMarketValueWithCurrency(
 				lastTransactionCurrency, marketValues);
 
-		marketValueWithCurrency.calculate(lastTradingPrice);
+		marketValueWithCurrency.calculate(lastTradingPrice, ownedQuantity);
 	}
 
 	private void generateMarketValue(List<MarketValueVO> marketValues,
-			InvertarCurrency currency, Float lastTradingPrice) {
-		marketValues.add(new MarketValueVO(currency, lastTradingPrice));
+			InvertarCurrency currency, Float lastTradingPrice, Long ownedQuantity) {
+		marketValues.add(new MarketValueVO(currency, lastTradingPrice, ownedQuantity));
 	}
 
 	private AssetDTO obtainAsset(Long assetId) throws AssetNotFoundException {
@@ -134,7 +138,8 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	@Override
 	public void storeUserAsset(TransactionDTO transactionDTO,
 			InvertarUser user, Long portfolioId)
-			throws PortfolioNotFoundException, UserAssetNotFoundException {
+			throws PortfolioNotFoundException, UserAssetNotFoundException,
+			InvalidUserAssetTransactionException {
 
 		Transaction transaction = TransactionFactory.create(transactionDTO);
 
@@ -146,7 +151,8 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void fillUserAssetWithTransaction(Transaction transaction,
-			Portfolio portfolio) throws UserAssetNotFoundException {
+			Portfolio portfolio) throws UserAssetNotFoundException,
+			InvalidUserAssetTransactionException {
 
 		if (userAssetExists(transaction, portfolio)) {
 			addTransactionToUserAsset(transaction, portfolio);
@@ -158,7 +164,8 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateNewUserAsset(Transaction transaction,
-			Portfolio portfolio) throws UserAssetNotFoundException {
+			Portfolio portfolio) throws UserAssetNotFoundException,
+			InvalidUserAssetTransactionException {
 		if (transaction.getType().equals(TransactionType.PURCHASE)) {
 			UserAsset newUserAsset = UserAssetFactory.create(transaction
 					.getAssetId());
@@ -183,7 +190,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void addTransactionToUserAsset(Transaction transaction,
-			Portfolio portfolio) {
+			Portfolio portfolio) throws InvalidUserAssetTransactionException {
 
 		for (UserAsset userAsset : portfolio.getUserAssets()) {
 			if (userAsset.getAssetId().equals(transaction.getAssetId())) {

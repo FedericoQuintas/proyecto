@@ -13,7 +13,7 @@ public class TransactionDTO {
 	@JsonProperty("tradingDate")
 	private Date tradingDate;
 	@JsonProperty("quantity")
-	private Integer quantity;
+	private Long quantity;
 	@JsonProperty("asset_id")
 	private Long assetId;
 	@JsonProperty("type")
@@ -39,11 +39,11 @@ public class TransactionDTO {
 		this.tradingDate = tradingDate;
 	}
 
-	public Integer getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
 

@@ -19,9 +19,10 @@ public class MarketValueVO {
 		this.value = value;
 	}
 
-	public MarketValueVO(InvertarCurrency currency, Float initialValue) {
+	public MarketValueVO(InvertarCurrency currency, Float lastTradingPrice,
+			Long ownedQuantity) {
 		this.currency = currency;
-		this.value = initialValue;
+		this.value = lastTradingPrice * ownedQuantity;
 	}
 
 	public void setCurrency(InvertarCurrency currency) {
@@ -32,8 +33,8 @@ public class MarketValueVO {
 		return this.currency;
 	}
 
-	public void calculate(Float lastTradingPrice) {
-		this.value = +lastTradingPrice;
+	public void calculate(Float lastTradingPrice, Long ownedQuantity) {
+		this.value = this.value + lastTradingPrice * ownedQuantity;
 
 	}
 
