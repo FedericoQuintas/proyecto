@@ -32,7 +32,7 @@ public class Transaction {
 		return id;
 	}
 
-	public float getPricePaid() {
+	public Float getPricePaid() {
 		return pricePaid;
 	}
 

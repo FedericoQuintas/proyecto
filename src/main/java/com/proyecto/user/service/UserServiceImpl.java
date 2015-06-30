@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private PortfolioDomainService portfolioDomainService;
-	
+
 	@Resource
 	private AssetService assetService;
 
@@ -101,12 +101,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Double getPortfoliosPerformance(Long userId)
-			throws UserNotFoundException {
+	public Float getPortfoliosPerformance(Long userId)
+			throws UserNotFoundException, AssetNotFoundException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
-			Double portfoliosPerformance = new Double(0);
+			Float portfoliosPerformance = new Float(0);
 
 			for (Portfolio portfolio : user.getPortfolios()) {
 				portfoliosPerformance += portfolioDomainService
@@ -121,8 +121,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Double getPortfolioPerformance(Long userId, Long portfolioId)
-			throws UserNotFoundException, PortfolioNotFoundException {
+	public Float getPortfolioPerformance(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException,
+			AssetNotFoundException {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);

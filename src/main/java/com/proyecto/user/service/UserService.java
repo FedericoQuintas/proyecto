@@ -69,21 +69,25 @@ public interface UserService {
 	/**
 	 * Calculates and retrieves de Performance of all the User Portfolios
 	 * 
-	 * @return Double
+	 * @return Float
 	 * @throws UserNotFoundException
+	 * @throws AssetNotFoundException
 	 */
 
-	Double getPortfoliosPerformance(Long id) throws UserNotFoundException;
+	Float getPortfoliosPerformance(Long id) throws UserNotFoundException,
+			AssetNotFoundException;
 
 	/**
 	 * Calculates and retrieves de Performance of the specified User Portfolio
 	 * 
-	 * @return Double
+	 * @return Float
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
+	 * @throws AssetNotFoundException
 	 */
-	Double getPortfolioPerformance(Long userId, Long portfolioId)
-			throws UserNotFoundException, PortfolioNotFoundException;
+	Float getPortfolioPerformance(Long userId, Long portfolioId)
+			throws UserNotFoundException, PortfolioNotFoundException,
+			AssetNotFoundException;
 
 	/**
 	 * Calculates and retrieves the Portfolio Market Value

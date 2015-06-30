@@ -185,25 +185,9 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAsksForAUserPortfolioPerformanceThenUserPortfolioPerformanceIsRetrieved()
-			throws UserNotFoundException, InvalidPortfolioArgumentException,
-			PortfolioNotFoundException {
-
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
-
-		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
-
-		Double portfolioPerformance = userService.getPortfolioPerformance(
-				userDTO.getId(), portfolioDTO.getId());
-
-		Assert.assertTrue(portfolioPerformance.equals(portfolioDTO
-				.getPerformance()));
-
-	}
-
-	@Test
 	public void whenAsksForAUserPortfoliosPerformanceThenUserPortfoliosPerformanceIsRetrieved()
-			throws UserNotFoundException, InvalidPortfolioArgumentException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException,
+			AssetNotFoundException {
 
 		PortfolioDTO firstPortfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -217,7 +201,7 @@ public class UserServiceTest extends SpringBaseTest {
 		secondPortfolioDTO = userService.addPortfolio(secondPortfolioDTO,
 				userDTO.getId());
 
-		Double portfoliosPerformance = userService
+		Float portfoliosPerformance = userService
 				.getPortfoliosPerformance(userDTO.getId());
 
 		Assert.assertTrue(portfoliosPerformance.equals(firstPortfolioDTO
@@ -311,6 +295,60 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	@Test
+	public void whenAsksForAUserPortfolioPerformanceWithOneAssetThenUserPortfolioPerformanceIsCorrectlyRetrieved()
+			throws ApplicationServiceException {
+
+		yahooService.update();
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		userService.addTransaction(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		TransactionDTO secondTransactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		secondTransactionDTO.setType(TransactionType.SELL);
+		secondTransactionDTO.setQuantity(new Long(5));
+
+		userService.addTransaction(secondTransactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
+				portfolioDTO.getId());
+
+		Float portfolioPerformance = userService.getPortfolioPerformance(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Float expectedPerformance = calculateExpectedPerformance(
+				transactionDTO, secondTransactionDTO);
+
+		Assert.assertTrue(portfolioPerformance.equals(expectedPerformance));
+
+	}
+
+	private Float calculateExpectedPerformance(TransactionDTO transactionDTO,
+			TransactionDTO secondTransactionDTO) throws AssetNotFoundException {
+		assetDTO = assetService.findById(assetDTO.getId());
+
+		Float quantityOwned = transactionDTO.getQuantity().floatValue()
+				- secondTransactionDTO.getQuantity().floatValue();
+		Float earnedMoney = secondTransactionDTO.getPricePaid().floatValue();
+		Float investedMoney = transactionDTO.getPricePaid().floatValue();
+
+		Float actualValue = quantityOwned
+				* assetDTO.getLastTradingPrice().floatValue() + earnedMoney;
+		Float expectedPerformance = (actualValue / investedMoney - new Float(1))
+				* new Float(100);
+		return expectedPerformance;
+	}
+
+	@Test
 	public void whenAUserBuysAUserAssetForFirstTimeThenAUserAssetIsAddedToPortfolioWithAPurchaseTransaction()
 			throws ApplicationServiceException {
 
@@ -368,9 +406,9 @@ public class UserServiceTest extends SpringBaseTest {
 				.get(0).getTransactions().get(0);
 
 		Float pricePaid = storedTransactionDTO.getPricePaid();
-		Float value = pricePaid * storedTransactionDTO.getQuantity().floatValue();
-		Assert.assertTrue(value.equals(portfolioMarketValue.get(0)
-				.getValue()));
+		Float value = pricePaid
+				* storedTransactionDTO.getQuantity().floatValue();
+		Assert.assertTrue(value.equals(portfolioMarketValue.get(0).getValue()));
 
 	}
 

@@ -15,7 +15,8 @@ public interface PortfolioDomainService {
 	List<MarketValueVO> calculateMarketValue(Portfolio portfolio)
 			throws AssetNotFoundException;
 
-	Double calculatePerformance(Portfolio portfolio);
+	Float calculatePerformance(Portfolio portfolio)
+			throws AssetNotFoundException;
 
 	void storeUserAsset(TransactionDTO transactionDTO, InvertarUser user,
 			Long portfolioId) throws PortfolioNotFoundException,

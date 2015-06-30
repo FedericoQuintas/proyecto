@@ -74,7 +74,8 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void calculateMarketValue(List<MarketValueVO> marketValues,
-			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency, Long ownedQuantity) {
+			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency,
+			Long ownedQuantity) {
 
 		MarketValueVO marketValueWithCurrency = obtainMarketValueWithCurrency(
 				lastTransactionCurrency, marketValues);
@@ -83,8 +84,10 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateMarketValue(List<MarketValueVO> marketValues,
-			InvertarCurrency currency, Float lastTradingPrice, Long ownedQuantity) {
-		marketValues.add(new MarketValueVO(currency, lastTradingPrice, ownedQuantity));
+			InvertarCurrency currency, Float lastTradingPrice,
+			Long ownedQuantity) {
+		marketValues.add(new MarketValueVO(currency, lastTradingPrice,
+				ownedQuantity));
 	}
 
 	private AssetDTO obtainAsset(Long assetId) throws AssetNotFoundException {
@@ -130,9 +133,50 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	@Override
-	public Double calculatePerformance(Portfolio portfolio) {
+	public Float calculatePerformance(Portfolio portfolio)
+			throws AssetNotFoundException {
 
-		return new Double(0);
+		Float totalPerformance = new Float(0);
+
+		for (UserAsset userAsset : portfolio.getUserAssets()) {
+
+			totalPerformance += calculateUserAssetPerformance(userAsset,
+					obtainAsset(userAsset.getAssetId()));
+
+		}
+
+		Float averagePerformance = totalPerformance
+				/ new Float(portfolio.getUserAssets().size());
+
+		return averagePerformance;
+	}
+
+	private Float calculateUserAssetPerformance(UserAsset userAsset,
+			AssetDTO assetDTO) {
+
+		Float investedMoney = new Float(0);
+		Float quantityOwned = new Float(0);
+		Float earnedMoney = new Float(0);
+
+		for (Transaction transaction : userAsset.getTransactions()) {
+
+			if (transaction.getType().equals(TransactionType.PURCHASE)) {
+				investedMoney += transaction.getPricePaid();
+				quantityOwned += transaction.getQuantity().floatValue();
+
+			} else {
+				earnedMoney += transaction.getPricePaid();
+				quantityOwned -= transaction.getQuantity().floatValue();
+			}
+
+		}
+
+		Float actualValue = quantityOwned * assetDTO.getLastTradingPrice()
+				+ earnedMoney;
+		Float performance = (actualValue / investedMoney - new Float(1))
+				* new Float(100);
+
+		return performance;
 	}
 
 	@Override
