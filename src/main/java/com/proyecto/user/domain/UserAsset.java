@@ -70,14 +70,24 @@ public class UserAsset {
 
 	private void calculateQuantity(Transaction transaction)
 			throws InvalidUserAssetTransactionException {
-
-		Long newOwnedQuantity = this.ownedQuantity + transaction.getQuantity();
+		Long newOwnedQuantity = calculateNewOwnedQuantity(transaction);
 		if (newOwnedQuantity >= 0) {
 			this.ownedQuantity = newOwnedQuantity;
 		} else {
 			throw new InvalidUserAssetTransactionException();
 
 		}
+	}
+
+	private Long calculateNewOwnedQuantity(Transaction transaction) {
+		Long newOwnedQuantity = new Long(0);
+
+		if (transaction.getType().equals(TransactionType.PURCHASE)) {
+			newOwnedQuantity = this.ownedQuantity + transaction.getQuantity();
+		} else {
+			newOwnedQuantity = this.ownedQuantity - transaction.getQuantity();
+		}
+		return newOwnedQuantity;
 	}
 
 	public Long getOwnedQuantity() {

@@ -15,10 +15,6 @@ public class PortfolioDTOFactory {
 
 		portfolioDTO.setId(portfolio.getId());
 		portfolioDTO.setName(portfolio.getName());
-		portfolioDTO.setMarketValue(portfolio.getMarketValue());
-		portfolioDTO.setPerformance(portfolio.getPerformance());
-		portfolioDTO.setLastSessionPerformance(portfolio
-				.getLastSessionPerformance());
 		portfolioDTO.setUserAssets(convertToDTOs(portfolio));
 
 		return portfolioDTO;

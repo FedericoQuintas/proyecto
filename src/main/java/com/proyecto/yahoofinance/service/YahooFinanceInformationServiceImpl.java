@@ -16,7 +16,7 @@ import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
-@Service("yahooFinance")
+@Service("yahooService")
 public class YahooFinanceInformationServiceImpl implements
 		YahooFinanceInformationService {
 
