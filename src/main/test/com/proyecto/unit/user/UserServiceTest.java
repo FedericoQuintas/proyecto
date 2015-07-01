@@ -315,6 +315,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 		secondTransactionDTO.setType(TransactionType.SELL);
 		secondTransactionDTO.setQuantity(new Long(5));
+		secondTransactionDTO.setPricePaid(new Float(1));
 
 		userService.addTransaction(secondTransactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
@@ -332,6 +333,75 @@ public class UserServiceTest extends SpringBaseTest {
 
 	}
 
+	@Test
+	public void whenAsksForAUserPortfolioPerformanceWithTwoAssetsThenUserPortfolioPerformanceIsCorrectlyRetrieved()
+			throws ApplicationServiceException {
+
+		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
+		secondAssetDTO = assetService.store(secondAssetDTO);
+		
+		yahooService.update();
+
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+
+		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
+
+		TransactionDTO transactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		userService.addTransaction(transactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		TransactionDTO secondTransactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+
+		secondTransactionDTO.setType(TransactionType.SELL);
+		secondTransactionDTO.setQuantity(new Long(5));
+		secondTransactionDTO.setPricePaid(new Float(1));
+
+		userService.addTransaction(secondTransactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+		
+		TransactionDTO thirdTransactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+		
+		thirdTransactionDTO.setAssetId(secondAssetDTO.getId());
+
+		userService.addTransaction(thirdTransactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+
+		TransactionDTO fourthTransactionDTO = TransactionHelper
+				.createDefaultTransactionDTO();
+		
+		fourthTransactionDTO.setAssetId(secondAssetDTO.getId());
+
+		fourthTransactionDTO.setType(TransactionType.SELL);
+		fourthTransactionDTO.setQuantity(new Long(5));
+		fourthTransactionDTO.setPricePaid(new Float(1));
+
+		userService.addTransaction(fourthTransactionDTO, userDTO.getId(),
+				portfolioDTO.getId());
+		
+		
+		portfolioDTO = userService.findPortfolioById(userDTO.getId(),
+				portfolioDTO.getId());
+
+		Float portfolioPerformance = userService.getPortfolioPerformance(
+				userDTO.getId(), portfolioDTO.getId());
+
+		Float firstExpectedPerformance = calculateExpectedPerformance(
+				transactionDTO, secondTransactionDTO);
+		
+		Float secondExpectedPerformance = calculateExpectedPerformance(
+				thirdTransactionDTO, fourthTransactionDTO);
+		
+		Float expectedPerformance = (firstExpectedPerformance + secondExpectedPerformance) / new Float(2);
+
+		Assert.assertTrue(portfolioPerformance.equals(expectedPerformance));
+
+	}
+
+	
 	private Float calculateExpectedPerformance(TransactionDTO transactionDTO,
 			TransactionDTO secondTransactionDTO) throws AssetNotFoundException {
 		assetDTO = assetService.findById(assetDTO.getId());

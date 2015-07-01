@@ -80,4 +80,21 @@ public class UserResource {
 		return userService.addTransaction(transactionDTO, userId, portfolioId);
 	}
 
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/performance", method = RequestMethod.GET)
+	@ResponseBody
+	public Float getUserPortfolioPerformance(
+			@PathVariable("user_id") Long userId,
+			@PathVariable("portfolio_id") Long portfolioId)
+			throws ApplicationServiceException {
+		return userService.getPortfolioPerformance(userId, portfolioId);
+	}
+
+	@RequestMapping(value = "/{user_id}/portfolios/performance", method = RequestMethod.GET)
+	@ResponseBody
+	public Float getUserPortfolioPerformance(
+			@PathVariable("user_id") Long userId)
+			throws ApplicationServiceException {
+		return userService.getPortfoliosPerformance(userId);
+	}
+
 }
