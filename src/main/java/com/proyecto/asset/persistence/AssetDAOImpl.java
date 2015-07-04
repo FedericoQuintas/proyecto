@@ -12,6 +12,8 @@ public class AssetDAOImpl implements AssetDAO {
 
 	Long assetsSequence = new Long(1);
 
+	private static AssetDAO instance;
+
 	@Override
 	public Long nextID() {
 		return assetsSequence++;
@@ -64,6 +66,13 @@ public class AssetDAOImpl implements AssetDAO {
 	public void udpate(Asset asset) {
 		remove(asset);
 		store(asset);
+	}
+
+	public static AssetDAO getInstance() {
+		if (instance == null) {
+			instance = new AssetDAOImpl();
+		}
+		return instance;
 	}
 
 }

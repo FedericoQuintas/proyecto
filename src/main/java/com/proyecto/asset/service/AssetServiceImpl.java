@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
+import com.proyecto.asset.persistence.AssetDAOImpl;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
@@ -23,12 +24,17 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 @Service("assetService")
 public class AssetServiceImpl implements AssetService {
 
-	@Resource
 	private AssetDAO assetDAO;
+
+	@PostConstruct
+	public void init() {
+		assetDAO = AssetDAOImpl.getInstance();
+	}
 
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
-			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+			throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 
@@ -50,7 +56,8 @@ public class AssetServiceImpl implements AssetService {
 
 	@Override
 	public void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
-			throws AssetNotFoundException, InvalidTradingSessionArgumentException {
+			throws AssetNotFoundException,
+			InvalidTradingSessionArgumentException {
 
 		Asset asset;
 		try {
@@ -69,7 +76,8 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
 		update(asset);
@@ -88,11 +96,11 @@ public class AssetServiceImpl implements AssetService {
 		return assetDTOs;
 
 	}
-	
+
 	@Override
-	public Map<Long,Double> getPercentageOfChange(long assetId,Date startDate,Date endDate) 
-			throws AssetNotFoundException{
-		
+	public Map<Long, Double> getPercentageOfChange(long assetId,
+			Date startDate, Date endDate) throws AssetNotFoundException {
+
 		try {
 			Asset asset = assetDAO.findById(assetId);
 			return asset.getPercentageOfChange(startDate, endDate);
@@ -100,6 +108,5 @@ public class AssetServiceImpl implements AssetService {
 			throw new AssetNotFoundException(e);
 		}
 
-		
 	}
 }

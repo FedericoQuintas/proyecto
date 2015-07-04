@@ -17,7 +17,7 @@ public class PortfolioDTO {
 	private Double performance;
 	@JsonProperty("last_session_performance")
 	private Double lastSessionPerformance;
-	@JsonProperty("userAssets")
+	@JsonProperty("user_assets")
 	private List<UserAssetDTO> userAssets = new ArrayList<UserAssetDTO>();
 
 	public void setPerformance(Double performance) {
