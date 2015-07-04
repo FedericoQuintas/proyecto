@@ -16,4 +16,6 @@ public interface AssetDAO extends GenericDAO {
 
 	public void udpate(Asset asset);
 
+	public Asset findByTicker(String description) throws ObjectNotFoundException;
+
 }

@@ -136,6 +136,8 @@ public class UserServiceTest extends SpringBaseTest {
 
 		Assert.assertNotNull(retrievedPortfolioDTO.getMarketValue());
 	}
+	
+	
 
 	private PortfolioDTO addPortfolioToUser() throws UserNotFoundException,
 			InvalidPortfolioArgumentException {

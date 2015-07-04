@@ -257,6 +257,25 @@ public class AssetServiceTest extends SpringBaseTest {
 		Assert.assertNotNull(assetService.getAllAssets());
 	}
 
+	@Test
+	public void whenSearchAssetByTickerThenIsRetrieved()
+			throws AssetNotFoundException {
+
+		AssetDTO storedAssetDTO = assetService.findByTicker(assetDTO
+				.getTicker());
+
+		Assert.assertTrue(assetDTO.getTicker().equals(
+				storedAssetDTO.getTicker()));
+	}
+
+	@Test(expected = AssetNotFoundException.class)
+	public void whenSearchAssetByTickerAndAssetDoesNotExistThenExceptionIsThrown()
+			throws AssetNotFoundException {
+
+		assetService.findByTicker("Not existing Ticker");
+
+	}
+
 	private void storeAsset() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException {
 

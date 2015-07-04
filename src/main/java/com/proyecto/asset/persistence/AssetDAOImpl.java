@@ -75,4 +75,14 @@ public class AssetDAOImpl implements AssetDAO {
 		return instance;
 	}
 
+	@Override
+	public Asset findByTicker(String ticker) throws ObjectNotFoundException {
+		for (Asset asset : assets) {
+			if (asset.getTicker().equals(ticker)) {
+				return asset;
+			}
+		}
+		throw new ObjectNotFoundException("Asset " + ticker + "not found.");
+
+	}
 }

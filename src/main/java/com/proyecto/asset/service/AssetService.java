@@ -19,7 +19,8 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
 	 */
-	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException;
+	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException;
 
 	/**
 	 * Retrieves the AssetDTO with specified ID
@@ -38,7 +39,8 @@ public interface AssetService {
 	 * @throws AssetNotFoundException
 	 */
 	void addTradingSession(Long id, TradingSessionDTO tradingSessionDTO)
-			throws AssetNotFoundException, InvalidTradingSessionArgumentException;
+			throws AssetNotFoundException,
+			InvalidTradingSessionArgumentException;
 
 	/**
 	 * Adds a TradingSession to Asset TradingSession collection.
@@ -47,9 +49,11 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
 	 */
-	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException;
-	
-	Map<Long, Double> getPercentageOfChange(long assetId, Date startDate, Date endDate) throws AssetNotFoundException;
+	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException;
+
+	Map<Long, Double> getPercentageOfChange(long assetId, Date startDate,
+			Date endDate) throws AssetNotFoundException;
 
 	/**
 	 * Retrieves all de AssetDTOs
@@ -60,6 +64,14 @@ public interface AssetService {
 
 	List<AssetDTO> getAllAssets();
 
-	
+	/**
+	 * Retrieves the AssetDTO with specified Description
+	 * 
+	 * @param description
+	 * @return AssetDTO
+	 * @throws AssetNotFoundException
+	 */
+	AssetDTO findByTicker(String description)
+			throws AssetNotFoundException;
 
 }

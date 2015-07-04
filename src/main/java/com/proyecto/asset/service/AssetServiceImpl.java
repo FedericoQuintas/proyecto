@@ -109,4 +109,15 @@ public class AssetServiceImpl implements AssetService {
 		}
 
 	}
+
+	@Override
+	public AssetDTO findByTicker(String ticker) throws AssetNotFoundException {
+		try {
+			Asset asset = assetDAO.findByTicker(ticker);
+
+			return AssetDTOFactory.create(asset);
+		} catch (ObjectNotFoundException e) {
+			throw new AssetNotFoundException(e);
+		}
+	}
 }
