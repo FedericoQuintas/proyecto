@@ -28,6 +28,7 @@ import com.proyecto.unit.user.helper.UserHelper;
 import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
+import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.service.UserService;
@@ -91,7 +92,7 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenAddsAPortfolioToAUserCollectionThenPortfolioIsAdded()
-			throws UserNotFoundException, InvalidPortfolioArgumentException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException {
 
 		addPortfolioToUser();
 
@@ -140,7 +141,7 @@ public class UserServiceTest extends SpringBaseTest {
 	
 
 	private PortfolioDTO addPortfolioToUser() throws UserNotFoundException,
-			InvalidPortfolioArgumentException {
+			InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException {
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
 		return userService.addPortfolio(portfolioDTO, userDTO.getId());
@@ -189,7 +190,7 @@ public class UserServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAsksForAUserPortfoliosPerformanceThenUserPortfoliosPerformanceIsRetrieved()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
-			AssetNotFoundException {
+			AssetNotFoundException, PortfolioNameAlreadyInUseException {
 
 		PortfolioDTO firstPortfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -231,7 +232,7 @@ public class UserServiceTest extends SpringBaseTest {
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
 			PortfolioNotFoundException, AssetNotFoundException,
 			InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, PortfolioNameAlreadyInUseException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
 
@@ -608,6 +609,20 @@ public class UserServiceTest extends SpringBaseTest {
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
+	}
+	
+	@Test(expected = PortfolioNameAlreadyInUseException.class)
+	public void whenStoringTwoPortfoliosWithSameNameThenExceptionIsThrown() throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException{
+		addPortfolioToUser();
+		addPortfolioToUser();
+	}
+	
+	@Test
+	public void whenStoringTwoPortfolioWithDifferentNamesThenNothingBadHappens() throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException{
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		userService.addPortfolio(portfolioDTO, userDTO.getId());
+		portfolioDTO.setName("Portfolio2");
+		userService.addPortfolio(portfolioDTO, userDTO.getId());
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,

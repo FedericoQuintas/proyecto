@@ -9,6 +9,7 @@ import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
+import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 
@@ -50,9 +51,10 @@ public interface UserService {
 	 * @return PortfolioDTO
 	 * @throws UserNotFoundException
 	 * @throws InvalidPortfolioArgumentException
+	 * @throws PortfolioNameAlreadyInUseException 
 	 */
 	PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws UserNotFoundException, InvalidPortfolioArgumentException;
+			throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException;
 
 	/**
 	 * Retrieves specified Portfolio

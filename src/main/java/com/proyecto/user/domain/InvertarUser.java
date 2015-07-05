@@ -3,6 +3,7 @@ package com.proyecto.user.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 
 public class InvertarUser {
@@ -40,7 +41,12 @@ public class InvertarUser {
 		return this.portfolios;
 	}
 
-	public void addPortfolio(Portfolio portfolio) {
+	public void addPortfolio(Portfolio portfolio) throws PortfolioNameAlreadyInUseException {
+		for(Portfolio userPortfolio : this.portfolios){
+			if(userPortfolio.getName().equals(portfolio.getName())){
+				throw new PortfolioNameAlreadyInUseException();
+			}
+		}
 		this.portfolios.add(portfolio);
 	}
 

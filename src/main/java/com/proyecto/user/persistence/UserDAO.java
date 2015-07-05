@@ -14,4 +14,6 @@ public interface UserDAO extends GenericDAO {
 
 	public Long nextPortfolioID();
 
+	public void decrementPortfolioID();
+
 }

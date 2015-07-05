@@ -23,6 +23,7 @@ import com.proyecto.user.domain.factory.PortfolioFactory;
 import com.proyecto.user.domain.service.PortfolioDomainService;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
+import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.persistence.UserDAO;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws UserNotFoundException, InvalidPortfolioArgumentException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
@@ -74,6 +75,9 @@ public class UserServiceImpl implements UserService {
 			return PortfolioDTOFactory.create(portfolio);
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
+		} catch (PortfolioNameAlreadyInUseException e) {
+			userDAO.decrementPortfolioID();
+			throw new PortfolioNameAlreadyInUseException(e);
 		}
 
 	}

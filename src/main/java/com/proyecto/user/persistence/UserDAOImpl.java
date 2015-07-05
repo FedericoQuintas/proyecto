@@ -17,6 +17,7 @@ public class UserDAOImpl implements UserDAO {
 
 	Long portfoliosSequence = new Long(1);
 
+	@Override
 	public InvertarUser store(InvertarUser user) {
 
 		users.add(user);
@@ -24,6 +25,7 @@ public class UserDAOImpl implements UserDAO {
 		return user;
 	}
 
+	@Override
 	public InvertarUser findById(Long id) throws ObjectNotFoundException {
 
 		for (InvertarUser user : users) {
@@ -62,5 +64,11 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public Long nextPortfolioID() {
 		return portfoliosSequence++;
+	}
+
+	@Override
+	public void decrementPortfolioID() {
+		portfoliosSequence--;
+		
 	}
 }
