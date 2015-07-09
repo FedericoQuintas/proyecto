@@ -16,6 +16,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
+import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
@@ -27,7 +28,8 @@ public class UserResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUserDTO store(@RequestBody InvertarUserDTO invertarUserDTO) {
+	public InvertarUserDTO store(@RequestBody InvertarUserDTO invertarUserDTO)
+			throws InvalidPasswordException {
 		return userService.store(invertarUserDTO);
 	}
 

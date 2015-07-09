@@ -14,13 +14,13 @@ public class PortfolioDTO {
 	@JsonProperty("market_value")
 	private Long marketValue;
 	@JsonProperty("performance")
-	private Double performance;
+	private Float performance;
 	@JsonProperty("last_session_performance")
-	private Double lastSessionPerformance;
+	private Float lastSessionPerformance;
 	@JsonProperty("user_assets")
 	private List<UserAssetDTO> userAssets = new ArrayList<UserAssetDTO>();
 
-	public void setPerformance(Double performance) {
+	public void setPerformance(Float performance) {
 		this.performance = performance;
 	}
 
@@ -56,15 +56,15 @@ public class PortfolioDTO {
 		return this.marketValue;
 	}
 
-	public Double getPerformance() {
+	public Float getPerformance() {
 		return this.performance;
 	}
 
-	public Double getLastSessionPerformance() {
+	public Float getLastSessionPerformance() {
 		return lastSessionPerformance;
 	}
 
-	public void setLastSessionPerformance(Double lastSessionPerformance) {
+	public void setLastSessionPerformance(Float lastSessionPerformance) {
 		this.lastSessionPerformance = lastSessionPerformance;
 	}
 

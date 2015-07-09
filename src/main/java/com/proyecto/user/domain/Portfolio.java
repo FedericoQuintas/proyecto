@@ -8,8 +8,8 @@ public class Portfolio {
 	private Long id;
 	private Long marketValue;
 	private String name;
-	private Double performance;
-	private Double lastSessionPerformance;
+	private Float performance;
+	private Float lastSessionPerformance;
 	private List<UserAsset> userAssets = new ArrayList<UserAsset>();
 
 	public String getName() {
@@ -24,11 +24,11 @@ public class Portfolio {
 		this.id = portfolioID;
 		this.name = name;
 		this.marketValue = new Long(0);
-		this.performance = new Double(0);
-		this.lastSessionPerformance = new Double(0);
+		this.performance = new Float(0);
+		this.lastSessionPerformance = new Float(0);
 	}
 
-	public Double getLastSessionPerformance() {
+	public Float getLastSessionPerformance() {
 		return lastSessionPerformance;
 	}
 
@@ -36,11 +36,11 @@ public class Portfolio {
 		return this.id;
 	}
 
-	public Double getPerformance() {
+	public Float getPerformance() {
 		return this.performance;
 	}
 
-	public void setPerformance(Double performance) {
+	public void setPerformance(Float performance) {
 		this.performance = performance;
 	}
 

@@ -1,9 +1,13 @@
 package com.proyecto.user.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
@@ -12,6 +16,7 @@ import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.common.exception.DomainException;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
@@ -22,6 +27,8 @@ import com.proyecto.user.domain.factory.PortfolioDTOFactory;
 import com.proyecto.user.domain.factory.PortfolioFactory;
 import com.proyecto.user.domain.service.PortfolioDomainService;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
+import com.proyecto.user.exception.InvalidLoginException;
+import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -61,7 +68,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException {
+			throws UserNotFoundException, InvalidPortfolioArgumentException,
+			PortfolioNameAlreadyInUseException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
@@ -131,7 +139,11 @@ public class UserServiceImpl implements UserService {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);
-			return portfolioDomainService.calculatePerformance(portfolio);
+			Float performance = portfolioDomainService
+					.calculatePerformance(portfolio);
+			portfolio.setPerformance(performance);
+			updateUser(user);
+			return performance;
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
 		}
@@ -139,15 +151,60 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public InvertarUserDTO store(InvertarUserDTO userDTO) {
+	public InvertarUserDTO store(InvertarUserDTO userDTO)
+			throws InvalidPasswordException {
+
+		String encryptedPassword;
+		try {
+			validatePassword(userDTO.getPassword());
+			encryptedPassword = applySHAtoPassword(userDTO.getPassword());
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			throw new InvalidPasswordException();
+		}
 
 		InvertarUser user = InvertarUserFactory.create(userDAO.nextID(),
-				userDTO.getUsername(), userDTO.getMail());
+				userDTO.getUsername(), userDTO.getMail(), encryptedPassword);
 
 		InvertarUser storedUser = userDAO.store(user);
 
 		return InvertarUserDTOFactory.create(storedUser);
 
+	}
+
+	private void validatePassword(String password)
+			throws InvalidPasswordException {
+		if (StringUtils.isBlank(password)) {
+			throw new InvalidPasswordException();
+		}
+
+	}
+
+	private String applySHAtoPassword(String password)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+		MessageDigest md;
+		md = MessageDigest.getInstance("SHA-1");
+		byte[] sha1hash = new byte[40];
+		md.update(password.getBytes("iso-8859-1"), 0, password.length());
+		sha1hash = md.digest();
+		return convertToHex(sha1hash);
+
+	}
+
+	private static String convertToHex(byte[] data) {
+		StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < data.length; i++) {
+			int halfbyte = (data[i] >>> 4) & 0x0F;
+			int two_halfs = 0;
+			do {
+				if ((0 <= halfbyte) && (halfbyte <= 9))
+					buf.append((char) ('0' + halfbyte));
+				else
+					buf.append((char) ('a' + (halfbyte - 10)));
+				halfbyte = data[i] & 0x0F;
+			} while (two_halfs++ < 1);
+		}
+		return buf.toString();
 	}
 
 	@Override
@@ -183,6 +240,43 @@ public class UserServiceImpl implements UserService {
 					e.getErrorCode());
 		}
 
+	}
+
+	@Override
+	public InvertarUserDTO login(InvertarUserLoginDTO loginDTO)
+			throws UserNotFoundException, InvalidPasswordException,
+			InvalidLoginException {
+
+		InvertarUser user = findByMail(loginDTO.getMail());
+
+		String encryptInputPassword = encrypt(loginDTO.getPassword());
+
+		validatePassword(user, encryptInputPassword);
+
+		return InvertarUserDTOFactory.create(user);
+	}
+
+	private String encrypt(String password) throws InvalidPasswordException {
+		try {
+			return applySHAtoPassword(password);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			throw new InvalidPasswordException();
+		}
+	}
+
+	private void validatePassword(InvertarUser user, String encryptInputPassword)
+			throws InvalidLoginException {
+		if (!user.getPassword().equals(encryptInputPassword)) {
+			throw new InvalidLoginException();
+		}
+	}
+
+	private InvertarUser findByMail(String mail) throws UserNotFoundException {
+		try {
+			return userDAO.findByMail(mail);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
 	}
 
 }

@@ -5,9 +5,12 @@ import java.util.List;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
+import com.proyecto.user.exception.InvalidLoginException;
+import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
@@ -21,8 +24,10 @@ public interface UserService {
 	 * @param userDTO
 	 * 
 	 * @return InvertarUserDTO
+	 * @throws InvalidPasswordException
 	 */
-	InvertarUserDTO store(InvertarUserDTO userDTO);
+	InvertarUserDTO store(InvertarUserDTO userDTO)
+			throws InvalidPasswordException;
 
 	/**
 	 * Retrieves the InvertarUserDTO with specified ID
@@ -51,10 +56,11 @@ public interface UserService {
 	 * @return PortfolioDTO
 	 * @throws UserNotFoundException
 	 * @throws InvalidPortfolioArgumentException
-	 * @throws PortfolioNameAlreadyInUseException 
+	 * @throws PortfolioNameAlreadyInUseException
 	 */
 	PortfolioDTO addPortfolio(PortfolioDTO portfolioDTO, Long userId)
-			throws UserNotFoundException, InvalidPortfolioArgumentException, PortfolioNameAlreadyInUseException;
+			throws UserNotFoundException, InvalidPortfolioArgumentException,
+			PortfolioNameAlreadyInUseException;
 
 	/**
 	 * Retrieves specified Portfolio
@@ -118,5 +124,17 @@ public interface UserService {
 	TransactionDTO addTransaction(TransactionDTO transactionDTO, Long userId,
 			Long portfolioId) throws UserNotFoundException,
 			PortfolioNotFoundException, ApplicationServiceException;
+
+	/**
+	 * User Login
+	 * 
+	 * @param loginDTO
+	 * @return
+	 * @throws UserNotFoundException
+	 * @throws InvalidPasswordException
+	 * @throws InvalidLoginException
+	 */
+	InvertarUserDTO login(InvertarUserLoginDTO loginDTO) throws UserNotFoundException,
+			InvalidPasswordException, InvalidLoginException;
 
 }

@@ -16,4 +16,6 @@ public interface UserDAO extends GenericDAO {
 
 	public void decrementPortfolioID();
 
+	public InvertarUser findByMail(String mail) throws ObjectNotFoundException;
+
 }

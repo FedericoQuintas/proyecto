@@ -12,6 +12,7 @@ public class InvertarUser {
 	private List<Portfolio> portfolios = new ArrayList<Portfolio>();
 	private String mail;
 	private String username;
+	private String password;
 
 	public String getMail() {
 		return mail;
@@ -41,9 +42,10 @@ public class InvertarUser {
 		return this.portfolios;
 	}
 
-	public void addPortfolio(Portfolio portfolio) throws PortfolioNameAlreadyInUseException {
-		for(Portfolio userPortfolio : this.portfolios){
-			if(userPortfolio.getName().equals(portfolio.getName())){
+	public void addPortfolio(Portfolio portfolio)
+			throws PortfolioNameAlreadyInUseException {
+		for (Portfolio userPortfolio : this.portfolios) {
+			if (userPortfolio.getName().equals(portfolio.getName())) {
 				throw new PortfolioNameAlreadyInUseException();
 			}
 		}
@@ -60,6 +62,15 @@ public class InvertarUser {
 
 		}
 		throw new PortfolioNotFoundException();
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 }

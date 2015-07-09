@@ -145,9 +145,17 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 		}
 
-		Float averagePerformance = totalPerformance
-				/ new Float(portfolio.getUserAssets().size());
+		return calculateTotalPerformance(portfolio, totalPerformance);
+	}
 
+	private Float calculateTotalPerformance(Portfolio portfolio,
+			Float totalPerformance) {
+
+		Float averagePerformance = new Float(0);
+		if (portfolio.getUserAssets().size() != 0) {
+			averagePerformance = totalPerformance
+					/ new Float(portfolio.getUserAssets().size());
+		}
 		return averagePerformance;
 	}
 

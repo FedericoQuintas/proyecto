@@ -18,6 +18,9 @@ public class InvertarUserDTO {
 	@JsonProperty("mail")
 	private String mail;
 
+	@JsonProperty("password")
+	private String password;
+
 	public Long getId() {
 		return id;
 	}
@@ -48,6 +51,14 @@ public class InvertarUserDTO {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 }
