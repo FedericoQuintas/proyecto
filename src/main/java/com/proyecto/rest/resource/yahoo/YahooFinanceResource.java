@@ -15,12 +15,12 @@ import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 public class YahooFinanceResource {
 
 	@Resource
-	private YahooFinanceInformationService yahooService;
+	private YahooFinanceInformationService yahooFinanceInformationService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public void update() throws ApplicationServiceException {
-		yahooService.update();
+		yahooFinanceInformationService.update();
 	}
 
 }

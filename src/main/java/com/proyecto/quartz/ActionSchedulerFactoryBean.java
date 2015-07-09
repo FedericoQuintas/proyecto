@@ -16,6 +16,7 @@ public class ActionSchedulerFactoryBean extends SchedulerFactoryBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+
 		setTriggers(triggerFactory.getObject());
 		super.afterPropertiesSet();
 	}

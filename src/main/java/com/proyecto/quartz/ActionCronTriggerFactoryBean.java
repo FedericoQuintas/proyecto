@@ -13,7 +13,7 @@ public class ActionCronTriggerFactoryBean extends CronTriggerFactoryBean {
 	@Resource
 	private ScheduledActionRunnerJobDetailFactory jobDetailFactory;
 
-	@Value("*/60 * * * * ?")
+	@Value("*/10 * * * * ?")
 	private String pattern;
 
 	@Override

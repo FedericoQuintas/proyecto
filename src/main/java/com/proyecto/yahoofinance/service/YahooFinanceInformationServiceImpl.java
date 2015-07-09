@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -21,15 +19,12 @@ import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAOImpl;
-import com.proyecto.asset.service.AssetService;
+import com.proyecto.asset.persistence.AssetMongoDAOImpl;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
-@Service("yahooService")
+@Service
 public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 		YahooFinanceInformationService {
-
-	@Resource
-	private AssetService assetService;
 
 	@Override
 	public void update() throws AssetNotFoundException,
@@ -52,18 +47,11 @@ public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 	private List<AssetDTO> obtainAssetDTOs() {
 		List<AssetDTO> assetDTOs = new ArrayList<AssetDTO>();
 
-		for (Asset asset : AssetDAOImpl.getInstance().getAll()) {
+		for (Asset asset : AssetMongoDAOImpl.getInstance().getAll()) {
 			assetDTOs.add(AssetDTOFactory.create(asset));
 		}
+
 		return assetDTOs;
-	}
-
-	public AssetService getAssetService() {
-		return assetService;
-	}
-
-	public void setAssetService(AssetService assetService) {
-		this.assetService = assetService;
 	}
 
 	private Stock obtainStockInformation(AssetDTO assetDTO) {

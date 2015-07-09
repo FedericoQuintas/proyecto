@@ -11,11 +11,11 @@ import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 public class ScheduledActionRunnerJobDetailFactory extends JobDetailFactoryBean {
 
 	@Resource
-	private YahooFinanceInformationService yahooService;
+	private YahooFinanceInformationService yahooFinanceInformationService;
 
 	@Override
 	public void afterPropertiesSet() {
-		setJobClass(yahooService.getClass());
+		setJobClass(yahooFinanceInformationService.getClass());
 		this.setDurability(true);
 		super.afterPropertiesSet();
 	}
