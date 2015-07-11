@@ -112,8 +112,12 @@ public class AssetMongoDAOImpl implements AssetDAO {
 
 	@Override
 	public void udpate(Asset asset) {
-		// TODO Auto-generated method stub
 
+		Jongo jongo = new Jongo(db);
+
+		MongoCollection assets = jongo.getCollection("assets");
+
+		assets.update("{id:" + asset.getId() + " }").with(asset);
 	}
 
 	@Override

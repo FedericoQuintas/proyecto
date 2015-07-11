@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +21,17 @@ import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
-import com.proyecto.asset.persistence.AssetDAOImpl;
 import com.proyecto.asset.persistence.AssetMongoDAOImpl;
+import com.proyecto.asset.service.AssetService;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
 @Service("yahooFinanceInformationService")
+@DependsOn("assetService")
 public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 		YahooFinanceInformationService {
+
+	@Resource
+	private AssetService assetService;
 
 	@Override
 	public void update() throws AssetNotFoundException,
@@ -39,7 +46,7 @@ public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 			BigDecimal price = stock.getQuote(true).getPrice();
 			assetDTO.setLastTradingPrice(price.floatValue());
 			Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
-			AssetDAOImpl.getInstance().udpate(asset);
+			AssetMongoDAOImpl.getInstance().udpate(asset);
 		}
 
 	}
