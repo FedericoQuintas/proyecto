@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import org.jongo.marshall.jackson.oid.MongoId;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.mongojack.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,9 +20,9 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class Asset {
 
-	@ObjectId
-	@JsonProperty("_id")
-	private String objectId;
+	@MongoId
+	@MongoObjectId
+	public String objectId;
 	private Long id;
 	private String description;
 	private Float lastTradingPrice;

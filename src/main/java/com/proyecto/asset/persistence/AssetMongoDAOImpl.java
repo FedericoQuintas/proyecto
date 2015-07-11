@@ -1,10 +1,15 @@
 package com.proyecto.asset.persistence;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
 import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
 import org.springframework.stereotype.Repository;
@@ -22,11 +27,9 @@ import com.proyecto.common.exception.ObjectNotFoundException;
 public class AssetMongoDAOImpl implements AssetDAO {
 
 	private static AssetDAO instance;
-
 	private MongoClient mongoClient;
-
 	private DB db;
-
+	private DBCollection persistedAssets;
 	private DBCollection counter;
 
 	@SuppressWarnings("deprecation")
@@ -35,13 +38,15 @@ public class AssetMongoDAOImpl implements AssetDAO {
 		db = mongoClient.getDB("invertarDB");
 		counter = db.getCollection("assets_sequence");
 
+		persistedAssets = db.getCollection("assets");
+
 		try {
 			BasicDBObject document = new BasicDBObject();
 			document.append("_id", "asset_id");
 			document.append("seq", 0);
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
-			
+
 		}
 	}
 
@@ -67,8 +72,6 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	public Asset store(Asset asset) throws JsonGenerationException,
 			JsonMappingException, IOException {
 
-		DBCollection persistedAssets = db.getCollection("assets");
-
 		JacksonDBCollection<Asset, String> coll = JacksonDBCollection.wrap(
 				persistedAssets, Asset.class, String.class);
 
@@ -79,14 +82,32 @@ public class AssetMongoDAOImpl implements AssetDAO {
 
 	@Override
 	public Asset findById(Long id) throws ObjectNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Jongo jongo = new Jongo(db);
+
+		MongoCollection assets = jongo.getCollection("assets");
+
+		Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
+
+		return asset;
 	}
 
 	@Override
 	public List<Asset> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Jongo jongo = new Jongo(db);
+
+		MongoCollection assets = jongo.getCollection("assets");
+
+		MongoCursor<Asset> all = assets.find().as(Asset.class);
+		Iterator<Asset> iterator = all.iterator();
+
+		List<Asset> result = new ArrayList<>();
+		while (iterator.hasNext()) {
+			Asset next = iterator.next();
+			result.add(next);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -98,8 +119,14 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public Asset findByTicker(String description)
 			throws ObjectNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		Jongo jongo = new Jongo(db);
+
+		MongoCollection assets = jongo.getCollection("assets");
+
+		Asset asset = assets.findOne("{ticker:" + description + " }").as(
+				Asset.class);
+
+		return asset;
 	}
 
 	public static AssetDAO getInstance() {

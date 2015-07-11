@@ -22,7 +22,7 @@ import com.proyecto.asset.persistence.AssetDAOImpl;
 import com.proyecto.asset.persistence.AssetMongoDAOImpl;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
-@Service
+@Service("yahooFinanceInformationService")
 public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 		YahooFinanceInformationService {
 
