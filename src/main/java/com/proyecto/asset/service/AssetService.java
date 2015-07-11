@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -18,9 +19,10 @@ public interface AssetService {
 	 * @param assetDTO
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
+	 * @throws DBAccessException
 	 */
 	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException;
+			InvalidTradingSessionArgumentException, DBAccessException;
 
 	/**
 	 * Retrieves the AssetDTO with specified ID

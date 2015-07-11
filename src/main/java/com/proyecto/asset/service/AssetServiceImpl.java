@@ -1,5 +1,6 @@
 package com.proyecto.asset.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
@@ -23,19 +25,24 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 @Service("assetService")
 public class AssetServiceImpl implements AssetService {
 
-	@Resource(name = "assetDAO")
+	@Resource(name = "assetMongoDAO")
 	private AssetDAO assetDAO;
 
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
 			throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, DBAccessException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 
-		Asset storedAsset = assetDAO.store(asset);
+		Asset storedAsset;
+		try {
+			storedAsset = assetDAO.store(asset);
+			return AssetDTOFactory.create(storedAsset);
+		} catch (IOException e) {
+			throw new DBAccessException(e.getMessage());
+		}
 
-		return AssetDTOFactory.create(storedAsset);
 	}
 
 	@Override

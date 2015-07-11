@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
+import com.proyecto.asset.persistence.AssetMongoDAOImpl;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.asset.service.AssetServiceImpl;
 import com.proyecto.user.domain.service.PortfolioDomainService;
@@ -47,6 +48,11 @@ public class AppConfig {
 	@Bean
 	public AssetDAO assetDAO() {
 		return new AssetDAOImpl();
+	}
+
+	@Bean
+	public AssetDAO assetMongoDAO() {
+		return new AssetMongoDAOImpl();
 	}
 
 }

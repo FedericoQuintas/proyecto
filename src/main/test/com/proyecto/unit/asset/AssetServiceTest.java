@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
@@ -37,7 +38,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Before
 	public void before() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, DBAccessException {
 		storeAsset();
 	}
 
@@ -277,7 +278,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, DBAccessException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 

@@ -15,7 +15,7 @@ public class AssetFactory {
 			InvalidTradingSessionArgumentException {
 
 		validateMandatoryFields(assetDTO);
-
+		
 		Asset asset = new Asset(id, assetDTO.getDescription(),
 				assetDTO.getTicker(), assetDTO.getCurrency());
 

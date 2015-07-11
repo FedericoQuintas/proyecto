@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import org.mongojack.ObjectId;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.currency.InvertarCurrency;
@@ -15,6 +18,9 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class Asset {
 
+	@ObjectId
+	@JsonProperty("_id")
+	private String objectId;
 	private Long id;
 	private String description;
 	private Float lastTradingPrice;
@@ -33,6 +39,9 @@ public class Asset {
 		tradingSessions = new TreeMap<Long, TradingSession>();
 	}
 
+	public Asset() {
+	}
+
 	public InvertarCurrency getCurrency() {
 		return currency;
 	}
@@ -47,6 +56,12 @@ public class Asset {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@ObjectId
+	@JsonProperty("_id")
+	public String getObjectId() {
+		return this.objectId;
 	}
 
 	public Long getId() {
@@ -115,4 +130,9 @@ public class Asset {
 		this.industry = industry;
 	}
 
+	@ObjectId
+	@JsonProperty("_id")
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
+	}
 }

@@ -14,6 +14,10 @@
 		<jackson.version>1.9.13</jackson.version>
 		<spring-security.version>3.2.5.RELEASE</spring-security.version>
 		<spring.version>4.0.1.RELEASE</spring.version>
+		<mongodb-driver.version>3.0.2</mongodb-driver.version>
+		<quartz.version>2.2.1</quartz.version>
+
+
 	</properties>
 	<repositories>
 		<repository>
@@ -138,19 +142,25 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
+			<version>${quartz.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
-			<version>2.2.1</version>
+			<version>${quartz.version}</version>
 		</dependency>
-		
+
 		<!-- Mongo Dependencies -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver</artifactId>
-			<version>3.0.2</version>
+			<version>${mongodb-driver.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongojack</groupId>
+			<artifactId>mongojack</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 
 	</dependencies>

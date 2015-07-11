@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
@@ -54,7 +55,8 @@ public class UserServiceTest extends SpringBaseTest {
 
 	@Before
 	public void before() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, InvalidPasswordException {
+			InvalidTradingSessionArgumentException, InvalidPasswordException,
+			DBAccessException {
 		storeUser();
 		storeAsset();
 	}
@@ -646,7 +648,7 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, DBAccessException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 		assetDTO = assetService.store(assetDTO);
