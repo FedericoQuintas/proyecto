@@ -146,16 +146,13 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	}
 
-	@Test
-	public void whenSearchAnUserByIdAndUserDoesNotExistThenUserExceptionIsThrown() {
+	@Test(expected = AssetNotFoundException.class)
+	public void whenSearchAnAssetByIdAndAssetDoesNotExistThenAssetExceptionIsThrown()
+			throws AssetNotFoundException {
 
 		Long NOT_EXISTING_ASSET_ID = new Long(1000);
 
-		try {
-			assetService.findById(NOT_EXISTING_ASSET_ID);
-		} catch (Exception e) {
-			Assert.assertTrue(e.getMessage().contains("not found"));
-		}
+		assetService.findById(NOT_EXISTING_ASSET_ID);
 
 	}
 

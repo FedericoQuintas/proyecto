@@ -169,7 +169,8 @@ public class UserServiceTest extends SpringBaseTest {
 	private PortfolioDTO addPortfolioToUser() throws UserNotFoundException,
 			InvalidPortfolioArgumentException,
 			PortfolioNameAlreadyInUseException {
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		return userService.addPortfolio(portfolioDTO, userDTO.getId());
 	}
@@ -188,7 +189,8 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAsksForAPortfolioThenPortfolioHasPerformance()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
@@ -210,12 +212,14 @@ public class UserServiceTest extends SpringBaseTest {
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
 			AssetNotFoundException, PortfolioNameAlreadyInUseException {
 
-		PortfolioDTO firstPortfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO firstPortfolioDTO = PortfolioHelper
+				.createDefaultDTO(assetDTO.getId());
 
 		firstPortfolioDTO = userService.addPortfolio(firstPortfolioDTO,
 				userDTO.getId());
 
-		PortfolioDTO secondPortfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO secondPortfolioDTO = PortfolioHelper
+				.createDefaultDTO(assetDTO.getId());
 
 		secondPortfolioDTO.setName("Second Portfolio Name");
 
@@ -253,7 +257,8 @@ public class UserServiceTest extends SpringBaseTest {
 			InvalidTradingSessionArgumentException,
 			PortfolioNameAlreadyInUseException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
@@ -272,14 +277,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserBuysAUserAssetForFirstTimeThenAUserAssetIsBoughtAndAddedToPortfolio()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 		transactionDTO.setAssetId(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
@@ -296,14 +302,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserBuysAUserAssetForFirstTimeThenAUserAssetIsAddedToPortfolioWithATransaction()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
@@ -322,18 +329,19 @@ public class UserServiceTest extends SpringBaseTest {
 
 		yahooService.update();
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
 		TransactionDTO secondTransactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		secondTransactionDTO.setType(TransactionType.SELL);
 		secondTransactionDTO.setQuantity(new Long(5));
@@ -364,18 +372,19 @@ public class UserServiceTest extends SpringBaseTest {
 
 		yahooService.update();
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
 
 		TransactionDTO secondTransactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		secondTransactionDTO.setType(TransactionType.SELL);
 		secondTransactionDTO.setQuantity(new Long(5));
@@ -385,7 +394,7 @@ public class UserServiceTest extends SpringBaseTest {
 				portfolioDTO.getId());
 
 		TransactionDTO thirdTransactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		thirdTransactionDTO.setAssetId(secondAssetDTO.getId());
 
@@ -393,7 +402,7 @@ public class UserServiceTest extends SpringBaseTest {
 				portfolioDTO.getId());
 
 		TransactionDTO fourthTransactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		fourthTransactionDTO.setAssetId(secondAssetDTO.getId());
 
@@ -443,14 +452,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserBuysAUserAssetForFirstTimeThenAUserAssetIsAddedToPortfolioWithAPurchaseTransaction()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
@@ -469,7 +479,8 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserHasOneUserAssetThenPortfolioMarketValueIsTheAssetLastPriceMultipliedByTheQuantityHeOwns()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		yahooService.update();
 
@@ -480,7 +491,7 @@ public class UserServiceTest extends SpringBaseTest {
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		transactionDTO.setPricePaid(updatedAssetDTO.getLastTradingPrice());
 
@@ -511,7 +522,8 @@ public class UserServiceTest extends SpringBaseTest {
 		secondAssetDTO.setCurrency(InvertarCurrency.ARS);
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		yahooService.update();
 
@@ -527,7 +539,7 @@ public class UserServiceTest extends SpringBaseTest {
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		transactionDTO.setPricePaid(updatedAssetDTO.getLastTradingPrice());
 
@@ -535,7 +547,7 @@ public class UserServiceTest extends SpringBaseTest {
 				portfolioDTO.getId());
 
 		TransactionDTO secondTransactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		secondTransactionDTO.setAssetId(secondAssetDTO.getId());
 
@@ -559,14 +571,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserSellsAUserAssetThatDoesNotHaveThenExceptionIsThrown()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		transactionDTO.setType(TransactionType.SELL);
 
@@ -584,14 +597,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserBuysAUserAssetForSecondTimeThenUserAssetHasTwoTransactions()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		userService.addTransaction(transactionDTO, userDTO.getId(),
 				portfolioDTO.getId());
@@ -612,14 +626,15 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserBuysAUserAssetThatDoesNotExistThenExceptionIsThrown()
 			throws ApplicationServiceException {
 
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 
 		assetService.update(assetDTO);
 
 		portfolioDTO = userService.addPortfolio(portfolioDTO, userDTO.getId());
 
 		TransactionDTO transactionDTO = TransactionHelper
-				.createDefaultTransactionDTO();
+				.createDefaultTransactionDTO(assetDTO.getId());
 
 		Long invalidAssetId = new Long(1000);
 		transactionDTO.setAssetId(invalidAssetId);
@@ -641,7 +656,8 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenStoringTwoPortfolioWithDifferentNamesThenNothingBadHappens()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
 			PortfolioNameAlreadyInUseException {
-		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO();
+		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
+				.getId());
 		userService.addPortfolio(portfolioDTO, userDTO.getId());
 		portfolioDTO.setName("Portfolio2");
 		userService.addPortfolio(portfolioDTO, userDTO.getId());

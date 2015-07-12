@@ -7,12 +7,12 @@ public class PortfolioHelper {
 
 	private static final String DEFAULT_NAME = "Default Name";
 
-	public static PortfolioDTO createDefaultDTO() {
+	public static PortfolioDTO createDefaultDTO(Long assetId) {
 		PortfolioDTO portfolioDTO = new PortfolioDTO();
 
 		portfolioDTO.setName(DEFAULT_NAME);
 		UserAssetDTO userAssetDTO = new UserAssetDTO();
-		userAssetDTO.setAssetId(new Long(1));
+		userAssetDTO.setAssetId(assetId);
 		portfolioDTO.getUserAssets().add(userAssetDTO);
 
 		return portfolioDTO;

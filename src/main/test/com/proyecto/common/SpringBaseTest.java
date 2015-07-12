@@ -17,21 +17,18 @@ import com.proyecto.user.persistence.UserDAO;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SpringBaseTest {
 
-	@Resource
+	@Resource(name = "assetMongoDAO")
 	private AssetDAO assetDAO;
 
-	@Resource
+	@Resource(name = "userMongoDAO")
 	private UserDAO userDAO;
 
 	@BeforeClass
 	public static void init() {
 		BasicConfigurator.configure();
+
 	}
 
-	// TODO (FEDEQ): Solo se hace para restartear cada test. Cuando saquemos
-	// persistencia en memoria
-	// y pasemos todo a la implementación de una base de datos, va a ir
-	// cambiando.
 	@After
 	public void after() {
 		userDAO.flush();

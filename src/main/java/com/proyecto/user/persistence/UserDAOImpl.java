@@ -67,12 +67,6 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void decrementPortfolioID() {
-		portfoliosSequence--;
-
-	}
-
-	@Override
 	public InvertarUser findByMail(String mail) throws ObjectNotFoundException {
 
 		for (InvertarUser user : users) {

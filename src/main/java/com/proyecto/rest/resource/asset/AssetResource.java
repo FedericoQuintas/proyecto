@@ -29,7 +29,7 @@ public class AssetResource {
 
 	@RequestMapping(value = "/{assetId}", method = RequestMethod.GET)
 	@ResponseBody
-	public AssetDTO findUserById(@PathVariable("assetId") Long userId)
+	public AssetDTO findAssetById(@PathVariable("assetId") Long userId)
 			throws ApplicationServiceException {
 		return assetService.findById(userId);
 	}

@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
 		} catch (ObjectNotFoundException e) {
 			throw new UserNotFoundException(e);
 		} catch (PortfolioNameAlreadyInUseException e) {
-			userDAO.decrementPortfolioID();
 			throw new PortfolioNameAlreadyInUseException(e);
 		}
 

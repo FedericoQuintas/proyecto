@@ -31,13 +31,14 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	private DB db;
 	private DBCollection persistedAssets;
 	private DBCollection counter;
+	private Jongo jongo;
 
 	@SuppressWarnings("deprecation")
 	public AssetMongoDAOImpl() {
 		mongoClient = new MongoClient();
 		db = mongoClient.getDB("invertarDB");
 		counter = db.getCollection("assets_sequence");
-
+		jongo = new Jongo(db);
 		persistedAssets = db.getCollection("assets");
 
 		try {
@@ -46,7 +47,6 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			document.append("seq", 0);
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
-
 		}
 	}
 
@@ -66,6 +66,10 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public void flush() {
 
+		MongoCollection assets = jongo.getCollection("assets");
+
+		assets.remove("{ id: { $gt: 0 } }");
+
 	}
 
 	@Override
@@ -83,18 +87,19 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public Asset findById(Long id) throws ObjectNotFoundException {
 
-		Jongo jongo = new Jongo(db);
-
 		MongoCollection assets = jongo.getCollection("assets");
 
 		Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
+
+		if (asset == null) {
+			throw new ObjectNotFoundException("Asset " + id + " not found");
+		}
 
 		return asset;
 	}
 
 	@Override
 	public List<Asset> getAll() {
-		Jongo jongo = new Jongo(db);
 
 		MongoCollection assets = jongo.getCollection("assets");
 
@@ -123,12 +128,16 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public Asset findByTicker(String description)
 			throws ObjectNotFoundException {
-		Jongo jongo = new Jongo(db);
 
 		MongoCollection assets = jongo.getCollection("assets");
 
-		Asset asset = assets.findOne("{ticker:" + description + " }").as(
+		Asset asset = assets.findOne("{ticker:\"" + description + "\"}").as(
 				Asset.class);
+
+		if (asset == null) {
+			throw new ObjectNotFoundException("Asset " + description
+					+ " not found");
+		}
 
 		return asset;
 	}
