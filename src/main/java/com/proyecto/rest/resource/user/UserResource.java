@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
@@ -97,6 +98,13 @@ public class UserResource {
 			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
 		return userService.getPortfoliosPerformance(userId);
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public InvertarUserDTO login(@RequestBody InvertarUserLoginDTO loginDTO)
+			throws ApplicationServiceException {
+		return userService.login(loginDTO);
 	}
 
 }

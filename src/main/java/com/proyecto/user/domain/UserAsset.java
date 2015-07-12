@@ -17,6 +17,9 @@ public class UserAsset {
 	private List<Transaction> transactions = new ArrayList<Transaction>();
 	private Long ownedQuantity = new Long(0);
 
+	public UserAsset() {
+	}
+
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}

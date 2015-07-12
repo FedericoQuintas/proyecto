@@ -12,6 +12,9 @@ public class Portfolio {
 	private Float lastSessionPerformance;
 	private List<UserAsset> userAssets = new ArrayList<UserAsset>();
 
+	public Portfolio() {
+	}
+
 	public String getName() {
 		return name;
 	}

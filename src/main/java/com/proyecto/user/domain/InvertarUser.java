@@ -3,16 +3,27 @@ package com.proyecto.user.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jongo.marshall.jackson.oid.MongoId;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
+import org.mongojack.ObjectId;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
 
 public class InvertarUser {
 
+	@MongoId
+	@MongoObjectId
+	public String objectId;
 	private Long id;
 	private List<Portfolio> portfolios = new ArrayList<Portfolio>();
 	private String mail;
 	private String username;
 	private String password;
+
+	public InvertarUser() {
+	}
 
 	public String getMail() {
 		return mail;
@@ -71,6 +82,18 @@ public class InvertarUser {
 
 	public String getPassword() {
 		return password;
+	}
+
+	@ObjectId
+	@JsonProperty("_id")
+	public String getObjectId() {
+		return this.objectId;
+	}
+
+	@ObjectId
+	@JsonProperty("_id")
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 }

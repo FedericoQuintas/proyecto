@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.asset.service.AssetService;
@@ -32,5 +33,13 @@ public class AssetResource {
 	public AssetDTO findAssetById(@PathVariable("assetId") Long userId)
 			throws ApplicationServiceException {
 		return assetService.findById(userId);
+	}
+
+	@RequestMapping(params = { "ticker" }, method = RequestMethod.GET)
+	@ResponseBody
+	public AssetDTO findAssetByTicker(
+			@RequestParam(value = "ticker") String ticker)
+			throws ApplicationServiceException {
+		return assetService.findByTicker(ticker);
 	}
 }

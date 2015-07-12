@@ -20,6 +20,9 @@ public class Transaction {
 		this.type = transactionType;
 	}
 
+	public Transaction() {
+	}
+
 	public TransactionType getType() {
 		return type;
 	}

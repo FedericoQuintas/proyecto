@@ -38,7 +38,7 @@ import com.proyecto.user.persistence.UserDAO;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-	@Resource
+	@Resource(name = "userMongoDAO")
 	private UserDAO userDAO;
 
 	@Resource

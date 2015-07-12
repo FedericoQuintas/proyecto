@@ -31,11 +31,15 @@ public class UserMongoDAOImpl implements UserDAO {
 		mongoClient = new MongoClient();
 		db = mongoClient.getDB("invertarDB");
 		userCounter = db.getCollection("users_sequence");
+		portfolioCounter = db.getCollection("portfolios_sequence");
 		persistedUsers = db.getCollection("users");
 		jongo = new Jongo(db);
 
 		try {
 			generateUserCounter();
+		} catch (DuplicateKeyException e) {
+		}
+		try {
 			generatePortfolioCounter();
 		} catch (DuplicateKeyException e) {
 		}
@@ -125,7 +129,7 @@ public class UserMongoDAOImpl implements UserDAO {
 
 		MongoCollection users = jongo.getCollection("users");
 
-		InvertarUser user = users.findOne("{ticker:\"" + mail + "\"}").as(
+		InvertarUser user = users.findOne("{mail:\"" + mail + "\"}").as(
 				InvertarUser.class);
 
 		if (user == null) {
