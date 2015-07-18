@@ -1,5 +1,6 @@
 package com.proyecto.asset.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,16 +11,21 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
+import com.proyecto.asset.domain.factory.TradingSessionDTOFactory;
+import com.proyecto.asset.domain.factory.TradingSessionFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
+import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
+import com.proyecto.unit.asset.helper.AssetHelper;
 
 @Service("assetService")
 public class AssetServiceImpl implements AssetService {
@@ -71,7 +77,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	private void update(Asset asset) {
-		assetDAO.udpate(asset);
+		assetDAO.update(asset);
 
 	}
 
@@ -120,4 +126,22 @@ public class AssetServiceImpl implements AssetService {
 			throw new AssetNotFoundException(e);
 		}
 	}
+
+	@Override
+	public List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,
+			Date endDate) throws AssetNotFoundException {
+		List<TradingSessionDTO> tradingSessionDTOs = new ArrayList<TradingSessionDTO>();
+		
+		try {
+			Asset asset = assetDAO.findById(assetId);
+			for(TradingSession tradingSession : asset.getRangeOfTradingSessions(startDate, endDate)){
+				tradingSessionDTOs.add(TradingSessionDTOFactory.create(tradingSession));
+			}
+			
+			return tradingSessionDTOs;
+		} catch (ObjectNotFoundException e) {
+			throw new AssetNotFoundException(e);
+		}
+	}
+	
 }

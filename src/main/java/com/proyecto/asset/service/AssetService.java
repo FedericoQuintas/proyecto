@@ -74,4 +74,7 @@ public interface AssetService {
 	AssetDTO findByTicker(String description)
 			throws AssetNotFoundException;
 
+	List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,
+			Date endDate) throws AssetNotFoundException;
+
 }
