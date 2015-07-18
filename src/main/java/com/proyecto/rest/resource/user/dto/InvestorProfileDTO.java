@@ -5,7 +5,7 @@ import com.proyecto.user.domain.InvestorProfile;
 public class InvestorProfileDTO {
 	
 	InvestorProfile investorProfile;
-	TheoricalPortfolioDTO theoricalPortfolios;
+	TheoreticalPortfolioDTO theoricalPortfolios;
 	
 	public InvestorProfile getInvestorProfile() {
 		return investorProfile;
@@ -13,10 +13,10 @@ public class InvestorProfileDTO {
 	public void setInvestorProfile(InvestorProfile investorProfile) {
 		this.investorProfile = investorProfile;
 	}
-	public TheoricalPortfolioDTO getTheoricalPortfolios() {
+	public TheoreticalPortfolioDTO getTheoricalPortfolios() {
 		return theoricalPortfolios;
 	}
-	public void setTheoricalPortfolios(TheoricalPortfolioDTO theoricalPortfolios) {
+	public void setTheoreticalPortfolios(TheoreticalPortfolioDTO theoricalPortfolios) {
 		this.theoricalPortfolios = theoricalPortfolios;
 	}
 	

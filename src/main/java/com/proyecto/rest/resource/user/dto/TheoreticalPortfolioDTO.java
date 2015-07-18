@@ -3,7 +3,7 @@ package com.proyecto.rest.resource.user.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TheoricalPortfolioDTO {
+public class TheoreticalPortfolioDTO {
 
 	private Map<String,Integer> assetTypeAndPercentage = new HashMap<String,Integer>();
 
