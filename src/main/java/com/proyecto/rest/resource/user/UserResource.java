@@ -16,6 +16,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.InvestorProfile;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.service.UserService;
@@ -99,6 +100,14 @@ public class UserResource {
 			throws ApplicationServiceException {
 		return userService.getPortfoliosPerformance(userId);
 	}
+	
+
+	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.POST)
+	@ResponseBody
+	public InvestorProfile getInvestorProfile(@RequestBody Integer amountOfPoints)
+	{
+		return userService.getInvestorProfile(amountOfPoints);
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
@@ -106,5 +115,6 @@ public class UserResource {
 			throws ApplicationServiceException {
 		return userService.login(loginDTO);
 	}
+	
 
 }
