@@ -17,7 +17,9 @@ public class AssetDTOFactory {
 
 		assetDTO.setId(asset.getId());
 		assetDTO.setDescription(asset.getDescription());
+		assetDTO.setName(asset.getName());
 		assetDTO.setTicker(asset.getTicker());
+		assetDTO.setLeader(asset.isLeader());
 		assetDTO.setTradingSessions(convertToDTOs(asset.getTradingSessions()));
 		assetDTO.setLastTradingPrice(asset.getLastTradingPrice());
 		assetDTO.setIndustry(asset.getIndustry());

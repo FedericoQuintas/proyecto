@@ -15,6 +15,12 @@ public class AssetDTO {
 	@JsonProperty("description")
 	private String description;
 
+	@JsonProperty("name")
+	private String name;
+	
+	@JsonProperty("isLeader")
+	private boolean isLeader = false;
+
 	@JsonProperty("trading_sessions")
 	private List<TradingSessionDTO> tradingSessions = new ArrayList<TradingSessionDTO>();
 
@@ -88,5 +94,22 @@ public class AssetDTO {
 	public InvertarCurrency getCurrency() {
 		return currency;
 	}
+
+	public boolean isLeader() {
+		return isLeader;
+	}
+
+	public void setLeader(boolean isLeader) {
+		this.isLeader = isLeader;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+		
 
 }
