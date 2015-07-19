@@ -8,7 +8,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
-import com.proyecto.user.domain.InvestorProfile;
+import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidLoginException;
 import com.proyecto.user.exception.InvalidPasswordException;
@@ -142,6 +142,6 @@ public interface UserService {
 	 * @param amountOfPoints
 	 * @return
 	 */
-	InvestorProfile getInvestorProfile(Integer amountOfPoints);
+	InvestorProfileEnum getInvestorProfile(Integer amountOfPoints);
 
 }

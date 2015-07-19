@@ -20,7 +20,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
-import com.proyecto.user.domain.InvestorProfile;
+import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.Portfolio;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
@@ -172,13 +172,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public InvestorProfile getInvestorProfile(Integer amountOfPoints){
+	public InvestorProfileEnum getInvestorProfile(Integer amountOfPoints){
 		if(amountOfPoints<=4){
-			return InvestorProfile.CONSERVATIVE;
+			return InvestorProfileEnum.CONSERVATIVE;
 		}else if(amountOfPoints<=8){
-			return InvestorProfile.MODERATE;
+			return InvestorProfileEnum.MODERATE;
 		}else{
-			return InvestorProfile.AGRESSIVE;
+			return InvestorProfileEnum.AGRESSIVE;
 		}
 	}
 

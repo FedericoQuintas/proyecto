@@ -1,22 +1,24 @@
 package com.proyecto.rest.resource.user.dto;
 
-import com.proyecto.user.domain.InvestorProfile;
+import java.util.List;
+
+import com.proyecto.user.domain.InvestorProfileEnum;
 
 public class InvestorProfileDTO {
 	
-	InvestorProfile investorProfile;
-	TheoreticalPortfolioDTO theoricalPortfolios;
+	InvestorProfileEnum investorProfile;
+	List<TheoreticalPortfolioDTO> theoricalPortfolios;
 	
-	public InvestorProfile getInvestorProfile() {
+	public InvestorProfileEnum getInvestorProfile() {
 		return investorProfile;
 	}
-	public void setInvestorProfile(InvestorProfile investorProfile) {
+	public void setInvestorProfile(InvestorProfileEnum investorProfile) {
 		this.investorProfile = investorProfile;
 	}
-	public TheoreticalPortfolioDTO getTheoricalPortfolios() {
+	public List<TheoreticalPortfolioDTO> getTheoricalPortfolios() {
 		return theoricalPortfolios;
 	}
-	public void setTheoreticalPortfolios(TheoreticalPortfolioDTO theoricalPortfolios) {
+	public void setTheoreticalPortfolios(List<TheoreticalPortfolioDTO> theoricalPortfolios) {
 		this.theoricalPortfolios = theoricalPortfolios;
 	}
 	
