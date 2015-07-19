@@ -2,12 +2,14 @@ package com.proyecto.asset.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.mongojack.ObjectId;
@@ -30,6 +32,7 @@ public class Asset {
 	private String industry;
 	private InvertarCurrency currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
+	private Double lastSessionPerformance;
 	private static int SCALE = 10;
 
 	public Asset(Long id, String description, String ticker,
@@ -130,6 +133,15 @@ public class Asset {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+	
+	public Double getLastSessionPerformance() {
+		return lastSessionPerformance;
+	}
+	
+	public void calculateLastSessionPerformance(Date lastDate){
+		lastSessionPerformance = getPercentageOfChange(
+				DateUtils.addDays(lastDate, -1), lastDate).get(lastDate.getTime());
 	}
 
 	@ObjectId
