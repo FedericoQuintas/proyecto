@@ -203,6 +203,21 @@ public class AssetServiceTest extends SpringBaseTest {
 				2e-2);
 
 	}
+	
+	@Test
+	public void whenLastSessionPerformanceIsCalculatedThenTheRightResultIsReturned()
+			throws ParseException, InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
+
+		AssetDTO assetDTO = AssetHelper
+				.createDefaultAssetDTOWithTradingSessions();
+		Asset asset = AssetFactory.create(assetDTO, new Long(1));
+
+		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+		asset.calculateLastSessionPerformance(sf.parse("27/05/2015"));
+		
+		Assert.assertEquals(0.35, asset.getLastSessionPerformance(), 2e-2 );
+	}
 
 	@Test
 	public void whenGetsPercentageOfChangesTheRightResultsAreReturned2()
