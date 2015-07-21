@@ -58,4 +58,16 @@ public class InvestorProfile {
 		
 		return portfolios;
 	}
+
+	public static List<TheoreticalPortfolioDTO> getAgressiveInvestor() {
+		return agressiveInvestor;
+	}
+
+	public static List<TheoreticalPortfolioDTO> getModerateInvestor() {
+		return moderateInvestor;
+	}
+
+	public static List<TheoreticalPortfolioDTO> getConservativeInvestor() {
+		return conservativeInvestor;
+	}
 }
