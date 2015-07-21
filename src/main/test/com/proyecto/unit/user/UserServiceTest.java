@@ -22,11 +22,13 @@ import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.unit.asset.helper.AssetHelper;
 import com.proyecto.unit.user.helper.PortfolioHelper;
 import com.proyecto.unit.user.helper.TransactionHelper;
 import com.proyecto.unit.user.helper.UserHelper;
+import com.proyecto.user.domain.InvestorProfile;
 import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidLoginException;
@@ -661,6 +663,18 @@ public class UserServiceTest extends SpringBaseTest {
 		userService.addPortfolio(portfolioDTO, userDTO.getId());
 		portfolioDTO.setName("Portfolio2");
 		userService.addPortfolio(portfolioDTO, userDTO.getId());
+	}
+	
+	@Test
+	public void whenXMLFileIsLoadedThenEverythingWorks(){
+		InvestorProfile.loadXmlFile();
+		List<TheoreticalPortfolioDTO> conservativePortfolios = InvestorProfile.getConservativeInvestor();
+		
+		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("Bonos No Pesificados").equals(45));
+		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("Bonos Pesificados").equals(20));
+		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("FCI Renta Fija").equals(20));
+		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("FCI Renta Mixta").equals(15));
+		
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,

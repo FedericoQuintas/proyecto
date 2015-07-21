@@ -3,10 +3,8 @@ package com.proyecto.user.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationBuilder;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.HierarchicalConfigurationXMLReader;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
@@ -35,13 +33,18 @@ public class InvestorProfile {
 		
 	}
 	
+	public static void loadXMLFile(String filename){
+		investorProfileFile = filename;
+		loadXmlFile();
+	}
+	
 	private static List<TheoreticalPortfolioDTO> loadInvestorProfilePortfolio(
 			XMLConfiguration config, String profile){
 		
 		List<TheoreticalPortfolioDTO> portfolios = new ArrayList<TheoreticalPortfolioDTO>();
 		
-
-		HierarchicalConfiguration baseNode = config.configurationAt("investorProfile." + profile);
+		config.configurationAt("agressive");
+		HierarchicalConfiguration baseNode = config.configurationAt(profile);
 		
 		//iterar sobre cada portfolio(no asumimos una cantidad fija)
 		for(HierarchicalConfiguration portfolioNode : baseNode.configurationsAt("portfolio")){

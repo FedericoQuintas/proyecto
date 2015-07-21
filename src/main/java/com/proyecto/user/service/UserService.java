@@ -7,6 +7,7 @@ import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
@@ -142,6 +143,6 @@ public interface UserService {
 	 * @param amountOfPoints
 	 * @return
 	 */
-	InvestorProfileEnum getInvestorProfile(Integer amountOfPoints);
+	List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints);
 
 }

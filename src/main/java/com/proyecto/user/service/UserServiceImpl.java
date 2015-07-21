@@ -18,8 +18,10 @@ import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
+import com.proyecto.user.domain.InvestorProfile;
 import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.Portfolio;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
@@ -172,13 +174,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public InvestorProfileEnum getInvestorProfile(Integer amountOfPoints){
+	public List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints){
+		InvestorProfile.loadXmlFile();
 		if(amountOfPoints<=4){
-			return InvestorProfileEnum.CONSERVATIVE;
+			return InvestorProfile.getConservativeInvestor();
 		}else if(amountOfPoints<=8){
-			return InvestorProfileEnum.MODERATE;
+			return InvestorProfile.getModerateInvestor();
 		}else{
-			return InvestorProfileEnum.AGRESSIVE;
+			return InvestorProfile.getAgressiveInvestor();
 		}
 	}
 
