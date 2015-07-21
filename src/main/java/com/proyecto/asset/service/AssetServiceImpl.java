@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.domain.Asset;
@@ -28,6 +29,7 @@ public class AssetServiceImpl implements AssetService {
 	@Resource(name = "assetMongoDAO")
 	private AssetDAO assetDAO;
 
+	@Secured("ROLE_ADMIN")
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
 			throws InvalidAssetArgumentException,

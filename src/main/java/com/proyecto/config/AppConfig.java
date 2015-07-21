@@ -1,7 +1,9 @@
 package com.proyecto.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
@@ -19,6 +21,8 @@ import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 import com.proyecto.yahoofinance.service.YahooFinanceInformationServiceImpl;
 
 @Configuration
+@Import(SecurityConfig.class)
+@ComponentScan({ "com.proyecto.*" })
 public class AppConfig {
 
 	private static String properties;

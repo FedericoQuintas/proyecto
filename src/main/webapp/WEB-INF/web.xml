@@ -20,5 +20,4 @@
        		org.quartz.ee.servlet.QuartzInitializerListener
    		</listener-class>
 	</listener>
-	
 </web-app>
