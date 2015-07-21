@@ -2,6 +2,7 @@ package com.proyecto.config;
 
 import java.io.IOException;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -13,7 +14,6 @@ public class CorsFilter implements Filter {
 
 	@Override
 	public void destroy() {
-
 	}
 
 	@Override
