@@ -2,8 +2,9 @@ package com.proyecto.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.asset.persistence.AssetDAOImpl;
@@ -20,8 +21,9 @@ import com.proyecto.user.service.UserServiceImpl;
 import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 import com.proyecto.yahoofinance.service.YahooFinanceInformationServiceImpl;
 
-@Configuration
-@Import(SecurityConfig.class)
+@WebAppConfiguration
+@EnableWebMvc
+@Import({ SecurityConfig.class })
 @ComponentScan({ "com.proyecto.*" })
 public class AppConfig {
 
