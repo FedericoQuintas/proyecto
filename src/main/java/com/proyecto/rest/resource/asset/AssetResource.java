@@ -51,8 +51,8 @@ public class AssetResource {
 	@ResponseBody
 	public List<TradingSessionDTO> getTradingSessions(
 			@PathVariable("assetId") Long assetId, 
-			@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) 
+			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) 
 					throws AssetNotFoundException{
 		return assetService.getAssetTradingSessions(assetId, startDate, endDate);
 		
