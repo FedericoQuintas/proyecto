@@ -1,5 +1,7 @@
 package com.proyecto.rest.resource.asset;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,12 @@ public class AssetResource {
 	public AssetDTO store(@RequestBody AssetDTO assetDTO)
 			throws ApplicationServiceException {
 		return assetService.store(assetDTO);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+		return assetService.getAllAssetsWithoutTradingSessions();
 	}
 
 	@RequestMapping(value = "/{assetId}", method = RequestMethod.GET)

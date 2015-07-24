@@ -98,6 +98,18 @@ public class AssetServiceImpl implements AssetService {
 		return assetDTOs;
 
 	}
+	
+	@Override
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+
+		List<AssetDTO> lighweightAssetDTOs = getAllAssets();
+		for(AssetDTO asset : lighweightAssetDTOs){
+			asset.setTradingSessions(null);
+		}
+
+		return lighweightAssetDTOs;
+
+	}
 
 	@Override
 	public Map<Long, Double> getPercentageOfChange(long assetId,

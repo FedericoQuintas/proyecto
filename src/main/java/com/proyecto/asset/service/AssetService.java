@@ -58,9 +58,8 @@ public interface AssetService {
 			Date endDate) throws AssetNotFoundException;
 
 	/**
-	 * Retrieves all de AssetDTOs
+	 * Retrieves all the Assets DTOs
 	 * 
-	 * @param id
 	 * @return List<AssetDTO>
 	 */
 
@@ -75,5 +74,11 @@ public interface AssetService {
 	 */
 	AssetDTO findByTicker(String description)
 			throws AssetNotFoundException;
+
+	/**
+	 * Retrieves all the Assets DTOs without their trading sessions
+	 * @return
+	 */
+	List<AssetDTO> getAllAssetsWithoutTradingSessions();
 
 }
