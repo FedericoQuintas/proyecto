@@ -11,8 +11,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
+import com.proyecto.asset.domain.factory.TradingSessionDTOFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
@@ -73,7 +75,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	private void update(Asset asset) {
-		assetDAO.udpate(asset);
+		assetDAO.update(asset);
 
 	}
 
@@ -134,4 +136,22 @@ public class AssetServiceImpl implements AssetService {
 			throw new AssetNotFoundException(e);
 		}
 	}
+
+	@Override
+	public List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,
+			Date endDate) throws AssetNotFoundException {
+		List<TradingSessionDTO> tradingSessionDTOs = new ArrayList<TradingSessionDTO>();
+		
+		try {
+			Asset asset = assetDAO.findById(assetId);
+			for(TradingSession tradingSession : asset.getRangeOfTradingSessions(startDate, endDate)){
+				tradingSessionDTOs.add(TradingSessionDTOFactory.create(tradingSession));
+			}
+			
+			return tradingSessionDTOs;
+		} catch (ObjectNotFoundException e) {
+			throw new AssetNotFoundException(e);
+		}
+	}
+	
 }

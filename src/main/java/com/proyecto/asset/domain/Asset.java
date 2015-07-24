@@ -2,10 +2,12 @@ package com.proyecto.asset.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.jongo.marshall.jackson.oid.MongoId;
@@ -122,6 +124,11 @@ public class Asset {
 		}
 
 		return resultantPercentagesOfChange;
+	}
+	
+	public Collection<TradingSession> getRangeOfTradingSessions(Date startDate, Date endDate){
+		return this.getTradingSessions().subMap(
+				startDate.getTime(), true, endDate.getTime(), true).values();
 	}
 
 	public String getIndustry() {

@@ -46,7 +46,7 @@ public class YahooFinanceInformationServiceImpl extends QuartzJobBean implements
 			BigDecimal price = stock.getQuote(true).getPrice();
 			assetDTO.setLastTradingPrice(price.floatValue());
 			Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
-			AssetMongoDAOImpl.getInstance().udpate(asset);
+			AssetMongoDAOImpl.getInstance().update(asset);
 		}
 
 	}

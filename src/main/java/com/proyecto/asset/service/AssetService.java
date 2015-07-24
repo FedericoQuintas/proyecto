@@ -80,5 +80,9 @@ public interface AssetService {
 	 * @return
 	 */
 	List<AssetDTO> getAllAssetsWithoutTradingSessions();
+	
+	
+	List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,
+			Date endDate) throws AssetNotFoundException;
 
 }
