@@ -47,7 +47,7 @@ public class AssetResource {
 		return assetService.findById(assetId);
 	}
 	
-	@RequestMapping(value = "/{assetId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{assetId}/tradingsessions", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TradingSessionDTO> getTradingSessions(
 			@PathVariable("assetId") Long assetId, 
