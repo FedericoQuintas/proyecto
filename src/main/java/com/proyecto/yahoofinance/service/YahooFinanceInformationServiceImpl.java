@@ -12,12 +12,9 @@ import org.springframework.stereotype.Service;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
-import com.proyecto.asset.domain.Asset;
-import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
-import com.proyecto.asset.persistence.AssetMongoDAOImpl;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 
@@ -28,7 +25,7 @@ public class YahooFinanceInformationServiceImpl implements
 	@Resource
 	private AssetService assetService;
 
-	@Scheduled(cron = "*/5 * * * * ?")
+	@Scheduled(cron = "*/59 * * * * ?")
 	@Override
 	public void update() throws AssetNotFoundException,
 			InvalidAssetArgumentException,
@@ -41,8 +38,7 @@ public class YahooFinanceInformationServiceImpl implements
 			Stock stock = obtainStockInformation(assetDTO);
 			BigDecimal price = stock.getQuote(true).getPrice();
 			assetDTO.setLastTradingPrice(price.floatValue());
-			Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
-			AssetMongoDAOImpl.getInstance().udpate(asset);
+			assetService.update(assetDTO);
 		}
 
 	}

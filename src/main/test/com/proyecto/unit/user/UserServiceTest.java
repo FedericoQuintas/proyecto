@@ -44,7 +44,7 @@ public class UserServiceTest extends SpringBaseTest {
 	private UserService userService;
 
 	@Resource
-	private YahooFinanceInformationService yahooService;
+	private YahooFinanceInformationService yahooFinanceInformationService;
 
 	@Resource
 	private AssetService assetService;
@@ -327,7 +327,7 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAsksForAUserPortfolioPerformanceWithOneAssetThenUserPortfolioPerformanceIsCorrectlyRetrieved()
 			throws ApplicationServiceException {
 
-		yahooService.update();
+		yahooFinanceInformationService.update();
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
 				.getId());
@@ -370,7 +370,7 @@ public class UserServiceTest extends SpringBaseTest {
 		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
-		yahooService.update();
+		yahooFinanceInformationService.update();
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
 				.getId());
@@ -482,7 +482,7 @@ public class UserServiceTest extends SpringBaseTest {
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
 				.getId());
 
-		yahooService.update();
+		yahooFinanceInformationService.update();
 
 		AssetDTO updatedAssetDTO = assetService.findById(assetDTO.getId());
 
@@ -525,7 +525,7 @@ public class UserServiceTest extends SpringBaseTest {
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
 				.getId());
 
-		yahooService.update();
+		yahooFinanceInformationService.update();
 
 		AssetDTO updatedAssetDTO = assetService.findById(assetDTO.getId());
 
