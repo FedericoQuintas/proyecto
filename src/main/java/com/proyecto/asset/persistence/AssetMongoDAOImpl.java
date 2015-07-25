@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.jongo.Jongo;
@@ -19,27 +22,27 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoClient;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.common.exception.ObjectNotFoundException;
+import com.proyecto.config.persistence.MongoAccessConfiguration;
 
 @Repository("assetMongoDAO")
 public class AssetMongoDAOImpl implements AssetDAO {
 
-	private static AssetDAO instance;
-	private MongoClient mongoClient;
-	private DB db;
+	private DB dbAccess;
 	private DBCollection persistedAssets;
-	private DBCollection counter;
 	private Jongo jongo;
+	private DBCollection counter;
+	private String dbName = "invertarDB";
 
-	@SuppressWarnings("deprecation")
-	public AssetMongoDAOImpl() {
-		mongoClient = new MongoClient();
-		db = mongoClient.getDB("invertarDB");
-		counter = db.getCollection("assets_sequence");
-		jongo = new Jongo(db);
-		persistedAssets = db.getCollection("assets");
+	@Resource
+	private MongoAccessConfiguration mongoAccessConfiguration;
+
+	@PostConstruct
+	public void post() {
+
+		configureDBAccess();
+		persistedAssets = dbAccess.getCollection("assets");
 
 		try {
 			BasicDBObject document = new BasicDBObject();
@@ -48,6 +51,14 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void configureDBAccess() {
+		dbAccess = mongoAccessConfiguration.getMongoClient().getDB(dbName);
+
+		counter = dbAccess.getCollection("assets_sequence");
+		jongo = new Jongo(dbAccess);
 	}
 
 	@Override
@@ -118,7 +129,7 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public void update(Asset asset) {
 
-		Jongo jongo = new Jongo(db);
+		Jongo jongo = new Jongo(dbAccess);
 
 		MongoCollection assets = jongo.getCollection("assets");
 
@@ -142,10 +153,4 @@ public class AssetMongoDAOImpl implements AssetDAO {
 		return asset;
 	}
 
-	public static AssetDAO getInstance() {
-		if (instance == null) {
-			instance = new AssetMongoDAOImpl();
-		}
-		return instance;
-	}
 }
