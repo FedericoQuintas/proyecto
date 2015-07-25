@@ -24,7 +24,7 @@ import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.common.exception.ObjectNotFoundException;
-import com.proyecto.config.persistence.RepositoryConfiguration;
+import com.proyecto.config.persistence.MongoAccessConfiguration;
 
 @Repository("assetMongoDAO")
 public class AssetMongoDAOImpl implements AssetDAO {
@@ -35,14 +35,15 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	private Jongo jongo;
 	private DBCollection counter;
 	private String dbName = "invertarDB";
+
 	@Resource
-	private RepositoryConfiguration repositoryConfiguration;
+	private MongoAccessConfiguration mongoAccessConfiguration;
 
 	@SuppressWarnings("deprecation")
 	@PostConstruct
 	public void post() {
 
-		dbAccess = repositoryConfiguration.getMongoClient().getDB(dbName);
+		dbAccess = mongoAccessConfiguration.getMongoClient().getDB(dbName);
 
 		counter = dbAccess.getCollection("assets_sequence");
 		jongo = new Jongo(dbAccess);
@@ -55,10 +56,6 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
 		}
-	}
-
-	public AssetMongoDAOImpl() {
-
 	}
 
 	@Override
