@@ -103,8 +103,8 @@ public class Asset {
 						endDate.getTime(), true);
 
 		BigDecimal initialClosingPrice = BigDecimal.valueOf(
-				this.getTradingSessions().get(startDate.getTime())
-						.getClosingPrice()).setScale(SCALE);
+				this.getTradingSessions().ceilingEntry(startDate.getTime())
+				.getValue().getClosingPrice()).setScale(SCALE);
 
 		Map<Long, Double> resultantPercentagesOfChange = new HashMap<Long, Double>();
 		resultantPercentagesOfChange.put(startDate.getTime(), 0d);

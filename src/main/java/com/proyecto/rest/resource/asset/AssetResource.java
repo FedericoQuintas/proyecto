@@ -1,11 +1,12 @@
 package com.proyecto.rest.resource.asset;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 @Controller("assetResource")
 @RequestMapping("/assets")
 public class AssetResource {
+	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Resource
 	private AssetService assetService;
@@ -47,14 +49,30 @@ public class AssetResource {
 		return assetService.findById(assetId);
 	}
 	
-	@RequestMapping(value = "/{assetId}/tradingsessions", method = RequestMethod.GET)
-	@ResponseBody
+	@RequestMapping(value = "/{assetId}/tradingSessions", method = RequestMethod.GET)
+	@ResponseBody	
 	public List<TradingSessionDTO> getTradingSessions(
 			@PathVariable("assetId") Long assetId, 
-			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) 
-					throws AssetNotFoundException{
-		return assetService.getAssetTradingSessions(assetId, startDate, endDate);
+			@RequestParam("startDate") String startDate, 
+			@RequestParam("endDate") String endDate) 
+					throws AssetNotFoundException, ParseException{
+		
+		System.out.print(String.format("StartDate: %s  EndDate: %s", 
+				sf.parse(startDate).getTime(),
+				sf.parse(endDate).getTime()));
+		return assetService.getAssetTradingSessions(assetId, sf.parse(startDate), sf.parse(endDate));
+		
+	}
+	
+	@RequestMapping(value = "/{assetId}/tradingSessions/changePercentage", method = RequestMethod.GET)
+	@ResponseBody	
+	public Map<Long, Double> getTradingSessionsChangePercentage(
+			@PathVariable("assetId") Long assetId, 
+			@RequestParam("startDate") String startDate, 
+			@RequestParam("endDate") String endDate) 
+					throws AssetNotFoundException, ParseException{
+		
+		return assetService.getPercentageOfChange(assetId, sf.parse(startDate), sf.parse(endDate));
 		
 	}
 
