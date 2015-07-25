@@ -7,7 +7,9 @@ import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
+import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidLoginException;
 import com.proyecto.user.exception.InvalidPasswordException;
@@ -136,5 +138,11 @@ public interface UserService {
 	 */
 	InvertarUserDTO login(InvertarUserLoginDTO loginDTO) throws UserNotFoundException,
 			InvalidPasswordException, InvalidLoginException;
+	/**
+	 * 
+	 * @param amountOfPoints
+	 * @return
+	 */
+	List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints);
 
 }

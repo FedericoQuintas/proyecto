@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<investorProfile>
+	<conservative>
+		<portfolio>
+			<asset>
+				<percentage> 45 </percentage>
+				<subtype>Bonos No Pesificados</subtype>				
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>Bonos Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>FCI Renta Fija</subtype>
+			</asset>
+			<asset>
+				<percentage> 15 </percentage>
+				<subtype>FCI Renta Mixta</subtype>
+			</asset>
+		</portfolio>
+		<portfolio>
+			<asset>
+				<percentage> 80 </percentage>
+				<subtype>Bonos No Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>FCI Renta Fija</subtype>
+			</asset>	
+		</portfolio>
+	</conservative>
+	<moderate>
+		<portfolio>
+			<asset>
+				<percentage> 45 </percentage>
+				<subtype>Acciones Lideres</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>Bonos Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>FCI de Renta Fija</subtype>
+			</asset>
+			<asset>
+				<percentage> 15 </percentage>
+				<subtype>FCI de Renta Variable</subtype>
+			</asset>
+		</portfolio>
+		<portfolio>
+			<asset>
+				<percentage> 25 </percentage>
+				<subtype>Acciones Lideres</subtype>
+			</asset>
+			<asset>
+				<percentage> 30 </percentage>
+				<subtype>FCI de Renta Variable</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>Bonos No Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 35 </percentage>
+				<subtype>FCI de Renta Mixta</subtype>
+			</asset>
+		</portfolio>
+	</moderate>
+	<agressive>
+		<portfolio>
+			<asset>
+				<percentage> 40 </percentage>
+				<subtype>Acciones Lideres</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>Acciones Panel General</subtype>
+			</asset>
+			<asset>
+				<percentage> 30 </percentage>
+				<subtype>Bonos No Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 10 </percentage>
+				<subtype>Bonos Pesificados</subtype>
+			</asset>
+		</portfolio>
+		<portfolio>
+			<asset>
+				<percentage> 45 </percentage>
+				<subtype>Acciones Lideres</subtype>
+			</asset>
+			<asset>
+				<percentage> 10 </percentage>
+				<subtype>Acciones Panel General</subtype>
+			</asset>
+			<asset>
+				<percentage> 25 </percentage>
+				<subtype>Bonos Pesificados</subtype>
+			</asset>
+			<asset>
+				<percentage> 20 </percentage>
+				<subtype>Bonos No Pesificados</subtype>
+			</asset>
+		</portfolio>
+	</agressive>
+</investorProfile>
