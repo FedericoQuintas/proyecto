@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.jongo.Jongo;
@@ -19,27 +22,31 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoClient;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.common.exception.ObjectNotFoundException;
+import com.proyecto.config.persistence.RepositoryConfiguration;
 
 @Repository("assetMongoDAO")
 public class AssetMongoDAOImpl implements AssetDAO {
 
 	private static AssetDAO instance;
-	private MongoClient mongoClient;
-	private DB db;
+	private DB dbAccess;
 	private DBCollection persistedAssets;
-	private DBCollection counter;
 	private Jongo jongo;
+	private DBCollection counter;
+	private String dbName = "invertarDB";
+	@Resource
+	private RepositoryConfiguration repositoryConfiguration;
 
 	@SuppressWarnings("deprecation")
-	public AssetMongoDAOImpl() {
-		mongoClient = new MongoClient();
-		db = mongoClient.getDB("invertarDB");
-		counter = db.getCollection("assets_sequence");
-		jongo = new Jongo(db);
-		persistedAssets = db.getCollection("assets");
+	@PostConstruct
+	public void post() {
+
+		dbAccess = repositoryConfiguration.getMongoClient().getDB(dbName);
+
+		counter = dbAccess.getCollection("assets_sequence");
+		jongo = new Jongo(dbAccess);
+		persistedAssets = dbAccess.getCollection("assets");
 
 		try {
 			BasicDBObject document = new BasicDBObject();
@@ -48,6 +55,10 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
 		}
+	}
+
+	public AssetMongoDAOImpl() {
+
 	}
 
 	@Override
@@ -118,7 +129,7 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public void udpate(Asset asset) {
 
-		Jongo jongo = new Jongo(db);
+		Jongo jongo = new Jongo(dbAccess);
 
 		MongoCollection assets = jongo.getCollection("assets");
 

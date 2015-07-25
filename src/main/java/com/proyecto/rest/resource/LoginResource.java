@@ -13,7 +13,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.user.service.UserService;
 
-@Controller("userResource")
+@Controller("loginResource")
 @RequestMapping("/login")
 public class LoginResource {
 
