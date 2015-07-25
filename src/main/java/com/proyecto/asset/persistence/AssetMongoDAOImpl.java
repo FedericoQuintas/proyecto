@@ -29,7 +29,6 @@ import com.proyecto.config.persistence.MongoAccessConfiguration;
 @Repository("assetMongoDAO")
 public class AssetMongoDAOImpl implements AssetDAO {
 
-	private static AssetDAO instance;
 	private DB dbAccess;
 	private DBCollection persistedAssets;
 	private Jongo jongo;
@@ -39,14 +38,10 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Resource
 	private MongoAccessConfiguration mongoAccessConfiguration;
 
-	@SuppressWarnings("deprecation")
 	@PostConstruct
 	public void post() {
 
-		dbAccess = mongoAccessConfiguration.getMongoClient().getDB(dbName);
-
-		counter = dbAccess.getCollection("assets_sequence");
-		jongo = new Jongo(dbAccess);
+		configureDBAccess();
 		persistedAssets = dbAccess.getCollection("assets");
 
 		try {
@@ -56,6 +51,14 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			counter.insert(document);
 		} catch (DuplicateKeyException e) {
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void configureDBAccess() {
+		dbAccess = mongoAccessConfiguration.getMongoClient().getDB(dbName);
+
+		counter = dbAccess.getCollection("assets_sequence");
+		jongo = new Jongo(dbAccess);
 	}
 
 	@Override
@@ -150,10 +153,4 @@ public class AssetMongoDAOImpl implements AssetDAO {
 		return asset;
 	}
 
-	public static AssetDAO getInstance() {
-		if (instance == null) {
-			instance = new AssetMongoDAOImpl();
-		}
-		return instance;
-	}
 }

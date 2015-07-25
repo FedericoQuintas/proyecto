@@ -2,12 +2,11 @@ package com.proyecto.common;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.BasicConfigurator;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.config.AppConfig;
@@ -15,6 +14,7 @@ import com.proyecto.user.persistence.UserDAO;
 
 @ContextConfiguration(classes = AppConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 public class SpringBaseTest {
 
 	@Resource(name = "assetMongoDAO")
@@ -22,12 +22,6 @@ public class SpringBaseTest {
 
 	@Resource(name = "userMongoDAO")
 	private UserDAO userDAO;
-
-	@BeforeClass
-	public static void init() {
-		BasicConfigurator.configure();
-
-	}
 
 	@After
 	public void after() {

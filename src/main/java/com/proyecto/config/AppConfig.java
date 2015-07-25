@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Import;
 import com.proyecto.config.persistence.RepositoryConfiguration;
 
 @Configuration
-@Import({ SecurityConfig.class, MVCConfiguration.class, RepositoryConfiguration.class })
+@Import({ SecurityConfig.class, MVCConfiguration.class,
+		RepositoryConfiguration.class })
 @ComponentScan({ "com.proyecto.*" })
 public class AppConfig {
-
 
 }
