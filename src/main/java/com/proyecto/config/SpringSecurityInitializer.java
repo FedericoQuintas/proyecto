@@ -3,6 +3,8 @@ package com.proyecto.config;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
+import com.proyecto.config.security.SecurityConfig;
+
 public class SpringSecurityInitializer extends
 		AbstractSecurityWebApplicationInitializer {
 

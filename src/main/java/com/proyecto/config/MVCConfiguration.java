@@ -4,10 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.asset.service.AssetServiceImpl;
+import com.proyecto.config.security.SessionValidator;
 import com.proyecto.user.domain.service.PortfolioDomainService;
 import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
 import com.proyecto.user.persistence.UserDAO;
@@ -26,6 +28,13 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public UserService userService() {
 		return new UserServiceImpl();
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new SessionValidator())
+				.addPathPatterns("/assets/*").addPathPatterns("/users/*");
+
 	}
 
 	@Bean

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.proyecto.config.persistence.RepositoryConfiguration;
+import com.proyecto.config.security.SecurityConfig;
 
 @Configuration
 @Import({ SecurityConfig.class, MVCConfiguration.class,

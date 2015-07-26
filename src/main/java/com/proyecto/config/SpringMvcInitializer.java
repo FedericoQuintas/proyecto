@@ -10,6 +10,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.proyecto.config.security.CorsFilter;
+
 public class SpringMvcInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
 
