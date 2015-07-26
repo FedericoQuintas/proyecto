@@ -3,7 +3,9 @@ package com.proyecto.rest.resource.user;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,6 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
-import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.service.UserService;
@@ -37,8 +38,14 @@ public class UserResource {
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
 	@ResponseBody
-	public InvertarUserDTO findUserById(@PathVariable("user_id") Long userId)
+	public InvertarUserDTO findUserById(HttpSession session,
+			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
+		Long attribute = (Long) session.getAttribute("MEMBER");
+		if (!attribute.equals(userId)) {
+			throw new AccessDeniedException("Invalid session");
+		}
+
 		return userService.findById(userId);
 	}
 
@@ -100,13 +107,12 @@ public class UserResource {
 			throws ApplicationServiceException {
 		return userService.getPortfoliosPerformance(userId);
 	}
-	
+
 	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.POST)
 	@ResponseBody
-	public List<TheoreticalPortfolioDTO> getInvestorProfile(@RequestBody Integer amountOfPoints)
-	{
+	public List<TheoreticalPortfolioDTO> getInvestorProfile(
+			@RequestBody Integer amountOfPoints) {
 		return userService.getInvestorProfile(amountOfPoints);
 	}
-
 
 }

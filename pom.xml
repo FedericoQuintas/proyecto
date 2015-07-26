@@ -149,25 +149,13 @@
 			<version>3.2.1</version>
 			<optional>false</optional>
 		</dependency>
-		
+
 
 		<!-- Yahoo Finance Dependencies -->
 		<dependency>
 			<groupId>com.yahoofinance-api</groupId>
 			<artifactId>YahooFinanceAPI</artifactId>
 			<version>1.3.0</version>
-		</dependency>
-
-		<!-- Quartz Finance Dependencies -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>${quartz.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jobs</artifactId>
-			<version>${quartz.version}</version>
 		</dependency>
 
 		<!-- Mongo Dependencies -->

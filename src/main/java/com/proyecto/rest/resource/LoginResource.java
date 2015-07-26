@@ -27,7 +27,7 @@ public class LoginResource {
 			@RequestBody InvertarUserLoginDTO loginDTO) throws Exception {
 		InvertarUserDTO login = userService.login(loginDTO);
 		if (login != null) {
-			session.setAttribute("MEMBER", login.getUsername());
+			session.setAttribute("MEMBER", login.getId());
 		} else {
 			throw new Exception("Invalid username or password");
 		}
