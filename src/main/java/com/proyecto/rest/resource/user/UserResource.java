@@ -31,9 +31,12 @@ public class UserResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public InvertarUserDTO store(@RequestBody InvertarUserDTO invertarUserDTO)
+	public InvertarUserDTO store(HttpSession session,
+			@RequestBody InvertarUserDTO invertarUserDTO)
 			throws InvalidPasswordException {
-		return userService.store(invertarUserDTO);
+		InvertarUserDTO user = userService.store(invertarUserDTO);
+		session.setAttribute("MEMBER", user.getId());
+		return user;
 	}
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
