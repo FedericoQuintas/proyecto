@@ -41,77 +41,91 @@ public class UserResource {
 	public InvertarUserDTO findUserById(HttpSession session,
 			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
-		Long attribute = (Long) session.getAttribute("MEMBER");
-		if (!attribute.equals(userId)) {
-			throw new AccessDeniedException("Invalid session");
-		}
+		checkSession(session, userId);
 
 		return userService.findById(userId);
 	}
 
+	private void checkSession(HttpSession session, Long userId) {
+		Long attribute = (Long) session.getAttribute("MEMBER");
+		if (!attribute.equals(userId)) {
+			throw new AccessDeniedException("Invalid session");
+		}
+	}
+
 	@RequestMapping(value = "/{user_id}/portfolios", method = RequestMethod.GET)
 	@ResponseBody
-	public List<PortfolioDTO> getUserPortfolios(
+	public List<PortfolioDTO> getUserPortfolios(HttpSession session,
 			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.getPortfolios(userId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios", method = RequestMethod.POST)
 	@ResponseBody
-	public PortfolioDTO store(@RequestBody PortfolioDTO portfolioDTO,
+	public PortfolioDTO store(HttpSession session,
+			@RequestBody PortfolioDTO portfolioDTO,
 			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.addPortfolio(portfolioDTO, userId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}", method = RequestMethod.GET)
 	@ResponseBody
-	public PortfolioDTO getUserPortfolio(@PathVariable("user_id") Long userId,
+	public PortfolioDTO getUserPortfolio(HttpSession session,
+			@PathVariable("user_id") Long userId,
 			@PathVariable("portfolio_id") Long portfolioId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.findPortfolioById(userId, portfolioId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/marketValue", method = RequestMethod.GET)
 	@ResponseBody
-	public List<MarketValueVO> getUserPortfolioMarketValue(
+	public List<MarketValueVO> getUserPortfolioMarketValue(HttpSession session,
 			@PathVariable("user_id") Long userId,
 			@PathVariable("portfolio_id") Long portfolioId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.getPortfolioMarketValue(userId, portfolioId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/transactions", method = RequestMethod.POST)
 	@ResponseBody
-	public TransactionDTO addTransaction(@PathVariable("user_id") Long userId,
+	public TransactionDTO addTransaction(HttpSession session,
+			@PathVariable("user_id") Long userId,
 			@PathVariable("portfolio_id") Long portfolioId,
 			@RequestBody TransactionDTO transactionDTO)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.addTransaction(transactionDTO, userId, portfolioId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/performance", method = RequestMethod.GET)
 	@ResponseBody
-	public Float getUserPortfolioPerformance(
+	public Float getUserPortfolioPerformance(HttpSession session,
 			@PathVariable("user_id") Long userId,
 			@PathVariable("portfolio_id") Long portfolioId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.getPortfolioPerformance(userId, portfolioId);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/performance", method = RequestMethod.GET)
 	@ResponseBody
-	public Float getUserPortfolioPerformance(
+	public Float getUserPortfolioPerformance(HttpSession session,
 			@PathVariable("user_id") Long userId)
 			throws ApplicationServiceException {
+		checkSession(session, userId);
 		return userService.getPortfoliosPerformance(userId);
 	}
 
 	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TheoreticalPortfolioDTO> getInvestorProfile(
-			@RequestBody Integer amountOfPoints) {
+			HttpSession session, @RequestBody Integer amountOfPoints) {
 		return userService.getInvestorProfile(amountOfPoints);
 	}
 

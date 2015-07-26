@@ -22,7 +22,6 @@ import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.InvestorProfile;
-import com.proyecto.user.domain.InvestorProfileEnum;
 import com.proyecto.user.domain.Portfolio;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
