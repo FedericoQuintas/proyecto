@@ -48,7 +48,7 @@ public class UserResource {
 
 	private void checkSession(HttpSession session, Long userId) {
 		Long attribute = (Long) session.getAttribute("MEMBER");
-		if (!attribute.equals(userId)) {
+		if (attribute == null || !attribute.equals(userId)) {
 			throw new AccessDeniedException("Invalid session");
 		}
 	}

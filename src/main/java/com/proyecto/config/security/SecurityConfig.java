@@ -30,9 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/login**").permitAll()
 				.antMatchers("/assets").hasRole("ADMIN").antMatchers("/yahoo")
-				.hasRole("ADMIN").and().logout().deleteCookies("JSESSIONID")
-				.invalidateHttpSession(true).and().sessionManagement()
-				.maximumSessions(1);
+				.hasRole("ADMIN").and().sessionManagement().maximumSessions(1);
 	}
 
 	@Override

@@ -33,7 +33,8 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new SessionValidator())
-				.addPathPatterns("/assets/*").addPathPatterns("/users/*");
+				.addPathPatterns("/assets/*").addPathPatterns("/users/*")
+				.addPathPatterns("/logout");
 
 	}
 
