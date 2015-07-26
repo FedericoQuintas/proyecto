@@ -29,9 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/login**").permitAll()
-				.antMatchers("/assets").hasRole("ADMIN").and().logout()
-				.deleteCookies("JSESSIONID").invalidateHttpSession(true).and()
-				.sessionManagement().maximumSessions(1);
+				.antMatchers("/assets").hasRole("ADMIN").antMatchers("/yahoo")
+				.hasRole("ADMIN").and().logout().deleteCookies("JSESSIONID")
+				.invalidateHttpSession(true).and().sessionManagement()
+				.maximumSessions(1);
 	}
 
 	@Override
