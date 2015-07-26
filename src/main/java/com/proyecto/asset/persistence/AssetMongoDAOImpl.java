@@ -127,7 +127,7 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	}
 
 	@Override
-	public void udpate(Asset asset) {
+	public void update(Asset asset) {
 
 		Jongo jongo = new Jongo(dbAccess);
 

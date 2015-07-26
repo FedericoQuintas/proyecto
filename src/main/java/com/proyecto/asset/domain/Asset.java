@@ -2,6 +2,7 @@ package com.proyecto.asset.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class Asset {
 	private Float lastTradingPrice;
 	private String ticker;
 	private String industry;
+	private boolean isLeader = false;
+	private String name;
 	private InvertarCurrency currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
 	private static int SCALE = 10;
@@ -69,6 +72,14 @@ public class Asset {
 	public Long getId() {
 		return this.id;
 	}
+	
+	public boolean isLeader() {
+		return isLeader;
+	}
+
+	public void setLeader(boolean isLeader) {
+		this.isLeader = isLeader;
+	}
 
 	public void addTradingSession(TradingSessionDTO tradingSessionDTO)
 			throws InvalidTradingSessionArgumentException {
@@ -101,8 +112,8 @@ public class Asset {
 						endDate.getTime(), true);
 
 		BigDecimal initialClosingPrice = BigDecimal.valueOf(
-				this.getTradingSessions().get(startDate.getTime())
-						.getClosingPrice()).setScale(SCALE);
+				this.getTradingSessions().ceilingEntry(startDate.getTime())
+				.getValue().getClosingPrice()).setScale(SCALE);
 
 		Map<Long, Double> resultantPercentagesOfChange = new HashMap<Long, Double>();
 		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
@@ -123,6 +134,11 @@ public class Asset {
 
 		return resultantPercentagesOfChange;
 	}
+	
+	public Collection<TradingSession> getRangeOfTradingSessions(Date startDate, Date endDate){
+		return this.getTradingSessions().subMap(
+				startDate.getTime(), true, endDate.getTime(), true).values();
+	}
 
 	public String getIndustry() {
 		return industry;
@@ -130,6 +146,14 @@ public class Asset {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@ObjectId

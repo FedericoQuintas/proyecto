@@ -63,7 +63,7 @@ public class AssetDAOImpl implements AssetDAO {
 	}
 
 	@Override
-	public void udpate(Asset asset) {
+	public void update(Asset asset) {
 		remove(asset);
 		store(asset);
 	}
