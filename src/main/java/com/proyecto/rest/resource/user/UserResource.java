@@ -36,7 +36,14 @@ public class UserResource {
 			throws InvalidPasswordException {
 		InvertarUserDTO user = userService.store(invertarUserDTO);
 		session.setAttribute("MEMBER", user.getId());
+		if (isAdmin(user)) {
+			session.setAttribute("ROLE", "admin");
+		}
 		return user;
+	}
+
+	private boolean isAdmin(InvertarUserDTO user) {
+		return user.getMail().equals("admin@invertar.com");
 	}
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
