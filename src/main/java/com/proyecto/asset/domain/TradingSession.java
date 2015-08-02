@@ -10,6 +10,7 @@ public class TradingSession {
 	private Double minPrice;
 	private Date tradingDate;
 	private Integer volume;
+	private Double payment;
 
 	public TradingSession() {
 	}
@@ -60,5 +61,13 @@ public class TradingSession {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
+	}
+
+	public Double getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Double payment) {
+		this.payment = payment;
 	}
 }

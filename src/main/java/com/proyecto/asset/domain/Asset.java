@@ -28,8 +28,6 @@ public class Asset {
 	private String description;
 	private Float lastTradingPrice;
 	private String ticker;
-	private String industry;
-	private boolean isLeader = false;
 	private String name;
 	private InvertarCurrency currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
@@ -42,9 +40,6 @@ public class Asset {
 		this.ticker = ticker;
 		this.currency = invertarCurrency;
 		tradingSessions = new TreeMap<Long, TradingSession>();
-	}
-
-	public Asset() {
 	}
 
 	public InvertarCurrency getCurrency() {
@@ -71,14 +66,6 @@ public class Asset {
 
 	public Long getId() {
 		return this.id;
-	}
-	
-	public boolean isLeader() {
-		return isLeader;
-	}
-
-	public void setLeader(boolean isLeader) {
-		this.isLeader = isLeader;
 	}
 
 	public void addTradingSession(TradingSessionDTO tradingSessionDTO)
@@ -138,14 +125,6 @@ public class Asset {
 	public Collection<TradingSession> getRangeOfTradingSessions(Date startDate, Date endDate){
 		return this.getTradingSessions().subMap(
 				startDate.getTime(), true, endDate.getTime(), true).values();
-	}
-
-	public String getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(String industry) {
-		this.industry = industry;
 	}
 	
 	public String getName() {

@@ -19,6 +19,7 @@ public class TradingSessionFactory {
 		tradingSession.setMinPrice(tradingSessionDTO.getMinPrice());
 		tradingSession.setOpeningPrice(tradingSessionDTO.getOpeningPrice());
 		tradingSession.setVolume(tradingSessionDTO.getVolume());
+		tradingSession.setPayment(tradingSessionDTO.getPayment());
 		
 		return tradingSession;
 

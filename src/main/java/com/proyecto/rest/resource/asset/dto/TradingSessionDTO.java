@@ -18,6 +18,9 @@ public class TradingSessionDTO {
 	private Date tradingDate;
 	@JsonProperty("volume")
 	private Integer volume;
+	@JsonProperty("payment")
+	private Double payment;
+	
 	public Double getClosingPrice() {
 		return closingPrice;
 	}
@@ -53,6 +56,12 @@ public class TradingSessionDTO {
 	}
 	public void setVolume(Integer volume) {
 		this.volume = volume;
+	}
+	public Double getPayment() {
+		return payment;
+	}
+	public void setPayment(Double payment) {
+		this.payment = payment;
 	}
 	
 }

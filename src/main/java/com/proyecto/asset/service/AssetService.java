@@ -9,6 +9,7 @@ import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public interface AssetService {
@@ -93,5 +94,8 @@ public interface AssetService {
 	
 	List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,
 			Date endDate) throws AssetNotFoundException;
+
+	AssetDTO store(StockDTO assetDTO) throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException, DBAccessException;
 
 }
