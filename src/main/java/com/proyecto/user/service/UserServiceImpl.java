@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public InvertarUserDTO store(InvertarUserDTO userDTO)
 			throws InvalidPasswordException, UsernameAlreadyExistsException,
-			ObjectNotFoundException, UserMailAlreadyExistsException {
+			UserMailAlreadyExistsException {
 
 		String encryptedPassword = validatePassword(userDTO);
 
@@ -181,8 +181,8 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	private void validateMail(String mail) throws ObjectNotFoundException,
-			UserMailAlreadyExistsException {
+	private void validateMail(String mail)
+			throws UserMailAlreadyExistsException {
 		if (userDAO.existsUserWithMail(mail)) {
 			throw new UserMailAlreadyExistsException();
 		}
