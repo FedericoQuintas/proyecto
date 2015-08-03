@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.common.exception.ApplicationServiceException;
+import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
@@ -33,7 +36,8 @@ public class UserResource {
 	@ResponseBody
 	public InvertarUserDTO store(HttpSession session,
 			@RequestBody InvertarUserDTO invertarUserDTO)
-			throws InvalidPasswordException {
+			throws InvalidPasswordException, ObjectNotFoundException,
+			UsernameAlreadyExistsException, UserMailAlreadyExistsException {
 		InvertarUserDTO user = userService.store(invertarUserDTO);
 		session.setAttribute("MEMBER", user.getId());
 		if (isAdmin(user)) {

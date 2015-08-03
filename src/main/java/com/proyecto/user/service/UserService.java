@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.common.exception.ApplicationServiceException;
+import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
@@ -15,7 +16,9 @@ import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
 import com.proyecto.user.exception.UserNotFoundException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 
 public interface UserService {
 
@@ -26,9 +29,12 @@ public interface UserService {
 	 * 
 	 * @return InvertarUserDTO
 	 * @throws InvalidPasswordException
+	 * @throws UsernameAlreadyExistsException
+	 * @throws UserMailAlreadyExistsException
+	 * @throws ObjectNotFoundException
 	 */
 	InvertarUserDTO store(InvertarUserDTO userDTO)
-			throws InvalidPasswordException;
+			throws InvalidPasswordException, UsernameAlreadyExistsException, ObjectNotFoundException, UserMailAlreadyExistsException;
 
 	/**
 	 * Retrieves the InvertarUserDTO with specified ID

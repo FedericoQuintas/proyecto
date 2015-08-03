@@ -16,4 +16,11 @@ public interface UserDAO extends GenericDAO {
 
 	public InvertarUser findByMail(String mail) throws ObjectNotFoundException;
 
+	public InvertarUser findByUsername(String username)
+			throws ObjectNotFoundException;
+
+	public Boolean existsUserWithMail(String mail);
+
+	public Boolean existsUserWithUsername(String username);
+
 }
