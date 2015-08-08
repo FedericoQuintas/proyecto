@@ -3,7 +3,7 @@ package com.proyecto.unit.asset.helper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -22,7 +22,7 @@ public class AssetHelper {
 		assetDTO.setDescription(DEFAULT_DESCRIPTION);
 		assetDTO.setTicker(DEFAULT_TICKER);
 		assetDTO.setIndustry(DEFAULT_INDUSTRY);
-		assetDTO.setCurrency(InvertarCurrency.US);
+		assetDTO.setCurrency(InvertarCurrencyCode.US);
 
 		return assetDTO;
 	}

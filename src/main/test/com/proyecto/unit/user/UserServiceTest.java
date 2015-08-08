@@ -15,7 +15,7 @@ import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.common.exception.ObjectNotFoundException;
@@ -534,7 +534,7 @@ public class UserServiceTest extends SpringBaseTest {
 			throws ApplicationServiceException {
 
 		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
-		secondAssetDTO.setCurrency(InvertarCurrency.ARS);
+		secondAssetDTO.setCurrency(InvertarCurrencyCode.ARS);
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO

@@ -10,6 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.asset.service.AssetServiceImpl;
 import com.proyecto.config.security.SessionValidator;
+import com.proyecto.currency.persistence.CurrencyDAO;
+import com.proyecto.currency.persistence.CurrencyDAOImpl;
+import com.proyecto.currency.service.CurrencyService;
+import com.proyecto.currency.service.CurrencyServiceImpl;
 import com.proyecto.user.domain.service.PortfolioDomainService;
 import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
 import com.proyecto.user.persistence.UserDAO;
@@ -63,4 +67,13 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 		return new AssetServiceImpl();
 	}
 
+	@Bean
+	public CurrencyDAO currencyMongoDAO() {
+		return new CurrencyDAOImpl();
+	}
+
+	@Bean
+	public CurrencyService currencyService() {
+		return new CurrencyServiceImpl();
+	}
 }
