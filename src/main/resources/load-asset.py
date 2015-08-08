@@ -22,6 +22,10 @@ class InvertarTradingSession:
     minPrice = 0.0
     tradingDate = ""
     volume = 0
+    sma_7 = 0.0     #Very Short-Term
+    sma_21 = 0.0    #Short-Term
+    sma_50 = 0.0    #Medium-Term
+    sma_200 = 0.0   #Long-Term
 
 http = urllib3.PoolManager()
 
@@ -81,7 +85,6 @@ stocks.append('RIGO.BA')
 stocks.append('ROSE.BA')
 stocks.append('SAMI.BA')
 stocks.append('SEMI.BA')
-stocks.append('STD.BA')
 stocks.append('TECO2.BA')
 stocks.append('TEF.BA')
 stocks.append('TGLT.BA')
@@ -110,7 +113,17 @@ for oneStock in stocks:
     myInvertarStock.industry = "Industry"
     myInvertarStock.currency = "ARS"
     myInvertarStock.tradingSessions = []
-    for oneTradingSession in currentStock.get_historical('2014-01-01' , '2015-07-30'):
+    stocksFromYahoo = currentStock.get_historical('2014-01-01', '2015-07-30')
+    stocksFromYahoo.reverse()
+
+    #Workaround to filter holidays
+    index = 0
+    for oneTradingSession in stocksFromYahoo:
+        if(int(oneTradingSession["Volume"])==0):
+            stocksFromYahoo.__delitem__(index)
+        index = index + 1
+
+    for oneTradingSession in stocksFromYahoo:
         currentTradingSession = InvertarTradingSession()
         currentTradingSession.closingPrice = oneTradingSession["Close"]
         currentTradingSession.openingPrice = oneTradingSession["Open"]
@@ -118,6 +131,48 @@ for oneStock in stocks:
         currentTradingSession.minPrice = oneTradingSession["Low"]
         currentTradingSession.volume = oneTradingSession["Volume"]
         currentTradingSession.tradingDate = oneTradingSession["Date"]
+
+        currentTradingSession.sma_7= 0.0
+        currentTradingSession.sma_21= 0.0
+        currentTradingSession.sma_50= 0.0
+        currentTradingSession.sma_200= 0.0
+
+        if len(myInvertarStock.tradingSessions) >= 7:
+            min = len(myInvertarStock.tradingSessions) - 6
+            max = len(myInvertarStock.tradingSessions)
+            cumulativeCloses = 0.0
+            for index in range(min,max):
+                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
+            current_sma_7 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 7
+            currentTradingSession.sma_7 = round(current_sma_7,2)
+
+        if len(myInvertarStock.tradingSessions) >= 21:
+            min = len(myInvertarStock.tradingSessions) - 20
+            max = len(myInvertarStock.tradingSessions)
+            cumulativeCloses = 0.0
+            for index in range(min,max):
+                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
+            current_sma_21 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 21
+            currentTradingSession.sma_21 = round(current_sma_21,2)
+
+        if len(myInvertarStock.tradingSessions) >= 50:
+            min = len(myInvertarStock.tradingSessions) - 49
+            max = len(myInvertarStock.tradingSessions)
+            cumulativeCloses = 0.0
+            for index in range(min,max):
+                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
+            current_sma_50 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 50
+            currentTradingSession.sma_50 = round(current_sma_50,2)
+
+        if len(myInvertarStock.tradingSessions) >= 200:
+            min = len(myInvertarStock.tradingSessions) - 199
+            max = len(myInvertarStock.tradingSessions)
+            cumulativeCloses = 0.0
+            for index in range(min,max):
+                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
+            current_sma_200 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 200
+            currentTradingSession.sma_200 = round(current_sma_200,2)
+
         myInvertarStock.tradingSessions.append(currentTradingSession)
     print(myInvertarStock.to_JSON())
     http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
