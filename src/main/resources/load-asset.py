@@ -25,7 +25,6 @@ class InvertarTradingSession:
     sma_7 = 0.0     #Very Short-Term
     sma_21 = 0.0    #Short-Term
     sma_50 = 0.0    #Medium-Term
-    sma_200 = 0.0   #Long-Term
 
 http = urllib3.PoolManager()
 
@@ -119,7 +118,78 @@ for oneStock in stocks:
     #Workaround to filter holidays
     index = 0
     for oneTradingSession in stocksFromYahoo:
-        if(int(oneTradingSession["Volume"])==0):
+        if((oneTradingSession["Date"])in ["2015-01-01",
+                                          "2015-02-16",
+                                          "2015-02-17",
+                                          "2015-03-23",
+                                          "2015-03-24",
+                                          "2015-04-02",
+                                          "2015-04-03",
+                                          "2015-05-01",
+                                          "2015-05-25",
+                                          "2015-06-20",
+                                          "2015-07-09",
+                                          "2015-08-17",
+                                          "2015-10-12",
+                                          "2015-11-23",
+                                          "2015-12-07",
+                                          "2015-12-08",
+                                          "2015-12-25",
+                                          "2014-01-01",
+                                          "2014-03-03",
+                                          "2014-03-04",
+                                          "2014-03-24",
+                                          "2014-04-02",
+                                          "2014-04-18",
+                                          "2014-05-01",
+                                          "2014-05-02",
+                                          "2014-05-25",
+                                          "2014-06-20",
+                                          "2014-07-09",
+                                          "2014-08-18",
+                                          "2014-10-13",
+                                          "2014-11-24",
+                                          "2014-12-08",
+                                          "2014-12-25",
+                                          "2014-12-26",
+                                          "2013-01-01",
+                                          "2013-01-31",
+                                          "2013-02-11",
+                                          "2013-02-12",
+                                          "2013-02-20",
+                                          "2013-03-24",
+                                          "2013-03-29",
+                                          "2013-04-01",
+                                          "2013-04-02",
+                                          "2013-05-01",
+                                          "2013-05-25",
+                                          "2013-06-20",
+                                          "2013-06-21",
+                                          "2013-07-09",
+                                          "2013-08-19",
+                                          "2013-10-14",
+                                          "2013-11-25",
+                                          "2013-12-08",
+                                          "2013-12-25",
+                                          "2012-01-01",
+                                          "2012-02-20",
+                                          "2012-02-21",
+                                          "2012-02-27",
+                                          "2012-03-24",
+                                          "2012-04-02",
+                                          "2012-04-06",
+                                          "2012-04-30",
+                                          "2012-05-01",
+                                          "2012-05-25",
+                                          "2012-06-20",
+                                          "2012-07-09",
+                                          "2012-08-20",
+                                          "2012-09-24",
+                                          "2012-10-08",
+                                          "2012-11-26",
+                                          "2012-12-08",
+                                          "2012-12-24",
+                                          "2012-12-25"]):
             stocksFromYahoo.__delitem__(index)
         index = index + 1
 
@@ -135,7 +205,6 @@ for oneStock in stocks:
         currentTradingSession.sma_7= 0.0
         currentTradingSession.sma_21= 0.0
         currentTradingSession.sma_50= 0.0
-        currentTradingSession.sma_200= 0.0
 
         if len(myInvertarStock.tradingSessions) >= 7:
             min = len(myInvertarStock.tradingSessions) - 6
@@ -163,15 +232,6 @@ for oneStock in stocks:
                 cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
             current_sma_50 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 50
             currentTradingSession.sma_50 = round(current_sma_50,2)
-
-        if len(myInvertarStock.tradingSessions) >= 200:
-            min = len(myInvertarStock.tradingSessions) - 199
-            max = len(myInvertarStock.tradingSessions)
-            cumulativeCloses = 0.0
-            for index in range(min,max):
-                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
-            current_sma_200 = (cumulativeCloses + float(currentTradingSession.closingPrice)) / 200
-            currentTradingSession.sma_200 = round(current_sma_200,2)
 
         myInvertarStock.tradingSessions.append(currentTradingSession)
     print(myInvertarStock.to_JSON())
