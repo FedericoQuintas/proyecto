@@ -49,7 +49,7 @@ public class CurrencyServiceTest extends SpringBaseTest {
 		InvertarCurrencyDTO currency = currencyService
 				.findByCode(InvertarCurrencyCode.US);
 
-		Assert.assertTrue(false);
+		Assert.assertNotNull(currency.getExchangeSessions());
 	}
 
 }
