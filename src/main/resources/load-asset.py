@@ -23,16 +23,22 @@ class InvertarTradingSession:
     minPrice = 0.0
     tradingDate = ""
     volume = 0
-    sma_7 = 0.0     #Very Short-Term
-    sma_21 = 0.0    #Short-Term
-    sma_50 = 0.0    #Medium-Term
-    sma_200 = 0.0    #Long-Term
+
+    sma_7 = 0.0
+    sma_21 = 0.0
+    sma_50 = 0.0
+    sma_200 = 0.0
+
+    momentum_7 = 0.0
+    momentum_21 = 0.0
+    momentum_50 = 0.0
+    momentum_200 = 0.0
 
 http = urllib3.PoolManager()
 
 stocks =[]
 stocks.append('AGRO.BA')
-stocks.append('APBRA.BA')
+stocks.append('APBR.BA')
 stocks.append('APSA.BA')
 stocks.append('AUSO.BA')
 stocks.append('BHIP.BA')
@@ -210,6 +216,11 @@ for oneStock in stocks:
         currentTradingSession.sma_50= 0.0
         currentTradingSession.sma_200= 0.0
 
+        currentTradingSession.momentum_7= 0.0
+        currentTradingSession.momentum_21= 0.0
+        currentTradingSession.momentum_50= 0.0
+        currentTradingSession.momentum_200= 0.0
+
         if len(myInvertarStock.tradingSessions) >= 7:
             min = len(myInvertarStock.tradingSessions) - 6
             max = len(myInvertarStock.tradingSessions)
@@ -218,6 +229,7 @@ for oneStock in stocks:
                 cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
             current_sma_7 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 7
             currentTradingSession.sma_7 = round(current_sma_7,2)
+            currentTradingSession.momentum_7 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
 
         if len(myInvertarStock.tradingSessions) >= 21:
             min = len(myInvertarStock.tradingSessions) - 20
@@ -227,6 +239,7 @@ for oneStock in stocks:
                 cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
             current_sma_21 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 21
             currentTradingSession.sma_21 = round(current_sma_21,2)
+            currentTradingSession.momentum_21 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
 
         if len(myInvertarStock.tradingSessions) >= 50:
             min = len(myInvertarStock.tradingSessions) - 49
@@ -236,6 +249,7 @@ for oneStock in stocks:
                 cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
             current_sma_50 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 50
             currentTradingSession.sma_50 = round(current_sma_50,2)
+            currentTradingSession.momentum_50 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
 
         if len(myInvertarStock.tradingSessions) >= 200:
             min = len(myInvertarStock.tradingSessions) - 199
@@ -245,6 +259,7 @@ for oneStock in stocks:
                 cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
             current_sma_200 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 200
             currentTradingSession.sma_200 = round(current_sma_200,2)
+            currentTradingSession.momentum_200 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
 
         myInvertarStock.tradingSessions.append(currentTradingSession)
     print(myInvertarStock.to_JSON())
