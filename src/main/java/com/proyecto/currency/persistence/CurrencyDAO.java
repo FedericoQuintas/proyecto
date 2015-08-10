@@ -21,4 +21,6 @@ public interface CurrencyDAO {
 	InvertarCurrency store(InvertarCurrency currency)
 			throws JsonGenerationException, JsonMappingException, IOException;
 
+	void update(InvertarCurrency invertarCurrency);
+
 }

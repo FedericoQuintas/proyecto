@@ -8,7 +8,6 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.mongojack.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.proyecto.common.currency.InvertarCurrencyCode;
 
 public class InvertarCurrency {
 
@@ -18,7 +17,7 @@ public class InvertarCurrency {
 
 	private Long id;
 
-	private InvertarCurrencyCode code;
+	private String code;
 
 	private List<ExchangeSession> exchangeSessions;
 
@@ -33,13 +32,13 @@ public class InvertarCurrency {
 		return id;
 	}
 
-	public InvertarCurrency(Long id, InvertarCurrencyCode code) {
+	public InvertarCurrency(Long id, String code) {
 		this.id = id;
 		this.code = code;
 		this.exchangeSessions = new ArrayList<ExchangeSession>();
 	}
 
-	public InvertarCurrencyCode getCode() {
+	public String getCode() {
 		return code;
 	}
 
@@ -53,6 +52,11 @@ public class InvertarCurrency {
 	@JsonProperty("_id")
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
+	}
+
+	public void addExchangeSession(ExchangeSession exchangeSession) {
+		this.exchangeSessions.add(exchangeSession);
+
 	}
 
 }

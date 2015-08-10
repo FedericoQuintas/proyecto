@@ -10,7 +10,6 @@ public interface CurrencyService {
 	InvertarCurrencyDTO findByCode(InvertarCurrencyCode us)
 			throws InvertarCurrencyNotFoundException;
 
-	InvertarCurrencyDTO store(InvertarCurrencyDTO currencyDTO)
-			throws DBAccessException;
+	InvertarCurrencyDTO store(String code) throws DBAccessException;
 
 }

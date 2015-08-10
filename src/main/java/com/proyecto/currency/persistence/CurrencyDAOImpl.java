@@ -74,7 +74,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
 	@Override
 	public void flush() {
 
-		MongoCollection currencies = jongo.getCollection("currencies");
+		MongoCollection currencies = jongo.getCollection("currency");
 
 		currencies.remove("{ id: { $gt: 0 } }");
 
@@ -108,4 +108,14 @@ public class CurrencyDAOImpl implements CurrencyDAO {
 		return currency;
 	}
 
+	@Override
+	public void update(InvertarCurrency invertarCurrency) {
+
+		Jongo jongo = new Jongo(dbAccess);
+
+		MongoCollection currencies = jongo.getCollection("currency");
+
+		currencies.update("{id:" + invertarCurrency.getId() + " }").with(
+				invertarCurrency);
+	}
 }

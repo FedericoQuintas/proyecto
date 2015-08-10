@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.common.exception.ApplicationServiceException;
-import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
