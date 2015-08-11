@@ -113,6 +113,7 @@ stocks.append('YPFD.BA')
 print("Inicio de Carga de Acciones")
 
 for oneStock in stocks:
+
     myInvertarStock = InvertarStock()
     currentStock = Share(oneStock)
     myInvertarStock.ticker = oneStock
@@ -221,47 +222,35 @@ for oneStock in stocks:
         currentTradingSession.momentum_50= 0.0
         currentTradingSession.momentum_200= 0.0
 
-        if len(myInvertarStock.tradingSessions) >= 7:
-            min = len(myInvertarStock.tradingSessions) - 6
-            max = len(myInvertarStock.tradingSessions)
-            cumulativeCloses = 0.0
-            for index in range(min,max):
-                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
-            current_sma_7 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 7
-            currentTradingSession.sma_7 = round(current_sma_7,2)
-            currentTradingSession.momentum_7 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
+        periods = [7,21,50,200]
 
-        if len(myInvertarStock.tradingSessions) >= 21:
-            min = len(myInvertarStock.tradingSessions) - 20
-            max = len(myInvertarStock.tradingSessions)
-            cumulativeCloses = 0.0
-            for index in range(min,max):
-                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
-            current_sma_21 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 21
-            currentTradingSession.sma_21 = round(current_sma_21,2)
-            currentTradingSession.momentum_21 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
+        for period in periods:
+            if len(myInvertarStock.tradingSessions) >= period-1:
+                min = len(myInvertarStock.tradingSessions) - (period-1)
+                max = len(myInvertarStock.tradingSessions)
+                cumulativeCloses = 0.0
 
-        if len(myInvertarStock.tradingSessions) >= 50:
-            min = len(myInvertarStock.tradingSessions) - 49
-            max = len(myInvertarStock.tradingSessions)
-            cumulativeCloses = 0.0
-            for index in range(min,max):
-                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
-            current_sma_50 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 50
-            currentTradingSession.sma_50 = round(current_sma_50,2)
-            currentTradingSession.momentum_50 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
+                for index in range(min,max):
+                    cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
 
-        if len(myInvertarStock.tradingSessions) >= 200:
-            min = len(myInvertarStock.tradingSessions) - 199
-            max = len(myInvertarStock.tradingSessions)
-            cumulativeCloses = 0.0
-            for index in range(min,max):
-                cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].adjClosingPrice)
-            current_sma_200 = (cumulativeCloses + float(currentTradingSession.adjClosingPrice)) / 200
-            currentTradingSession.sma_200 = round(current_sma_200,2)
-            currentTradingSession.momentum_200 = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min-1].closingPrice),2)
+                current_sma = (cumulativeCloses + float(currentTradingSession.closingPrice)) / period
+                current_momentum = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min].closingPrice),2)
+
+                if period==7:
+                    currentTradingSession.sma_7 = round(current_sma,2)
+                    currentTradingSession.momentum_7 = round(current_momentum,2)
+                elif period==21:
+                    currentTradingSession.sma_21 = round(current_sma,2)
+                    currentTradingSession.momentum_21 = round(current_momentum,2)
+                elif period==50:
+                    currentTradingSession.sma_50 = round(current_sma,2)
+                    currentTradingSession.momentum_50 = round(current_momentum,2)
+                elif period==200:
+                    currentTradingSession.sma_200 = round(current_sma,2)
+                    currentTradingSession.momentum_200 = round(current_momentum,2)
 
         myInvertarStock.tradingSessions.append(currentTradingSession)
+
     print(myInvertarStock.to_JSON())
     http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
                  body=myInvertarStock.to_JSON())
