@@ -45,4 +45,15 @@ public class CurrencyServiceTest extends SpringBaseTest {
 		Assert.assertNotNull(currency.getExchangeSessions());
 	}
 
+	@Test
+	public void whenAskForThePercentageOfChangeOfCurrencyThenCurrencyHasPercentageOfChange()
+			throws InvertarCurrencyNotFoundException, DBAccessException {
+
+
+		InvertarCurrencyDTO currency = currencyService
+				.findByCode(InvertarCurrencyCode.US);
+
+		Assert.assertNotNull(currency.getExchangeSessions());
+	}
+
 }

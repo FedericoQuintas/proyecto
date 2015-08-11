@@ -1,7 +1,13 @@
 package com.proyecto.currency.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
@@ -15,13 +21,15 @@ public class InvertarCurrency {
 	@MongoObjectId
 	public String objectId;
 
+	private static int SCALE = 10;
+
 	private Long id;
 
 	private String code;
 
-	private List<ExchangeSession> exchangeSessions;
+	private NavigableMap<Long, ExchangeSession> exchangeSessions;
 
-	public List<ExchangeSession> getExchangeSessions() {
+	public NavigableMap<Long, ExchangeSession> getExchangeSessions() {
 		return exchangeSessions;
 	}
 
@@ -35,7 +43,7 @@ public class InvertarCurrency {
 	public InvertarCurrency(Long id, String code) {
 		this.id = id;
 		this.code = code;
-		this.exchangeSessions = new ArrayList<ExchangeSession>();
+		this.exchangeSessions = new TreeMap<Long, ExchangeSession>();
 	}
 
 	public String getCode() {
@@ -55,8 +63,45 @@ public class InvertarCurrency {
 	}
 
 	public void addExchangeSession(ExchangeSession exchangeSession) {
-		this.exchangeSessions.add(exchangeSession);
+		this.exchangeSessions.put(exchangeSession.getDate().getTime(),
+				exchangeSession);
+	}
 
+	public Map<Long, Double> getPercentageOfChange(Date startDate, Date endDate) {
+
+		NavigableMap<Long, ExchangeSession> selectedExchangeSessions = this
+				.getExchangeSessions().subMap(startDate.getTime(), false,
+						endDate.getTime(), true);
+
+		BigDecimal initialClosingPrice = BigDecimal.valueOf(
+				this.getExchangeSessions().ceilingEntry(startDate.getTime())
+						.getValue().getPrice()).setScale(SCALE);
+
+		Map<Long, Double> resultantPercentagesOfChange = new HashMap<Long, Double>();
+		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
+
+		for (Long currentDate : selectedExchangeSessions.navigableKeySet()) {
+			BigDecimal currentClosingPrice = BigDecimal.valueOf(
+					selectedExchangeSessions.get(currentDate).getPrice())
+					.setScale(SCALE);
+			resultantPercentagesOfChange.put(
+					currentDate,
+					currentClosingPrice
+							.subtract(initialClosingPrice)
+							.divide(initialClosingPrice, SCALE,
+									RoundingMode.DOWN)
+							.multiply(BigDecimal.valueOf(100L))
+							.setScale(2, RoundingMode.DOWN).doubleValue());
+		}
+
+		return resultantPercentagesOfChange;
+	}
+
+	public Collection<ExchangeSession> getRangeOfTradingSessions(
+			Date startDate, Date endDate) {
+		return this.getExchangeSessions()
+				.subMap(startDate.getTime(), true, endDate.getTime(), true)
+				.values();
 	}
 
 }
