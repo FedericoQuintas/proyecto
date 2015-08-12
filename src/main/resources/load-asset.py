@@ -1,4 +1,5 @@
 from yahoo_finance import Share
+from datetime import *
 import json
 import urllib3
 
@@ -28,6 +29,11 @@ class InvertarTradingSession:
     sma_21 = 0.0
     sma_50 = 0.0
     sma_200 = 0.0
+
+    ema_7 = 0.0
+    ema_21 = 0.0
+    ema_50 = 0.0
+    ema_200 = 0.0
 
     momentum_7 = 0.0
     momentum_21 = 0.0
@@ -121,7 +127,8 @@ for oneStock in stocks:
     myInvertarStock.industry = "Industry"
     myInvertarStock.currency = "ARS"
     myInvertarStock.tradingSessions = []
-    stocksFromYahoo = currentStock.get_historical('2014-01-01', '2015-07-30')
+    stocksFromYahoo = currentStock.get_historical((date.today() - timedelta(days=1825)).strftime("%Y-%m-%d"),
+                                                  (date.today()).strftime("%Y-%m-%d")) #Last 5 years
     stocksFromYahoo.reverse()
 
     #Workaround to filter holidays
@@ -166,21 +173,17 @@ for oneStock in stocks:
                                           "2013-02-11",
                                           "2013-02-12",
                                           "2013-02-20",
-                                          "2013-03-24",
                                           "2013-03-29",
                                           "2013-04-01",
                                           "2013-04-02",
                                           "2013-05-01",
-                                          "2013-05-25",
                                           "2013-06-20",
                                           "2013-06-21",
                                           "2013-07-09",
                                           "2013-08-19",
                                           "2013-10-14",
                                           "2013-11-25",
-                                          "2013-12-08",
                                           "2013-12-25",
-                                          "2012-01-01",
                                           "2012-02-20",
                                           "2012-02-21",
                                           "2012-02-27",
@@ -198,7 +201,33 @@ for oneStock in stocks:
                                           "2012-11-26",
                                           "2012-12-08",
                                           "2012-12-24",
-                                          "2012-12-25"]):
+                                          "2012-12-25",
+                                          "2011-03-07",
+                                          "2011-03-08",
+                                          "2011-03-24",
+                                          "2011-03-25",
+                                          "2011-04-21",
+                                          "2011-04-22",
+                                          "2011-05-25",
+                                          "2011-06-20",
+                                          "2011-08-22",
+                                          "2011-10-10",
+                                          "2011-11-28",
+                                          "2011-12-08",
+                                          "2011-12-09",
+                                          "2010-01-01",
+                                          "2010-03-24",
+                                          "2010-04-01",
+                                          "2010-04-02",
+                                          "2010-05-25",
+                                          "2010-06-21",
+                                          "2010-07-09",
+                                          "2010-08-16",
+                                          "2010-10-11",
+                                          "2010-10-27",
+                                          "2010-11-22",
+                                          "2010-12-08"
+                                          ]):
             stocksFromYahoo.__delitem__(index)
         index = index + 1
 
@@ -216,6 +245,11 @@ for oneStock in stocks:
         currentTradingSession.sma_21= 0.0
         currentTradingSession.sma_50= 0.0
         currentTradingSession.sma_200= 0.0
+
+        currentTradingSession.ema_7= 0.0
+        currentTradingSession.ema_21= 0.0
+        currentTradingSession.ema_50= 0.0
+        currentTradingSession.ema_200= 0.0
 
         currentTradingSession.momentum_7= 0.0
         currentTradingSession.momentum_21= 0.0
@@ -236,20 +270,56 @@ for oneStock in stocks:
                 current_sma = (cumulativeCloses + float(currentTradingSession.closingPrice)) / period
                 current_momentum = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min].closingPrice),2)
 
+                current_ema = 0.0
+
                 if period==7:
                     currentTradingSession.sma_7 = round(current_sma,2)
                     currentTradingSession.momentum_7 = round(current_momentum,2)
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_7 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    currentTradingSession.ema_7 = round(current_ema,2)
+                    last_ema_7 = current_ema
                 elif period==21:
                     currentTradingSession.sma_21 = round(current_sma,2)
                     currentTradingSession.momentum_21 = round(current_momentum,2)
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_21 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    currentTradingSession.ema_21 = round(current_ema,2)
+                    last_ema_21 = current_ema
                 elif period==50:
                     currentTradingSession.sma_50 = round(current_sma,2)
                     currentTradingSession.momentum_50 = round(current_momentum,2)
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_50 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    currentTradingSession.ema_50 = round(current_ema,2)
+                    last_ema_50 = current_ema
                 elif period==200:
                     currentTradingSession.sma_200 = round(current_sma,2)
                     currentTradingSession.momentum_200 = round(current_momentum,2)
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_200 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    currentTradingSession.ema_200 = round(current_ema,2)
+                    last_ema_200 = current_ema
 
-        myInvertarStock.tradingSessions.append(currentTradingSession)
+        #Only inserts last 3 years but we take in consideration for the calculations the last 5 years
+        if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1095):
+            myInvertarStock.tradingSessions.append(currentTradingSession)
 
     print(myInvertarStock.to_JSON())
     http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
