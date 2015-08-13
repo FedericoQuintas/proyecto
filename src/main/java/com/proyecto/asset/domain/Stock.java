@@ -1,6 +1,5 @@
-package com.proyecto.asset.domain.factory;
+package com.proyecto.asset.domain;
 
-import com.proyecto.asset.domain.Asset;
 import com.proyecto.common.currency.InvertarCurrency;
 
 public class Stock extends Asset {

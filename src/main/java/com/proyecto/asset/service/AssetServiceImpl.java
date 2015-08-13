@@ -11,10 +11,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
-import com.proyecto.asset.domain.factory.Stock;
+import com.proyecto.asset.domain.Bond;
 import com.proyecto.asset.domain.factory.TradingSessionDTOFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
@@ -23,6 +24,7 @@ import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.BondDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -42,22 +44,6 @@ public class AssetServiceImpl implements AssetService {
 		Asset storedAsset;
 		try {
 			storedAsset = assetDAO.store(asset);
-			return AssetDTOFactory.create(storedAsset);
-		} catch (IOException e) {
-			throw new DBAccessException(e.getMessage());
-		}
-	}
-	
-	@Override
-	public AssetDTO store(StockDTO stockDTO)
-			throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
-
-		Stock asset = AssetFactory.create(stockDTO, assetDAO.nextID());
-
-		Stock storedAsset;
-		try {
-			storedAsset = (Stock) assetDAO.store(asset);
 			return AssetDTOFactory.create(storedAsset);
 		} catch (IOException e) {
 			throw new DBAccessException(e.getMessage());

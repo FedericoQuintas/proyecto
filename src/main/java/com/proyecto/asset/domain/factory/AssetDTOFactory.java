@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.NavigableMap;
 
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.Bond;
+import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
@@ -26,32 +28,14 @@ public class AssetDTOFactory {
 		return assetDTO;
 	}
 	
-	public static StockDTO create(Stock stock) {
-
-		StockDTO stockDTO = new StockDTO();
-		complete(stockDTO, stock);
-		//TODO: Completar con los campos especificos de stock
-
-		return stockDTO;
-	}
-	
-	public static BondDTO create(Bond bond) {
-
-		BondDTO bondDTO = new BondDTO();
-		complete(bondDTO, bond);
-		//TODO: Completar con los campos especificos de bond
-
-		return bondDTO;
-	}
-	
 	public static AssetDTO create(Asset asset){
 		if(asset.getClass().equals(Bond.class)){
-			return create((Bond) asset);
+			return StockDTOFactory.create((Bond) asset);
 		}
 		else if(asset.getClass().equals(Stock.class)){
-			return create((Stock) asset);
+			return BondDTOFactory.create((Stock) asset);
 		}
-		return null;
+		return null; // TODO: tirar una excepcion de Unknown asset type
 	}
 
 	private static List<TradingSessionDTO> convertToDTOs(
