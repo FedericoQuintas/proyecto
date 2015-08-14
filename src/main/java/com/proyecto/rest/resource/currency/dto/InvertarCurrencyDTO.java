@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.common.currency.InvertarCurrencyCode;
-import com.proyecto.currency.domain.ExchangeSession;
 
 public class InvertarCurrencyDTO {
 
