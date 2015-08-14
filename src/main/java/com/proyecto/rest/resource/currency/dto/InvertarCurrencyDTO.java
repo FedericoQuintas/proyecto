@@ -11,7 +11,7 @@ public class InvertarCurrencyDTO {
 	@JsonProperty("code")
 	private InvertarCurrencyCode code;
 	@JsonProperty("exchange_sessions")
-	private List<ExchangeSession> exchangeSessions;
+	private List<ExchangeSessionDTO> exchangeSessions;
 
 	public InvertarCurrencyCode getCode() {
 		return code;
@@ -21,12 +21,12 @@ public class InvertarCurrencyDTO {
 		this.code = code;
 	}
 
-	public void setExchangeSessions(List<ExchangeSession> exchangeSessions) {
-		this.exchangeSessions = exchangeSessions;
+	public List<ExchangeSessionDTO> getExchangeSessions() {
+		return exchangeSessions;
 	}
 
-	public List<ExchangeSession> getExchangeSessions() {
-		return exchangeSessions;
+	public void setExchangeSessions(List<ExchangeSessionDTO> exchangeSessions) {
+		this.exchangeSessions = exchangeSessions;
 	}
 
 }
