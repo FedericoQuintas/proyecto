@@ -40,6 +40,11 @@ class InvertarTradingSession:
     momentum_50 = 0.0
     momentum_200 = 0.0
 
+    rsi_7 = 0.0
+    rsi_21 = 0.0
+    rsi_50 = 0.0
+    rsi_200 = 0.0
+
 http = urllib3.PoolManager()
 
 stocks =[]
@@ -256,25 +261,52 @@ for oneStock in stocks:
         currentTradingSession.momentum_50= 0.0
         currentTradingSession.momentum_200= 0.0
 
+        currentTradingSession.rsi_7 = 0.0
+        currentTradingSession.rsi_21 = 0.0
+        currentTradingSession.rsi_50 = 0.0
+        currentTradingSession.rsi_200 = 0.0
+
         periods = [7,21,50,200]
 
         for period in periods:
             if len(myInvertarStock.tradingSessions) >= period-1:
                 min = len(myInvertarStock.tradingSessions) - (period-1)
                 max = len(myInvertarStock.tradingSessions)
+
                 cumulativeCloses = 0.0
 
+                upward_movements = 0.0
+                downward_movements = 0.0
+
+                last_closing_price = 0.0
+
                 for index in range(min,max):
-                    cumulativeCloses = cumulativeCloses + float(myInvertarStock.tradingSessions[index].closingPrice)
+                    if float(myInvertarStock.tradingSessions[index].closingPrice)>=float(myInvertarStock.tradingSessions[index-1].closingPrice):
+                        upward_movements += (float(myInvertarStock.tradingSessions[index].closingPrice)-float(myInvertarStock.tradingSessions[index-1].closingPrice))
+                    else:
+                        downward_movements += (float(myInvertarStock.tradingSessions[index-1].closingPrice)-float(myInvertarStock.tradingSessions[index].closingPrice))
+                    last_closing_price = myInvertarStock.tradingSessions[index].closingPrice
+                    cumulativeCloses += float(myInvertarStock.tradingSessions[index].closingPrice)
+
+                if float(currentTradingSession.closingPrice)>=float(last_closing_price):
+                    upward_movements += (float(currentTradingSession.closingPrice)-float(last_closing_price))
+                else:
+                    downward_movements += (float(last_closing_price)-float(currentTradingSession.closingPrice))
 
                 current_sma = (cumulativeCloses + float(currentTradingSession.closingPrice)) / period
                 current_momentum = round(float(currentTradingSession.closingPrice) - float(myInvertarStock.tradingSessions[min].closingPrice),2)
+
+                if downward_movements==0.0:
+                    current_rsi=100.0
+                else:
+                    current_rsi = 100 - (100 / ((upward_movements/period)/(downward_movements/period)+1))
 
                 current_ema = 0.0
 
                 if period==7:
                     currentTradingSession.sma_7 = round(current_sma,2)
                     currentTradingSession.momentum_7 = round(current_momentum,2)
+                    currentTradingSession.rsi_7 = round(current_rsi,2)
                     if min== 0:
                         current_ema = current_sma
                     else:
@@ -286,6 +318,7 @@ for oneStock in stocks:
                 elif period==21:
                     currentTradingSession.sma_21 = round(current_sma,2)
                     currentTradingSession.momentum_21 = round(current_momentum,2)
+                    currentTradingSession.rsi_21 = round(current_rsi,2)
                     if min== 0:
                         current_ema = current_sma
                     else:
@@ -297,6 +330,7 @@ for oneStock in stocks:
                 elif period==50:
                     currentTradingSession.sma_50 = round(current_sma,2)
                     currentTradingSession.momentum_50 = round(current_momentum,2)
+                    currentTradingSession.rsi_50 = round(current_rsi,2)
                     if min== 0:
                         current_ema = current_sma
                     else:
@@ -308,6 +342,7 @@ for oneStock in stocks:
                 elif period==200:
                     currentTradingSession.sma_200 = round(current_sma,2)
                     currentTradingSession.momentum_200 = round(current_momentum,2)
+                    currentTradingSession.rsi_200 = round(current_rsi,2)
                     if min== 0:
                         current_ema = current_sma
                     else:
@@ -322,7 +357,7 @@ for oneStock in stocks:
             myInvertarStock.tradingSessions.append(currentTradingSession)
 
     print(myInvertarStock.to_JSON())
-    http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
-                 body=myInvertarStock.to_JSON())
+    #http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
+    #             body=myInvertarStock.to_JSON())
 
 print("Fin de Carga de Acciones")
