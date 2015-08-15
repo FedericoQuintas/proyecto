@@ -63,7 +63,8 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		TradingSessionDTO tradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
-		tradingSessionDTO.setTradingDate(AssetHelper.sf.parse("08/06/2015"));
+		tradingSessionDTO.setTradingDate(AssetHelper.sf.parse("08/06/2015")
+				.getTime());
 
 		assetService.addTradingSession(assetDTO.getId(), tradingSessionDTO);
 

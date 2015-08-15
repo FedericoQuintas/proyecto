@@ -12,9 +12,10 @@ public class TradingSessionDTOFactory {
 		tradingSessionDTO.setMaxPrice(tradingSession.getMaxPrice());
 		tradingSessionDTO.setMinPrice(tradingSession.getMinPrice());
 		tradingSessionDTO.setOpeningPrice(tradingSession.getOpeningPrice());
-		tradingSessionDTO.setTradingDate(tradingSession.getTradingDate());
+		tradingSessionDTO.setTradingDate(tradingSession.getTradingDate()
+				.getTime());
 		tradingSessionDTO.setVolume(tradingSession.getVolume());
-		
+
 		return tradingSessionDTO;
 	}
 
