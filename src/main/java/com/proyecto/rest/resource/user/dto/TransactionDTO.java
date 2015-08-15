@@ -1,18 +1,20 @@
 package com.proyecto.rest.resource.user.dto;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.proyecto.user.domain.TransactionType;
 
 public class TransactionDTO {
 
-	@JsonProperty("price_paid")
+	@JsonProperty("pricePaid")
 	private Float pricePaid;
-	@JsonProperty("trading_date")
-	private Long tradingDate;
+	@JsonProperty("tradingDate")
+	private Date tradingDate;
 	@JsonProperty("quantity")
 	private Long quantity;
-	@JsonProperty("asset_id")
+	@JsonProperty("assetId")
 	private Long assetId;
 	@JsonProperty("type")
 	private TransactionType type;
@@ -29,11 +31,11 @@ public class TransactionDTO {
 		this.pricePaid = pricePaid;
 	}
 
-	public Long getTradingDate() {
+	public Date getTradingDate() {
 		return tradingDate;
 	}
 
-	public void setTradingDate(Long tradingDate) {
+	public void setTradingDate(Date tradingDate) {
 		this.tradingDate = tradingDate;
 	}
 
