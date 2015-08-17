@@ -125,6 +125,8 @@ stocks.append('PAMP.BA')
 stocks.append('TS.BA')
 stocks.append('YPFD.BA')
 
+finalStocks = []
+
 print("Inicio de Carga de Acciones")
 
 for oneStock in stocks:
@@ -381,8 +383,6 @@ for oneStock in stocks:
                     last_ema_26 = current_ema
                     currentTradingSession.macd_macd_line -= current_ema
 
-
-
         #Only inserts last 3 years but we take in consideration for the calculations the last 5 years
         if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1085):
             myInvertarStock.tradingSessions.append(currentTradingSession)
@@ -390,9 +390,9 @@ for oneStock in stocks:
         #Now we have to calculate the singal line for MACD
 
 
-        stocks.append(myInvertarStock)
+    finalStocks.append(myInvertarStock)
 
-for oneInvertarStock in stocks:
+for oneInvertarStock in finalStocks:
     macd_macd_line = []
     last_ema_9 = 0.0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
