@@ -45,6 +45,10 @@ class InvertarTradingSession:
     rsi_50 = 0.0
     rsi_200 = 0.0
 
+    macd_macd_line = 0.0
+    macd_signal_line = 0.0
+    macd_histogram = 0.0
+
 http = urllib3.PoolManager()
 
 stocks =[]
@@ -125,6 +129,7 @@ print("Inicio de Carga de Acciones")
 
 for oneStock in stocks:
 
+    print("Procesando: ",oneStock)
     myInvertarStock = InvertarStock()
     currentStock = Share(oneStock)
     myInvertarStock.ticker = oneStock
@@ -236,6 +241,7 @@ for oneStock in stocks:
             stocksFromYahoo.__delitem__(index)
         index = index + 1
 
+    stocks=[]
     for oneTradingSession in stocksFromYahoo:
         currentTradingSession = InvertarTradingSession()
         currentTradingSession.closingPrice = oneTradingSession["Close"]
@@ -266,10 +272,15 @@ for oneStock in stocks:
         currentTradingSession.rsi_50 = 0.0
         currentTradingSession.rsi_200 = 0.0
 
-        periods = [7,21,50,200]
+        currentTradingSession.macd_macd_line = 0.0
+        currentTradingSession.macd_signal_line = 0.0
+        currentTradingSession.macd_histogram = 0.0
+
+        periods = [7,12,21,26,50,200]
 
         for period in periods:
             if len(myInvertarStock.tradingSessions) >= period-1:
+
                 min = len(myInvertarStock.tradingSessions) - (period-1)
                 max = len(myInvertarStock.tradingSessions)
 
@@ -351,12 +362,56 @@ for oneStock in stocks:
                                                     * (float(2)/float(period+1)))
                     currentTradingSession.ema_200 = round(current_ema,2)
                     last_ema_200 = current_ema
+                elif period==12:
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_12 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    last_ema_12 = current_ema
+                    currentTradingSession.macd_macd_line = current_ema
+                elif period==26:
+                    if min== 0:
+                        current_ema = current_sma
+                    else:
+                        current_ema = last_ema_26 * (1-(float(2) / float(period+1))) + (
+                                                    float(currentTradingSession.closingPrice)
+                                                    * (float(2)/float(period+1)))
+                    last_ema_26 = current_ema
+                    currentTradingSession.macd_macd_line -= current_ema
+
+
 
         #Only inserts last 3 years but we take in consideration for the calculations the last 5 years
-        if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1095):
+        if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1085):
             myInvertarStock.tradingSessions.append(currentTradingSession)
 
-    print(myInvertarStock.to_JSON())
+        #Now we have to calculate the singal line for MACD
+
+
+        stocks.append(myInvertarStock)
+
+for oneInvertarStock in stocks:
+    macd_macd_line = []
+    last_ema_9 = 0.0
+    for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
+        macd_macd_line.append(oneInvertarTradingSession.macd_macd_line)
+        if len(macd_macd_line) >= 9:
+            min = len(macd_macd_line) - 9
+            max = len(macd_macd_line)
+            sum_macd_macd_line=0.0
+            for index in range(min,max):
+                sum_macd_macd_line += macd_macd_line[index]
+            current_sma = sum_macd_macd_line/float(9)
+            current_ema = current_sma
+            if min != 0:
+                current_ema = last_ema_9 * (1-(float(2) / float(10))) + (
+                                            float(oneInvertarTradingSession.macd_macd_line)
+                                            * (float(2)/float(10)))
+            last_ema_9 = current_ema
+            oneInvertarTradingSession.macd_signal_line = current_ema
+    print(oneInvertarStock.to_JSON())
     #http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
     #             body=myInvertarStock.to_JSON())
 
