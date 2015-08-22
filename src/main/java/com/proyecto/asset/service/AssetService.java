@@ -7,6 +7,7 @@ import java.util.Map;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
@@ -22,9 +23,10 @@ public interface AssetService {
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
 	 * @throws DBAccessException
+	 * @throws InvalidAssetTypeException 
 	 */
 	AssetDTO store(AssetDTO assetDTO) throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException;
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException;
 
 	/**
 	 * Retrieves the AssetDTO with specified ID
@@ -32,8 +34,9 @@ public interface AssetService {
 	 * @param id
 	 * @return AssetDTO
 	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetTypeException 
 	 */
-	AssetDTO findById(Long assetID) throws AssetNotFoundException;
+	AssetDTO findById(Long assetID) throws AssetNotFoundException, InvalidAssetTypeException;
 
 	/**
 	 * Adds a TradingSession to Asset TradingSession collection.
@@ -72,9 +75,10 @@ public interface AssetService {
 	 * Retrieves all the Assets DTOs
 	 * 
 	 * @return List<AssetDTO>
+	 * @throws InvalidAssetTypeException 
 	 */
 
-	List<AssetDTO> getAllAssets();
+	List<AssetDTO> getAllAssets() throws InvalidAssetTypeException;
 
 	/**
 	 * Retrieves the AssetDTO with specified Description
@@ -82,15 +86,17 @@ public interface AssetService {
 	 * @param description
 	 * @return AssetDTO
 	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetTypeException 
 	 */
 	AssetDTO findByTicker(String description)
-			throws AssetNotFoundException;
+			throws AssetNotFoundException, InvalidAssetTypeException;
 
 	/**
 	 * Retrieves all the Assets DTOs without their trading sessions
 	 * @return
+	 * @throws InvalidAssetTypeException 
 	 */
-	List<AssetDTO> getAllAssetsWithoutTradingSessions();
+	List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException;
 	
 	
 	List<TradingSessionDTO> getAssetTradingSessions(Long assetId, Date startDate,

@@ -19,11 +19,8 @@ import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
-public class Asset {
+public abstract class Asset {
 
-	@MongoId
-	@MongoObjectId
-	public String objectId;
 	private Long id;
 	private String description;
 	private Float lastTradingPrice;
@@ -32,6 +29,10 @@ public class Asset {
 	private InvertarCurrency currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
 	private static int SCALE = 10;
+	
+	public Asset(){
+		
+	}
 
 	public Asset(Long id, String description, String ticker,
 			InvertarCurrency invertarCurrency) {
@@ -58,11 +59,6 @@ public class Asset {
 		this.description = description;
 	}
 
-	@ObjectId
-	@JsonProperty("_id")
-	public String getObjectId() {
-		return this.objectId;
-	}
 
 	public Long getId() {
 		return this.id;
@@ -135,9 +131,4 @@ public class Asset {
 		this.name = name;
 	}
 
-	@ObjectId
-	@JsonProperty("_id")
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
 }

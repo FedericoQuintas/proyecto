@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.proyecto.common.currency.InvertarCurrency;
 
-public class AssetDTO {
+public abstract class AssetDTO {
 
 	@JsonProperty("id")
 	private Long id;

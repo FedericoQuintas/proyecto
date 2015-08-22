@@ -11,21 +11,18 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.domain.Asset;
-import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.asset.domain.factory.AssetDTOFactory;
 import com.proyecto.asset.domain.factory.AssetFactory;
-import com.proyecto.asset.domain.Bond;
 import com.proyecto.asset.domain.factory.TradingSessionDTOFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
-import com.proyecto.rest.resource.asset.dto.BondDTO;
-import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 @Service("assetService")
@@ -37,7 +34,7 @@ public class AssetServiceImpl implements AssetService {
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
 			throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 
@@ -51,7 +48,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public AssetDTO findById(Long id) throws AssetNotFoundException {
+	public AssetDTO findById(Long id) throws AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			Asset asset = assetDAO.findById(id);
 
@@ -92,7 +89,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public List<AssetDTO> getAllAssets() {
+	public List<AssetDTO> getAllAssets() throws InvalidAssetTypeException {
 
 		List<AssetDTO> assetDTOs = new ArrayList<AssetDTO>();
 
@@ -105,7 +102,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 	
 	@Override
-	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException {
 
 		List<AssetDTO> lighweightAssetDTOs = getAllAssets();
 		for(AssetDTO asset : lighweightAssetDTOs){
@@ -130,7 +127,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public AssetDTO findByTicker(String ticker) throws AssetNotFoundException {
+	public AssetDTO findByTicker(String ticker) throws AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			Asset asset = assetDAO.findByTicker(ticker);
 

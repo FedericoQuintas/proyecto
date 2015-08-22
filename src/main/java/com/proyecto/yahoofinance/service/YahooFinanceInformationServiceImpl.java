@@ -14,6 +14,7 @@ import yahoofinance.YahooFinance;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -29,7 +30,7 @@ public class YahooFinanceInformationServiceImpl implements
 	@Override
 	public void update() throws AssetNotFoundException,
 			InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 
 		List<AssetDTO> assetDTOs = obtainAssetDTOs();
 
@@ -43,7 +44,7 @@ public class YahooFinanceInformationServiceImpl implements
 
 	}
 
-	private List<AssetDTO> obtainAssetDTOs() {
+	private List<AssetDTO> obtainAssetDTOs() throws InvalidAssetTypeException {
 		List<AssetDTO> assetDTOs = new ArrayList<AssetDTO>();
 		for (AssetDTO asset : assetService.getAllAssets()) {
 			assetDTOs.add(asset);

@@ -16,6 +16,7 @@ import com.proyecto.asset.domain.factory.AssetFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
@@ -38,7 +39,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Before
 	public void before() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 		storeAsset();
 	}
 
@@ -59,7 +60,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAddsTradingSessionToAssetThenTradingSessionIsAdded()
 			throws AssetNotFoundException,
-			InvalidTradingSessionArgumentException, ParseException {
+			InvalidTradingSessionArgumentException, ParseException, InvalidAssetTypeException {
 
 		TradingSessionDTO tradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
@@ -76,7 +77,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAskForAssetLastTradingPriceThenLastTradingPriceIsRetrieved()
 			throws AssetNotFoundException, InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 
 		yahooFinanceService.update();
 
@@ -138,7 +139,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test
 	public void whenSearchAnUserByIdThenUserIsRetrieved()
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		AssetDTO storedAssetDTO = assetService.findById(assetDTO.getId());
 
@@ -148,7 +149,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test(expected = AssetNotFoundException.class)
 	public void whenSearchAnAssetByIdAndAssetDoesNotExistThenAssetExceptionIsThrown()
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		Long NOT_EXISTING_ASSET_ID = new Long(1000);
 
@@ -250,14 +251,14 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAsksForAllTheAssetsThenAllTheAssetsAreRetrieved() {
+	public void whenAsksForAllTheAssetsThenAllTheAssetsAreRetrieved() throws InvalidAssetTypeException {
 
 		Assert.assertNotNull(assetService.getAllAssets());
 	}
 
 	@Test
 	public void whenSearchAssetByTickerThenIsRetrieved()
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		AssetDTO storedAssetDTO = assetService.findByTicker(assetDTO
 				.getTicker());
@@ -268,14 +269,14 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Test(expected = AssetNotFoundException.class)
 	public void whenSearchAssetByTickerAndAssetDoesNotExistThenExceptionIsThrown()
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		assetService.findByTicker("Not existing Ticker");
 
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 

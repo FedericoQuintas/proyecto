@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 import com.proyecto.common.currency.InvertarCurrency;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetHelper {
@@ -17,7 +18,7 @@ public class AssetHelper {
 
 	public static AssetDTO createDefaultAssetDTO() {
 
-		AssetDTO assetDTO = new AssetDTO();
+		AssetDTO assetDTO = new StockDTO();
 
 		assetDTO.setDescription(DEFAULT_DESCRIPTION);
 		assetDTO.setTicker(DEFAULT_TICKER);

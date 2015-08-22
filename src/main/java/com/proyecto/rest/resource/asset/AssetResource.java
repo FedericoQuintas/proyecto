@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -38,7 +39,7 @@ public class AssetResource {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException {
 		return assetService.getAllAssetsWithoutTradingSessions();
 	}
 

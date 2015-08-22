@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
@@ -58,7 +59,7 @@ public class UserServiceTest extends SpringBaseTest {
 	@Before
 	public void before() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException, InvalidPasswordException,
-			DBAccessException {
+			DBAccessException, InvalidAssetTypeException {
 		storeUser();
 		storeAsset();
 	}
@@ -212,7 +213,7 @@ public class UserServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAsksForAUserPortfoliosPerformanceThenUserPortfoliosPerformanceIsRetrieved()
 			throws UserNotFoundException, InvalidPortfolioArgumentException,
-			AssetNotFoundException, PortfolioNameAlreadyInUseException {
+			AssetNotFoundException, PortfolioNameAlreadyInUseException, InvalidAssetTypeException {
 
 		PortfolioDTO firstPortfolioDTO = PortfolioHelper
 				.createDefaultDTO(assetDTO.getId());
@@ -257,7 +258,7 @@ public class UserServiceTest extends SpringBaseTest {
 			PortfolioNotFoundException, AssetNotFoundException,
 			InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException,
-			PortfolioNameAlreadyInUseException {
+			PortfolioNameAlreadyInUseException, InvalidAssetTypeException {
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
 				.getId());
@@ -435,7 +436,7 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	private Float calculateExpectedPerformance(TransactionDTO transactionDTO,
-			TransactionDTO secondTransactionDTO) throws AssetNotFoundException {
+			TransactionDTO secondTransactionDTO) throws AssetNotFoundException, InvalidAssetTypeException {
 		assetDTO = assetService.findById(assetDTO.getId());
 
 		Float quantityOwned = transactionDTO.getQuantity().floatValue()
@@ -678,7 +679,7 @@ public class UserServiceTest extends SpringBaseTest {
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 
 		assetDTO = AssetHelper.createDefaultAssetDTO();
 		assetDTO = assetService.store(assetDTO);

@@ -3,6 +3,7 @@ package com.proyecto.user.service;
 import java.util.List;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
@@ -81,10 +82,11 @@ public interface UserService {
 	 * @return Float
 	 * @throws UserNotFoundException
 	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetTypeException 
 	 */
 
 	Float getPortfoliosPerformance(Long id) throws UserNotFoundException,
-			AssetNotFoundException;
+			AssetNotFoundException, InvalidAssetTypeException;
 
 	/**
 	 * Calculates and retrieves de Performance of the specified User Portfolio
@@ -93,10 +95,11 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
 	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetTypeException 
 	 */
 	Float getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException,
-			AssetNotFoundException;
+			AssetNotFoundException, InvalidAssetTypeException;
 
 	/**
 	 * Calculates and retrieves the Portfolio Market Value
@@ -105,10 +108,11 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
 	 * @throws AssetNotFoundException
+	 * @throws InvalidAssetTypeException 
 	 */
 	List<MarketValueVO> getPortfolioMarketValue(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException,
-			AssetNotFoundException;
+			AssetNotFoundException, InvalidAssetTypeException;
 
 	/**
 	 * Tracks and retrieves a Transaction

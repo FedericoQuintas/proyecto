@@ -8,6 +8,7 @@ import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.Bond;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
@@ -28,14 +29,14 @@ public class AssetDTOFactory {
 		return assetDTO;
 	}
 	
-	public static AssetDTO create(Asset asset){
-		if(asset.getClass().equals(Bond.class)){
-			return StockDTOFactory.create((Bond) asset);
+	public static AssetDTO create(Asset asset) throws InvalidAssetTypeException{
+		if(asset.getClass().equals(Stock.class)){
+			return StockDTOFactory.create((Stock) asset);
 		}
-		else if(asset.getClass().equals(Stock.class)){
-			return BondDTOFactory.create((Stock) asset);
+		else if(asset.getClass().equals(Bond.class)){
+			return BondDTOFactory.create((Bond) asset);
 		}
-		return null; // TODO: tirar una excepcion de Unknown asset type
+		throw new InvalidAssetTypeException();
 	}
 
 	private static List<TradingSessionDTO> convertToDTOs(
