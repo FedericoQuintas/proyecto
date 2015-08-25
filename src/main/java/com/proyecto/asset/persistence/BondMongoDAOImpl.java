@@ -112,11 +112,6 @@ public class BondMongoDAOImpl implements AssetDAO{
 		Bond bond = bonds.findOne("{ticker:\"" + description + "\"}").as(
 				Bond.class);
 
-		if (bond == null) {
-			throw new ObjectNotFoundException("Bond Asset " + description
-					+ " not found");
-		}
-
 		return bond;
 	}
 

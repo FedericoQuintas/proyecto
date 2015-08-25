@@ -384,7 +384,7 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAsksForAUserPortfolioPerformanceWithTwoAssetsThenUserPortfolioPerformanceIsCorrectlyRetrieved()
 			throws ApplicationServiceException {
 
-		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
+		AssetDTO secondAssetDTO = AssetHelper.createDefaultStockDTO();
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
 		yahooFinanceInformationService.update();
@@ -535,7 +535,7 @@ public class UserServiceTest extends SpringBaseTest {
 	public void whenAUserHasTwoUserAssetsThenPortfolioMarketValueIsTheSumOfTheirLastPrice()
 			throws ApplicationServiceException {
 
-		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
+		AssetDTO secondAssetDTO = AssetHelper.createDefaultStockDTO();
 		secondAssetDTO.setCurrency(InvertarCurrencyCode.ARS);
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
@@ -702,7 +702,7 @@ public class UserServiceTest extends SpringBaseTest {
 	private void storeAsset() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 
-		assetDTO = AssetHelper.createDefaultAssetDTO();
+		assetDTO = AssetHelper.createDefaultStockDTO();
 		assetDTO = assetService.store(assetDTO);
 	}
 

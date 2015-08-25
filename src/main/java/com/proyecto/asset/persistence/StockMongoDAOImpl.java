@@ -111,11 +111,6 @@ public class StockMongoDAOImpl implements AssetDAO {
 		Stock stock = stocks.findOne("{ticker:\"" + description + "\"}").as(
 				Stock.class);
 
-		if (stock == null) {
-			throw new ObjectNotFoundException("Stock Asset " + description
-					+ " not found");
-		}
-
 		return stock;
 	}
 

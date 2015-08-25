@@ -30,9 +30,6 @@ public abstract class AssetDTO {
 	@JsonProperty("ticker")
 	private String ticker;
 
-	@JsonProperty("industry")
-	private String industry;
-
 	@JsonProperty("currency")
 	private InvertarCurrencyCode currency;
 
@@ -76,14 +73,6 @@ public abstract class AssetDTO {
 
 	public void setTicker(String ticker) {
 		this.ticker = ticker;
-	}
-
-	public String getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(String industry) {
-		this.industry = industry;
 	}
 
 	public void setCurrency(InvertarCurrencyCode currency) {
