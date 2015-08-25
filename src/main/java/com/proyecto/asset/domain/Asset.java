@@ -16,7 +16,7 @@ import org.mongojack.ObjectId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public abstract class Asset {
@@ -26,16 +26,12 @@ public abstract class Asset {
 	private Float lastTradingPrice;
 	private String ticker;
 	private String name;
-	private InvertarCurrency currency;
+	private InvertarCurrencyCode currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
 	private static int SCALE = 10;
-	
-	public Asset(){
-		
-	}
 
 	public Asset(Long id, String description, String ticker,
-			InvertarCurrency invertarCurrency) {
+			InvertarCurrencyCode invertarCurrency) {
 		this.id = id;
 		this.description = description;
 		this.ticker = ticker;
@@ -43,7 +39,10 @@ public abstract class Asset {
 		tradingSessions = new TreeMap<Long, TradingSession>();
 	}
 
-	public InvertarCurrency getCurrency() {
+	public Asset() {
+	}
+
+	public InvertarCurrencyCode getCurrency() {
 		return currency;
 	}
 

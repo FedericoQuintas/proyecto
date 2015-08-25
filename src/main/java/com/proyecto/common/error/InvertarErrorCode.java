@@ -3,7 +3,7 @@ package com.proyecto.common.error;
 public enum InvertarErrorCode {
 
 	OBJECT_NOT_FOUND(404), INVALID_ARGUMENT(405), NO_TRANSACTIONS_FOUND(406), INVALID_LOGIN(
-			407), DATABASE_ERROR(408);
+			407), DATABASE_ERROR(408), CURRENCY_LOADING_ERROR(409);
 
 	private Integer code;
 

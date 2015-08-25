@@ -24,13 +24,21 @@ public class LoginResource {
 	@ResponseBody
 	public InvertarUserDTO login(HttpSession session,
 			@RequestBody InvertarUserLoginDTO loginDTO) throws Exception {
+		cleanSession(session);
 		InvertarUserDTO login = userService.login(loginDTO);
 		if (login != null) {
 			session.setAttribute("MEMBER", login.getId());
+			if (login.getMail().equals("admin@invertar.com")) {
+				session.setAttribute("ROLE", "admin");
+			}
 		} else {
 			throw new Exception("Invalid username or password");
 		}
 		return login;
 	}
 
+	private void cleanSession(HttpSession session) {
+		session.removeAttribute("MEMBER");
+		session.removeAttribute("ROLE");
+	}
 }

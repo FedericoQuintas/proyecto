@@ -140,4 +140,42 @@ public class UserMongoDAOImpl implements UserDAO {
 
 	}
 
+	@Override
+	public InvertarUser findByUsername(String username)
+			throws ObjectNotFoundException {
+
+		MongoCollection users = jongo.getCollection("users");
+
+		InvertarUser user = users.findOne("{username:\"" + username + "\"}")
+				.as(InvertarUser.class);
+
+		if (user == null) {
+			throw new ObjectNotFoundException("User " + username + " not found");
+		}
+
+		return user;
+
+	}
+
+	@Override
+	public Boolean existsUserWithMail(String mail) {
+
+		MongoCollection users = jongo.getCollection("users");
+
+		InvertarUser user = users.findOne("{mail:\"" + mail + "\"}").as(
+				InvertarUser.class);
+
+		return user != null;
+	}
+
+	@Override
+	public Boolean existsUserWithUsername(String username) {
+		MongoCollection users = jongo.getCollection("users");
+
+		InvertarUser user = users.findOne("{username:\"" + username + "\"}")
+				.as(InvertarUser.class);
+
+		return user != null;
+	}
+
 }

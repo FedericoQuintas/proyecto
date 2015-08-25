@@ -20,6 +20,8 @@ import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 import com.proyecto.user.service.UserService;
 
 @Controller("userResource")
@@ -33,10 +35,18 @@ public class UserResource {
 	@ResponseBody
 	public InvertarUserDTO store(HttpSession session,
 			@RequestBody InvertarUserDTO invertarUserDTO)
-			throws InvalidPasswordException {
+			throws InvalidPasswordException, UsernameAlreadyExistsException,
+			UserMailAlreadyExistsException {
 		InvertarUserDTO user = userService.store(invertarUserDTO);
 		session.setAttribute("MEMBER", user.getId());
+		if (isAdmin(user)) {
+			session.setAttribute("ROLE", "admin");
+		}
 		return user;
+	}
+
+	private boolean isAdmin(InvertarUserDTO user) {
+		return user.getMail().equals("admin@invertar.com");
 	}
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 
 public abstract class AssetDTO {
 
@@ -34,7 +34,7 @@ public abstract class AssetDTO {
 	private String industry;
 
 	@JsonProperty("currency")
-	private InvertarCurrency currency;
+	private InvertarCurrencyCode currency;
 
 	public List<TradingSessionDTO> getTradingSessions() {
 		return tradingSessions;
@@ -86,12 +86,12 @@ public abstract class AssetDTO {
 		this.industry = industry;
 	}
 
-	public void setCurrency(InvertarCurrency currency) {
+	public void setCurrency(InvertarCurrencyCode currency) {
 		this.currency = currency;
 
 	}
 
-	public InvertarCurrency getCurrency() {
+	public InvertarCurrencyCode getCurrency() {
 		return currency;
 	}
 

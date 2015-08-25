@@ -16,7 +16,9 @@ import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
 import com.proyecto.user.exception.UserNotFoundException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 
 public interface UserService {
 
@@ -27,9 +29,12 @@ public interface UserService {
 	 * 
 	 * @return InvertarUserDTO
 	 * @throws InvalidPasswordException
+	 * @throws UsernameAlreadyExistsException
+	 * @throws UserMailAlreadyExistsException
 	 */
 	InvertarUserDTO store(InvertarUserDTO userDTO)
-			throws InvalidPasswordException;
+			throws InvalidPasswordException, UsernameAlreadyExistsException,
+			UserMailAlreadyExistsException;
 
 	/**
 	 * Retrieves the InvertarUserDTO with specified ID
@@ -139,8 +144,10 @@ public interface UserService {
 	 * @throws InvalidPasswordException
 	 * @throws InvalidLoginException
 	 */
-	InvertarUserDTO login(InvertarUserLoginDTO loginDTO) throws UserNotFoundException,
-			InvalidPasswordException, InvalidLoginException;
+	InvertarUserDTO login(InvertarUserLoginDTO loginDTO)
+			throws UserNotFoundException, InvalidPasswordException,
+			InvalidLoginException;
+
 	/**
 	 * 
 	 * @param amountOfPoints

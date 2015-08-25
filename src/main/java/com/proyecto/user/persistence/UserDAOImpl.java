@@ -76,4 +76,36 @@ public class UserDAOImpl implements UserDAO {
 		}
 		throw new ObjectNotFoundException("User " + mail + "not found.");
 	}
+
+	@Override
+	public InvertarUser findByUsername(String username)
+			throws ObjectNotFoundException {
+		for (InvertarUser user : users) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		throw new ObjectNotFoundException("User " + username + "not found.");
+
+	}
+
+	@Override
+	public Boolean existsUserWithMail(String mail) {
+		for (InvertarUser user : users) {
+			if (user.getMail().equals(mail)) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	@Override
+	public Boolean existsUserWithUsername(String username) {
+		for (InvertarUser user : users) {
+			if (user.getUsername().equals(username)) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
 }

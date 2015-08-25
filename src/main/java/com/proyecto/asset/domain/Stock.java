@@ -5,7 +5,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.mongojack.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 
 public class Stock extends Asset {
 	@MongoId
@@ -20,7 +20,7 @@ public class Stock extends Asset {
 	}
 	
 	public Stock(Long id, String description, String ticker,
-			InvertarCurrency invertarCurrency) {
+			InvertarCurrencyCode invertarCurrency) {
 		super(id, description, ticker, invertarCurrency);
 	}
 	

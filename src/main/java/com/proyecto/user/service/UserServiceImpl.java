@@ -35,7 +35,9 @@ import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
 import com.proyecto.user.exception.UserNotFoundException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 import com.proyecto.user.persistence.UserDAO;
 
 @Service("userService")
@@ -154,15 +156,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public InvertarUserDTO store(InvertarUserDTO userDTO)
-			throws InvalidPasswordException {
+			throws InvalidPasswordException, UsernameAlreadyExistsException,
+			UserMailAlreadyExistsException {
 
-		String encryptedPassword;
-		try {
-			validatePassword(userDTO.getPassword());
-			encryptedPassword = applySHAtoPassword(userDTO.getPassword());
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			throw new InvalidPasswordException();
-		}
+		String encryptedPassword = validatePassword(userDTO);
+
+		validateUsername(userDTO.getUsername());
+
+		validateMail(userDTO.getMail());
 
 		InvertarUser user = InvertarUserFactory.create(userDAO.nextID(),
 				userDTO.getUsername(), userDTO.getMail(), encryptedPassword);
@@ -172,20 +173,49 @@ public class UserServiceImpl implements UserService {
 		return InvertarUserDTOFactory.create(storedUser);
 
 	}
-	
+
+	private void validateUsername(String username)
+			throws UsernameAlreadyExistsException {
+		if (userDAO.existsUserWithUsername(username)) {
+			throw new UsernameAlreadyExistsException();
+		}
+
+	}
+
+	private void validateMail(String mail)
+			throws UserMailAlreadyExistsException {
+		if (userDAO.existsUserWithMail(mail)) {
+			throw new UserMailAlreadyExistsException();
+		}
+
+	}
+
+	private String validatePassword(InvertarUserDTO userDTO)
+			throws InvalidPasswordException {
+		String encryptedPassword;
+		try {
+			validatePasswordNotNull(userDTO.getPassword());
+			encryptedPassword = applySHAtoPassword(userDTO.getPassword());
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			throw new InvalidPasswordException();
+		}
+		return encryptedPassword;
+	}
+
 	@Override
-	public List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints){
+	public List<TheoreticalPortfolioDTO> getInvestorProfile(
+			Integer amountOfPoints) {
 		InvestorProfile.loadXmlFile();
-		if(amountOfPoints<=4){
+		if (amountOfPoints <= 4) {
 			return InvestorProfile.getConservativeInvestor();
-		}else if(amountOfPoints<=8){
+		} else if (amountOfPoints <= 8) {
 			return InvestorProfile.getModerateInvestor();
-		}else{
+		} else {
 			return InvestorProfile.getAgressiveInvestor();
 		}
 	}
 
-	private void validatePassword(String password)
+	private void validatePasswordNotNull(String password)
 			throws InvalidPasswordException {
 		if (StringUtils.isBlank(password)) {
 			throw new InvalidPasswordException();

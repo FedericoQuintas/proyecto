@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.service.AssetService;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.InvertarUser;
@@ -59,7 +59,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateMarketValues(List<MarketValueVO> marketValues,
-			Float lastTradingPrice, InvertarCurrency currency,
+			Float lastTradingPrice, InvertarCurrencyCode currency,
 			Long ownedQuantity) {
 
 		if (marketValuesHasCurrency(currency, marketValues)) {
@@ -75,7 +75,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void calculateMarketValue(List<MarketValueVO> marketValues,
-			Float lastTradingPrice, InvertarCurrency lastTransactionCurrency,
+			Float lastTradingPrice, InvertarCurrencyCode lastTransactionCurrency,
 			Long ownedQuantity) {
 
 		MarketValueVO marketValueWithCurrency = obtainMarketValueWithCurrency(
@@ -85,7 +85,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private void generateMarketValue(List<MarketValueVO> marketValues,
-			InvertarCurrency currency, Float lastTradingPrice,
+			InvertarCurrencyCode currency, Float lastTradingPrice,
 			Long ownedQuantity) {
 		marketValues.add(new MarketValueVO(currency, lastTradingPrice,
 				ownedQuantity));
@@ -96,7 +96,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 	}
 
 	private MarketValueVO obtainMarketValueWithCurrency(
-			InvertarCurrency currency, List<MarketValueVO> marketValues) {
+			InvertarCurrencyCode currency, List<MarketValueVO> marketValues) {
 
 		MarketValueVO marketValueVOResult = null;
 
@@ -108,12 +108,12 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 		return marketValueVOResult;
 	}
 
-	private Boolean marketValuesHasCurrency(InvertarCurrency currency,
+	private Boolean marketValuesHasCurrency(InvertarCurrencyCode currency,
 			List<MarketValueVO> marketValues) {
 
 		Boolean hasCurrency = Boolean.FALSE;
 
-		List<InvertarCurrency> currencies = obtainMarketValuesCurrencies(marketValues);
+		List<InvertarCurrencyCode> currencies = obtainMarketValuesCurrencies(marketValues);
 
 		if (currencies.contains(currency)) {
 
@@ -123,10 +123,10 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 		return hasCurrency;
 	}
 
-	private List<InvertarCurrency> obtainMarketValuesCurrencies(
+	private List<InvertarCurrencyCode> obtainMarketValuesCurrencies(
 			List<MarketValueVO> marketValues) {
 
-		List<InvertarCurrency> currencies = new ArrayList<InvertarCurrency>();
+		List<InvertarCurrencyCode> currencies = new ArrayList<InvertarCurrencyCode>();
 		for (MarketValueVO marketValue : marketValues) {
 			currencies.add(marketValue.getCurrency());
 		}

@@ -16,9 +16,10 @@ import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.SpringBaseTest;
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.common.error.InvertarErrorCode;
 import com.proyecto.common.exception.ApplicationServiceException;
+import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
@@ -37,7 +38,9 @@ import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.InvalidPortfolioArgumentException;
 import com.proyecto.user.exception.PortfolioNameAlreadyInUseException;
 import com.proyecto.user.exception.PortfolioNotFoundException;
+import com.proyecto.user.exception.UserMailAlreadyExistsException;
 import com.proyecto.user.exception.UserNotFoundException;
+import com.proyecto.user.exception.UsernameAlreadyExistsException;
 import com.proyecto.user.service.UserService;
 import com.proyecto.yahoofinance.service.YahooFinanceInformationService;
 
@@ -59,7 +62,9 @@ public class UserServiceTest extends SpringBaseTest {
 	@Before
 	public void before() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException, InvalidPasswordException,
-			DBAccessException, InvalidAssetTypeException {
+			DBAccessException, ObjectNotFoundException,
+			UsernameAlreadyExistsException, UserMailAlreadyExistsException, 
+			InvalidAssetTypeException {
 		storeUser();
 		storeAsset();
 	}
@@ -70,9 +75,18 @@ public class UserServiceTest extends SpringBaseTest {
 		Assert.assertNotNull(userDTO.getId());
 	}
 
+	@Test(expected = UsernameAlreadyExistsException.class)
+	public void whenCreatesTwoUsersWithSameUsernameThenExceptionIsThrown()
+			throws InvalidPasswordException, ObjectNotFoundException,
+			UsernameAlreadyExistsException, UserMailAlreadyExistsException {
+
+		storeUser();
+	}
+
 	@Test(expected = InvalidPasswordException.class)
 	public void whenCreatesUserWithNoPasswordThenExceptionIsThrown()
-			throws InvalidPasswordException {
+			throws InvalidPasswordException, ObjectNotFoundException,
+			UsernameAlreadyExistsException, UserMailAlreadyExistsException {
 
 		InvertarUserDTO userDTO = UserHelper.createDefaultUserDTO();
 		userDTO.setPassword(null);
@@ -522,7 +536,7 @@ public class UserServiceTest extends SpringBaseTest {
 			throws ApplicationServiceException {
 
 		AssetDTO secondAssetDTO = AssetHelper.createDefaultAssetDTO();
-		secondAssetDTO.setCurrency(InvertarCurrency.ARS);
+		secondAssetDTO.setCurrency(InvertarCurrencyCode.ARS);
 		secondAssetDTO = assetService.store(secondAssetDTO);
 
 		PortfolioDTO portfolioDTO = PortfolioHelper.createDefaultDTO(assetDTO
@@ -665,17 +679,24 @@ public class UserServiceTest extends SpringBaseTest {
 		portfolioDTO.setName("Portfolio2");
 		userService.addPortfolio(portfolioDTO, userDTO.getId());
 	}
-	
+
 	@Test
-	public void whenXMLFileIsLoadedThenEverythingWorks(){
+	public void whenXMLFileIsLoadedThenEverythingWorks() {
 		InvestorProfile.loadXmlFile();
-		List<TheoreticalPortfolioDTO> conservativePortfolios = InvestorProfile.getConservativeInvestor();
-		
-		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("Bonos No Pesificados").equals(45));
-		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("Bonos Pesificados").equals(20));
-		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("FCI Renta Fija").equals(20));
-		Assert.assertTrue(conservativePortfolios.get(0).getAssetTypeAndPercentage().get("FCI Renta Mixta").equals(15));
-		
+		List<TheoreticalPortfolioDTO> conservativePortfolios = InvestorProfile
+				.getConservativeInvestor();
+
+		Assert.assertTrue(conservativePortfolios.get(0)
+				.getAssetTypeAndPercentage().get("Bonos No Pesificados")
+				.equals(45));
+		Assert.assertTrue(conservativePortfolios.get(0)
+				.getAssetTypeAndPercentage().get("Bonos Pesificados")
+				.equals(20));
+		Assert.assertTrue(conservativePortfolios.get(0)
+				.getAssetTypeAndPercentage().get("FCI Renta Fija").equals(20));
+		Assert.assertTrue(conservativePortfolios.get(0)
+				.getAssetTypeAndPercentage().get("FCI Renta Mixta").equals(15));
+
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
@@ -685,7 +706,9 @@ public class UserServiceTest extends SpringBaseTest {
 		assetDTO = assetService.store(assetDTO);
 	}
 
-	private void storeUser() throws InvalidPasswordException {
+	private void storeUser() throws InvalidPasswordException,
+			ObjectNotFoundException, UsernameAlreadyExistsException,
+			UserMailAlreadyExistsException {
 
 		userDTO = UserHelper.createDefaultUserDTO();
 

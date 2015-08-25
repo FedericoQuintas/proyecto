@@ -8,13 +8,13 @@ import com.proyecto.user.domain.TransactionType;
 
 public class TransactionDTO {
 
-	@JsonProperty("price_paid")
+	@JsonProperty("pricePaid")
 	private Float pricePaid;
-	@JsonProperty("trading_date")
+	@JsonProperty("tradingDate")
 	private Date tradingDate;
 	@JsonProperty("quantity")
 	private Long quantity;
-	@JsonProperty("asset_id")
+	@JsonProperty("assetId")
 	private Long assetId;
 	@JsonProperty("type")
 	private TransactionType type;

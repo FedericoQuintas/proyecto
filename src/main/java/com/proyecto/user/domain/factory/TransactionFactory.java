@@ -14,5 +14,4 @@ public class TransactionFactory {
 
 		return transaction;
 	}
-
 }

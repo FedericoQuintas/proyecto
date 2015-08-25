@@ -2,12 +2,12 @@ package com.proyecto.user.domain.valueobject;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.proyecto.common.currency.InvertarCurrency;
+import com.proyecto.common.currency.InvertarCurrencyCode;
 
 public class MarketValueVO {
 
 	@JsonProperty("currency")
-	private InvertarCurrency currency;
+	private InvertarCurrencyCode currency;
 	@JsonProperty("value")
 	private Float value;
 
@@ -19,17 +19,17 @@ public class MarketValueVO {
 		this.value = value;
 	}
 
-	public MarketValueVO(InvertarCurrency currency, Float lastTradingPrice,
+	public MarketValueVO(InvertarCurrencyCode currency, Float lastTradingPrice,
 			Long ownedQuantity) {
 		this.currency = currency;
 		this.value = lastTradingPrice * ownedQuantity;
 	}
 
-	public void setCurrency(InvertarCurrency currency) {
+	public void setCurrency(InvertarCurrencyCode currency) {
 		this.currency = currency;
 	}
 
-	public InvertarCurrency getCurrency() {
+	public InvertarCurrencyCode getCurrency() {
 		return this.currency;
 	}
 

@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +34,20 @@ public class AssetResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public AssetDTO store(@RequestBody AssetDTO assetDTO)
+	public AssetDTO store(HttpSession session, @RequestBody AssetDTO assetDTO)
 			throws ApplicationServiceException {
-		return assetService.store(assetDTO);
+		if (isAdmin(session)) {
+			return assetService.store(assetDTO);
+		} else {
+			throw new AccessDeniedException("Invalid Role");
+		}
 	}
-	
+
+	private boolean isAdmin(HttpSession session) {
+		return session.getAttribute("ROLE") != null
+				&& session.getAttribute("ROLE").equals("admin");
+	}
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException {
@@ -49,32 +60,33 @@ public class AssetResource {
 			throws ApplicationServiceException {
 		return assetService.findById(assetId);
 	}
-	
+
 	@RequestMapping(value = "/{assetId}/tradingSessions", method = RequestMethod.GET)
-	@ResponseBody	
+	@ResponseBody
 	public List<TradingSessionDTO> getTradingSessions(
-			@PathVariable("assetId") Long assetId, 
-			@RequestParam("startDate") String startDate, 
-			@RequestParam("endDate") String endDate) 
-					throws AssetNotFoundException, ParseException{
-		
-		System.out.print(String.format("StartDate: %s  EndDate: %s", 
-				sf.parse(startDate).getTime(),
-				sf.parse(endDate).getTime()));
-		return assetService.getAssetTradingSessions(assetId, sf.parse(startDate), sf.parse(endDate));
-		
+			@PathVariable("assetId") Long assetId,
+			@RequestParam("startDate") String startDate,
+			@RequestParam("endDate") String endDate)
+			throws AssetNotFoundException, ParseException {
+
+		System.out.print(String.format("StartDate: %s  EndDate: %s",
+				sf.parse(startDate).getTime(), sf.parse(endDate).getTime()));
+		return assetService.getAssetTradingSessions(assetId,
+				sf.parse(startDate), sf.parse(endDate));
+
 	}
-	
+
 	@RequestMapping(value = "/{assetId}/tradingSessions/changePercentage", method = RequestMethod.GET)
-	@ResponseBody	
+	@ResponseBody
 	public Map<Long, Double> getTradingSessionsChangePercentage(
-			@PathVariable("assetId") Long assetId, 
-			@RequestParam("startDate") String startDate, 
-			@RequestParam("endDate") String endDate) 
-					throws AssetNotFoundException, ParseException{
-		
-		return assetService.getPercentageOfChange(assetId, sf.parse(startDate), sf.parse(endDate));
-		
+			@PathVariable("assetId") Long assetId,
+			@RequestParam("startDate") String startDate,
+			@RequestParam("endDate") String endDate)
+			throws AssetNotFoundException, ParseException {
+
+		return assetService.getPercentageOfChange(assetId, sf.parse(startDate),
+				sf.parse(endDate));
+
 	}
 
 	@RequestMapping(params = { "ticker" }, method = RequestMethod.GET)
