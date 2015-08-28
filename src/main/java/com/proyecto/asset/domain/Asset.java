@@ -29,6 +29,7 @@ public abstract class Asset {
 	private InvertarCurrencyCode currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
 	private static int SCALE = 10;
+	//TODO: Agregar campo de suma de pagos o dividendos una vez que las TradingSessions tengan la logica necesaria
 
 	public Asset(Long id, String description, String ticker,
 			InvertarCurrencyCode invertarCurrency) {

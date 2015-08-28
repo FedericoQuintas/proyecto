@@ -11,7 +11,8 @@ public class BondFactory extends AssetFactory {
 		Bond bond = new Bond(id, bondDTO.getDescription(),
 				bondDTO.getTicker(), bondDTO.getCurrency());
 		complete(bond, bondDTO);
-		//TODO: completar los campos especificos de stock
+		
+		bond.setPesified(bondDTO.isPesified());
 		return bond;
 	}
 }

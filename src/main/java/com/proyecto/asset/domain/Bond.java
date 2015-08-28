@@ -33,4 +33,10 @@ public class Bond extends Asset {
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
 	}
+	public boolean isPesified() { 
+		return isPesified;
+	}
+	public void setPesified(boolean isPesified) {
+		this.isPesified = isPesified;
+	}
 }

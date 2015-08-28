@@ -8,7 +8,8 @@ public class BondDTOFactory extends AssetDTOFactory {
 
 		BondDTO bondDTO = new BondDTO();
 		complete(bondDTO, bond);
-		//TODO: Completar con los campos especificos de bond
+		
+		bondDTO.setPesified(bond.isPesified());
 
 		return bondDTO;
 	}
