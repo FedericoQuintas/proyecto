@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 @Controller("assetResource")
@@ -31,17 +34,27 @@ public class AssetResource {
 	@Resource
 	private AssetService assetService;
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/stocks", method = RequestMethod.POST)
 	@ResponseBody
-	public AssetDTO store(HttpSession session, @RequestBody AssetDTO assetDTO)
+	public AssetDTO storeStock(HttpSession session, @RequestBody StockDTO stockDTO)
 			throws ApplicationServiceException {
 		if (isAdmin(session)) {
-			return assetService.store(assetDTO);
+			return assetService.store(stockDTO);
 		} else {
 			throw new AccessDeniedException("Invalid Role");
 		}
 	}
-
+	
+	@RequestMapping(value = "/bonds", method = RequestMethod.POST)
+	@ResponseBody
+	public AssetDTO storeBond(HttpSession session, @RequestBody BondDTO bondDTO)
+			throws ApplicationServiceException {
+		if (isAdmin(session)) {
+			return assetService.store(bondDTO);
+		} else {
+			throw new AccessDeniedException("Invalid Role");
+		}
+	}
 	private boolean isAdmin(HttpSession session) {
 		return session.getAttribute("ROLE") != null
 				&& session.getAttribute("ROLE").equals("admin");
@@ -49,7 +62,7 @@ public class AssetResource {
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException {
 		return assetService.getAllAssetsWithoutTradingSessions();
 	}
 

@@ -9,31 +9,22 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import org.jongo.marshall.jackson.oid.MongoId;
-import org.jongo.marshall.jackson.oid.MongoObjectId;
-import org.mongojack.ObjectId;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.asset.domain.factory.TradingSessionFactory;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
-public class Asset {
+public abstract class Asset {
 
-	@MongoId
-	@MongoObjectId
-	public String objectId;
 	private Long id;
 	private String description;
 	private Float lastTradingPrice;
 	private String ticker;
-	private String industry;
-	private boolean isLeader = false;
 	private String name;
 	private InvertarCurrencyCode currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
 	private static int SCALE = 10;
+	//TODO: Agregar campo de suma de pagos o dividendos una vez que las TradingSessions tengan la logica necesaria
 
 	public Asset(Long id, String description, String ticker,
 			InvertarCurrencyCode invertarCurrency) {
@@ -63,22 +54,9 @@ public class Asset {
 		this.description = description;
 	}
 
-	@ObjectId
-	@JsonProperty("_id")
-	public String getObjectId() {
-		return this.objectId;
-	}
 
 	public Long getId() {
 		return this.id;
-	}
-	
-	public boolean isLeader() {
-		return isLeader;
-	}
-
-	public void setLeader(boolean isLeader) {
-		this.isLeader = isLeader;
 	}
 
 	public void addTradingSession(TradingSessionDTO tradingSessionDTO)
@@ -139,14 +117,6 @@ public class Asset {
 		return this.getTradingSessions().subMap(
 				startDate.getTime(), true, endDate.getTime(), true).values();
 	}
-
-	public String getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(String industry) {
-		this.industry = industry;
-	}
 	
 	public String getName() {
 		return name;
@@ -156,9 +126,4 @@ public class Asset {
 		this.name = name;
 	}
 
-	@ObjectId
-	@JsonProperty("_id")
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
 }

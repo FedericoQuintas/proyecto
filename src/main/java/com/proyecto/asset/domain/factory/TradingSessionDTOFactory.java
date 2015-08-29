@@ -15,6 +15,8 @@ public class TradingSessionDTOFactory {
 		tradingSessionDTO.setTradingDate(tradingSession.getTradingDate()
 				.getTime());
 		tradingSessionDTO.setVolume(tradingSession.getVolume());
+		tradingSessionDTO.setPayment(tradingSession.getPayment());
+		
 		tradingSessionDTO.setSma_7(tradingSession.getSma_7());
 		tradingSessionDTO.setSma_21(tradingSession.getSma_21());
 		tradingSessionDTO.setSma_50(tradingSession.getSma_50());

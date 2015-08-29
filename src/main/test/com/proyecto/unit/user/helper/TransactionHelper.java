@@ -15,7 +15,7 @@ public class TransactionHelper {
 		TransactionDTO transactionDTO = new TransactionDTO();
 		transactionDTO.setPricePaid(DEFAULT_PRICE_PAID);
 		transactionDTO.setQuantity(new Long(DEFAULT_QUANTITY));
-		transactionDTO.setTradingDate(new Date().getTime());
+		transactionDTO.setTradingDate(new Date());
 		transactionDTO.setAssetId(assetId);
 		transactionDTO.setType(TransactionType.PURCHASE);
 		return transactionDTO;

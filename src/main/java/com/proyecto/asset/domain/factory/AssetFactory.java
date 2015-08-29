@@ -6,27 +6,36 @@ import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.exception.InvalidArgumentException;
 import com.proyecto.common.validator.FieldValidator;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetFactory {
 
-	public static Asset create(AssetDTO assetDTO, Long id)
+	protected static Asset complete(Asset container, AssetDTO assetDTO)
 			throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException {
 
 		validateMandatoryFields(assetDTO);
-		
-		Asset asset = new Asset(id, assetDTO.getDescription(),
-				assetDTO.getTicker(), assetDTO.getCurrency());
 
-		asset.setLastTradingPrice(assetDTO.getLastTradingPrice());
-		asset.setIndustry(assetDTO.getIndustry());
+		container.setLastTradingPrice(assetDTO.getLastTradingPrice());
 
 		for (TradingSessionDTO tradingSession : assetDTO.getTradingSessions()) {
-			asset.addTradingSession(tradingSession);
+			container.addTradingSession(tradingSession);
 		}
 
-		return asset;
+		return container;
+	}
+	
+	public static Asset create(AssetDTO assetDTO, Long id) 
+			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException{
+		if(assetDTO.getClass().equals(StockDTO.class)){
+			return StockFactory.create((StockDTO) assetDTO, id);
+		}
+		else if(assetDTO.getClass().equals(BondDTO.class)){
+			return BondFactory.create((BondDTO) assetDTO, id);
+		}
+		return null; //TODO: Tirar una excepcion de tipo disconocido
 	}
 
 	private static void validateMandatoryFields(AssetDTO assetDTO)

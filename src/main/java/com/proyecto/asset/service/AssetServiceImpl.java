@@ -18,6 +18,7 @@ import com.proyecto.asset.domain.factory.TradingSessionDTOFactory;
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.DBAccessException;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.asset.persistence.AssetDAO;
 import com.proyecto.common.exception.ObjectNotFoundException;
@@ -33,7 +34,7 @@ public class AssetServiceImpl implements AssetService {
 	@Override
 	public AssetDTO store(AssetDTO assetDTO)
 			throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException {
+			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDAO.nextID());
 
@@ -44,11 +45,10 @@ public class AssetServiceImpl implements AssetService {
 		} catch (IOException e) {
 			throw new DBAccessException(e.getMessage());
 		}
-
 	}
 
 	@Override
-	public AssetDTO findById(Long id) throws AssetNotFoundException {
+	public AssetDTO findById(Long id) throws AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			Asset asset = assetDAO.findById(id);
 
@@ -89,7 +89,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public List<AssetDTO> getAllAssets() {
+	public List<AssetDTO> getAllAssets() throws InvalidAssetTypeException {
 
 		List<AssetDTO> assetDTOs = new ArrayList<AssetDTO>();
 
@@ -102,7 +102,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 	
 	@Override
-	public List<AssetDTO> getAllAssetsWithoutTradingSessions() {
+	public List<AssetDTO> getAllAssetsWithoutTradingSessions() throws InvalidAssetTypeException {
 
 		List<AssetDTO> lighweightAssetDTOs = getAllAssets();
 		for(AssetDTO asset : lighweightAssetDTOs){
@@ -127,7 +127,7 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public AssetDTO findByTicker(String ticker) throws AssetNotFoundException {
+	public AssetDTO findByTicker(String ticker) throws AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			Asset asset = assetDAO.findByTicker(ticker);
 

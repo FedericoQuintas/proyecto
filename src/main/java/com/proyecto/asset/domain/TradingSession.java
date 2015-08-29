@@ -10,6 +10,7 @@ public class TradingSession {
 	private Double minPrice;
 	private Date tradingDate;
 	private Integer volume;
+	private Double payment;
 	
 	private Double sma_7;
 	private Double sma_21;
@@ -80,6 +81,14 @@ public class TradingSession {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
+	}
+
+	public Double getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Double payment) {
+		this.payment = payment;
 	}
 
 	public Double getSma_7() {
@@ -209,6 +218,5 @@ public class TradingSession {
 	public void setRsi_200(Double rsi_200) {
 		this.rsi_200 = rsi_200;
 	}
-	
 	
 }

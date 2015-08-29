@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.common.exception.DomainException;
@@ -117,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Float getPortfoliosPerformance(Long userId)
-			throws UserNotFoundException, AssetNotFoundException {
+			throws UserNotFoundException, AssetNotFoundException, InvalidAssetTypeException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
@@ -138,7 +139,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Float getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException,
-			AssetNotFoundException {
+			AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);
@@ -253,7 +254,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<MarketValueVO> getPortfolioMarketValue(Long userId,
 			Long portfolioId) throws UserNotFoundException,
-			PortfolioNotFoundException, AssetNotFoundException {
+			PortfolioNotFoundException, AssetNotFoundException, InvalidAssetTypeException {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);

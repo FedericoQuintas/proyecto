@@ -16,6 +16,9 @@ public class TradingSessionDTO {
 	private Long tradingDate;
 	@JsonProperty("volume")
 	private Integer volume;
+	@JsonProperty("payment")
+	private Double payment;
+	
 	@JsonProperty("sma_7")
 	private Double sma_7;
 	@JsonProperty("sma_21")
@@ -98,6 +101,13 @@ public class TradingSessionDTO {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
+	}
+
+	public Double getPayment() {
+		return payment;
+	}
+	public void setPayment(Double payment) {
+		this.payment = payment;
 	}
 
 	public Double getSma_7() {
@@ -227,5 +237,4 @@ public class TradingSessionDTO {
 	public void setRsi_200(Double rsi_200) {
 		this.rsi_200 = rsi_200;
 	}
-
 }

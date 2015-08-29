@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
+import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
@@ -28,7 +29,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 	@Override
 	public List<MarketValueVO> calculateMarketValue(Portfolio portfolio)
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		List<MarketValueVO> marketValues = new ArrayList<MarketValueVO>();
 
@@ -45,7 +46,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 	private void evaluateLastTransaction(List<MarketValueVO> marketValues,
 			Transaction lastTransaction, UserAsset userAsset)
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		if (lastTransaction != null) {
 
@@ -90,7 +91,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 				ownedQuantity));
 	}
 
-	private AssetDTO obtainAsset(Long assetId) throws AssetNotFoundException {
+	private AssetDTO obtainAsset(Long assetId) throws AssetNotFoundException, InvalidAssetTypeException {
 		return assetService.findById(assetId);
 	}
 
@@ -134,7 +135,7 @@ public class PortfolioDomainServiceImpl implements PortfolioDomainService {
 
 	@Override
 	public Float calculatePerformance(Portfolio portfolio)
-			throws AssetNotFoundException {
+			throws AssetNotFoundException, InvalidAssetTypeException {
 
 		Float totalPerformance = new Float(0);
 

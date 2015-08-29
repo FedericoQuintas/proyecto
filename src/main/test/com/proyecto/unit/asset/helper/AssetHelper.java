@@ -5,33 +5,64 @@ import java.text.SimpleDateFormat;
 
 import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetHelper {
 
-	public static final String DEFAULT_DESCRIPTION = "Tenaris S.A.,fabrica y provee ca�erias de acero y servicios relacionados para el sector energetico y otros usos industriales";
-	public static final String DEFAULT_TICKER = "TS.BA";
+	public static final String DEFAULT_STOCK_DESCRIPTION = "Tenaris S.A.,fabrica y provee ca�erias de acero y servicios relacionados para el sector energetico y otros usos industriales";
+	public static final String DEFAULT_STOCK_TICKER = "TS.BA";
 	public static final String DEFAULT_INDUSTRY = "Metalurgica";
 
+	public static final String DEFAULT_BOND_DESCRIPTION = "Bonar 2024";
+	public static final String DEFAULT_BOND_TICKER = "AY24";
+	
 	public static SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 
-	public static AssetDTO createDefaultAssetDTO() {
+	public static StockDTO createDefaultStockDTO() {
 
-		AssetDTO assetDTO = new AssetDTO();
+		StockDTO stockDTO = new StockDTO();
 
-		assetDTO.setDescription(DEFAULT_DESCRIPTION);
-		assetDTO.setTicker(DEFAULT_TICKER);
-		assetDTO.setIndustry(DEFAULT_INDUSTRY);
-		assetDTO.setCurrency(InvertarCurrencyCode.US);
+		stockDTO.setDescription(DEFAULT_STOCK_DESCRIPTION);
+		stockDTO.setTicker(DEFAULT_STOCK_TICKER);
+		stockDTO.setIndustry(DEFAULT_INDUSTRY);
+		stockDTO.setCurrency(InvertarCurrencyCode.US);
 
-		return assetDTO;
+		return stockDTO;
+	}
+	
+	public static BondDTO createDefaultBondDTO() {
+
+		BondDTO bondDTO = new BondDTO();
+
+		bondDTO.setDescription(DEFAULT_BOND_DESCRIPTION);
+		bondDTO.setTicker(DEFAULT_BOND_TICKER);
+		bondDTO.setCurrency(InvertarCurrencyCode.US);
+
+		return bondDTO;
 	}
 
-	public static AssetDTO createDefaultAssetDTOWithTradingSessions()
+	public static AssetDTO createDefaultStockDTOWithTradingSessions()
 			throws ParseException {
 
-		AssetDTO assetDTO = createDefaultAssetDTO();
+		AssetDTO stockDTO = createDefaultStockDTO();
+		addDefaultTradingSessions(stockDTO);
+		
+		return stockDTO;
+	}
+	
+	public static AssetDTO createDefaultBondDTOWithTradingSessions()
+			throws ParseException {
 
+		AssetDTO bondDTO = createDefaultBondDTO();
+		addDefaultTradingSessions(bondDTO);
+		
+		return bondDTO;
+	}
+	
+	public static void addDefaultTradingSessions(AssetDTO assetDTO) throws ParseException{
+		
 		TradingSessionDTO tradingSessionDayOne = new TradingSessionDTO();
 		tradingSessionDayOne.setClosingPrice(169.4);
 		tradingSessionDayOne.setTradingDate(sf.parse("26/05/2015").getTime());
@@ -82,8 +113,7 @@ public class AssetHelper {
 		assetDTO.getTradingSessions().add(tradingSessionDayEight);
 		assetDTO.getTradingSessions().add(tradingSessionDayNine);
 		assetDTO.getTradingSessions().add(tradingSessionDayTen);
-
-		return assetDTO;
+		
 	}
 
 	public static TradingSessionDTO createDefaultTradingSession()
