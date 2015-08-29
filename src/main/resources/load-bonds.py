@@ -15,6 +15,9 @@ class InvertarBond:
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
+    def __init__(self, aTicker,aName):
+         self.ticker = aTicker
+         self.name = aName
 
 class InvertarTradingSession:
 
@@ -24,6 +27,13 @@ class InvertarTradingSession:
     minPrice = 0.0
     tradingDate = ""
     volume = 0
+    def __init__(self, aClosingPrice,anOpeningPrice, aMaxPrice,aMinPrice,aTradingDate,aVolume):
+        self.closingPrice = aClosingPrice
+        self.openingPrice = anOpeningPrice
+        self.maxPrice = aMaxPrice
+        self.minPrice = aMinPrice
+        self.tradingDate = aTradingDate
+        self.volume = aVolume
 
 class Link:
     ticker =""
@@ -97,5 +107,9 @@ for oneLink in csvsToDownload:
     print("Procesando:",oneLink.ticker)
     webpage = urllib.request.urlopen(oneLink.url)
     datareader = csv.reader(io.TextIOWrapper(webpage))
+    currentBond = InvertarBond(oneLink.ticker,oneLink.name)
+    currentBond.tradingSessions=[]
     for row in datareader:
-        print(row)
+        if row[4] != "cierre":
+            currentBond.tradingSessions.append(InvertarTradingSession(row[4],row[1],row[2],row[3],row[0],row[5]))
+    print(currentBond.to_JSON())

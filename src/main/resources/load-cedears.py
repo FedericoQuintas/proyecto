@@ -12,6 +12,10 @@ class InvertarCedear:
     description = ""
     currency = "ARS"
     tradingSessions = []
+    def __init__(self, aTicker,aName):
+         self.ticker = aTicker
+         self.name = aName
+
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
@@ -24,6 +28,13 @@ class InvertarTradingSession:
     minPrice = 0.0
     tradingDate = ""
     volume = 0
+    def __init__(self, aClosingPrice,anOpeningPrice, aMaxPrice,aMinPrice,aTradingDate,aVolume):
+        self.closingPrice = aClosingPrice
+        self.openingPrice = anOpeningPrice
+        self.maxPrice = aMaxPrice
+        self.minPrice = aMinPrice
+        self.tradingDate = aTradingDate
+        self.volume = aVolume
 
 class Link:
     ticker =""
@@ -48,5 +59,9 @@ for oneLink in csvsToDownload:
     print("Procesando:",oneLink.ticker)
     webpage = urllib.request.urlopen(oneLink.url)
     datareader = csv.reader(io.TextIOWrapper(webpage))
+    currentCedear = InvertarCedear(oneLink.ticker,oneLink.name)
+    currentCedear.tradingSessions=[]
     for row in datareader:
-        print(row)
+        if row[4] != "cierre":
+            currentCedear.tradingSessions.append(InvertarTradingSession(row[4],row[1],row[2],row[3],row[0],row[5]))
+    print(currentCedear.to_JSON())
