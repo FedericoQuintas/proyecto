@@ -18,6 +18,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.AssetType;
 import com.proyecto.asset.domain.Bond;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.common.exception.ObjectNotFoundException;
@@ -75,10 +76,6 @@ public class AssetMongoDAOImpl implements AssetDAO {
 
 	@Override
 	public void flush() {
-
-		// MongoCollection assets = jongo.getCollection("assets");
-		//
-		// assets.remove("{ id: { $gt: 0 } }");
 		stockDAO.flush();
 		bondDAO.flush();
 
@@ -89,16 +86,13 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			JsonMappingException, IOException {
 
 		if (asset.getClass().equals(Stock.class)) {
+			asset.setType(AssetType.STOCK.getType());
 			asset = stockDAO.store(asset);
 		} else if (asset.getClass().equals(Bond.class)) {
+			asset.setType(AssetType.BOND.getType());
 			asset = bondDAO.store(asset);
 		}
 
-		// JacksonDBCollection<Asset, String> coll = JacksonDBCollection.wrap(
-		// persistedAssets, Asset.class, String.class);
-		//
-		// WriteResult<Asset, String> result = coll.insert(asset);
-		// asset = result.getSavedObject();
 		return asset;
 	}
 

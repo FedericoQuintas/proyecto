@@ -17,7 +17,7 @@ public abstract class AssetDTO {
 
 	@JsonProperty("name")
 	private String name;
-	
+
 	@JsonProperty("isLeader")
 	private boolean isLeader = false;
 
@@ -32,6 +32,13 @@ public abstract class AssetDTO {
 
 	@JsonProperty("currency")
 	private InvertarCurrencyCode currency;
+
+	@JsonProperty("asset_type")
+	private String assetType;
+
+	public void setAssetType(String assetType) {
+		this.assetType = assetType;
+	}
 
 	public List<TradingSessionDTO> getTradingSessions() {
 		return tradingSessions;
@@ -99,6 +106,9 @@ public abstract class AssetDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-		
+
+	public String getAssetType() {
+		return this.assetType;
+	}
 
 }

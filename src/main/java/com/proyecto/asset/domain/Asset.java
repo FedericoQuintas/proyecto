@@ -23,8 +23,15 @@ public abstract class Asset {
 	private String name;
 	private InvertarCurrencyCode currency;
 	private NavigableMap<Long, TradingSession> tradingSessions;
+	private String type;
+	public String getType() {
+		return type;
+	}
+
 	private static int SCALE = 10;
-	//TODO: Agregar campo de suma de pagos o dividendos una vez que las TradingSessions tengan la logica necesaria
+
+	// TODO: Agregar campo de suma de pagos o dividendos una vez que las
+	// TradingSessions tengan la logica necesaria
 
 	public Asset(Long id, String description, String ticker,
 			InvertarCurrencyCode invertarCurrency) {
@@ -53,7 +60,6 @@ public abstract class Asset {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 	public Long getId() {
 		return this.id;
@@ -91,7 +97,7 @@ public abstract class Asset {
 
 		BigDecimal initialClosingPrice = BigDecimal.valueOf(
 				this.getTradingSessions().ceilingEntry(startDate.getTime())
-				.getValue().getClosingPrice()).setScale(SCALE);
+						.getValue().getClosingPrice()).setScale(SCALE);
 
 		Map<Long, Double> resultantPercentagesOfChange = new HashMap<Long, Double>();
 		resultantPercentagesOfChange.put(startDate.getTime(), 0d);
@@ -112,18 +118,24 @@ public abstract class Asset {
 
 		return resultantPercentagesOfChange;
 	}
-	
-	public Collection<TradingSession> getRangeOfTradingSessions(Date startDate, Date endDate){
-		return this.getTradingSessions().subMap(
-				startDate.getTime(), true, endDate.getTime(), true).values();
+
+	public Collection<TradingSession> getRangeOfTradingSessions(Date startDate,
+			Date endDate) {
+		return this.getTradingSessions()
+				.subMap(startDate.getTime(), true, endDate.getTime(), true)
+				.values();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

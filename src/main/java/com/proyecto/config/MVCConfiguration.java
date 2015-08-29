@@ -14,6 +14,10 @@ import com.proyecto.currency.persistence.CurrencyDAO;
 import com.proyecto.currency.persistence.CurrencyDAOImpl;
 import com.proyecto.currency.service.CurrencyService;
 import com.proyecto.currency.service.CurrencyServiceImpl;
+import com.proyecto.inflation.persistence.InflationDAO;
+import com.proyecto.inflation.persistence.InflationDAOImpl;
+import com.proyecto.inflation.service.InflationService;
+import com.proyecto.inflation.service.InflationServiceImpl;
 import com.proyecto.user.domain.service.PortfolioDomainService;
 import com.proyecto.user.domain.service.PortfolioDomainServiceImpl;
 import com.proyecto.user.persistence.UserDAO;
@@ -63,8 +67,18 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
+	public InflationDAO inflationMongoDAO() {
+		return new InflationDAOImpl();
+	}
+
+	@Bean
 	public AssetService assetService() {
 		return new AssetServiceImpl();
+	}
+
+	@Bean
+	public InflationService inflationService() {
+		return new InflationServiceImpl();
 	}
 
 	@Bean

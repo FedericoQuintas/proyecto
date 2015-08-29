@@ -23,15 +23,15 @@ public class AssetDTOFactory {
 		assetDTO.setTradingSessions(convertToDTOs(asset.getTradingSessions()));
 		assetDTO.setLastTradingPrice(asset.getLastTradingPrice());
 		assetDTO.setCurrency(asset.getCurrency());
+		assetDTO.setAssetType(asset.getType());
 
 		return assetDTO;
 	}
-	
-	public static AssetDTO create(Asset asset) throws InvalidAssetTypeException{
-		if(asset.getClass().equals(Stock.class)){
+
+	public static AssetDTO create(Asset asset) throws InvalidAssetTypeException {
+		if (asset.getClass().equals(Stock.class)) {
 			return StockDTOFactory.create((Stock) asset);
-		}
-		else if(asset.getClass().equals(Bond.class)){
+		} else if (asset.getClass().equals(Bond.class)) {
 			return BondDTOFactory.create((Bond) asset);
 		}
 		throw new InvalidAssetTypeException();

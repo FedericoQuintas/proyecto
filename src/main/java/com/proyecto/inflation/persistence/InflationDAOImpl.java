@@ -14,7 +14,7 @@ import com.mongodb.DBCollection;
 import com.proyecto.config.persistence.MongoAccessConfiguration;
 import com.proyecto.inflation.domain.Inflation;
 
-@Repository("inflatioinDAO")
+@Repository("inflationDAO")
 public class InflationDAOImpl implements InflationDAO {
 
 	private DB dbAccess;

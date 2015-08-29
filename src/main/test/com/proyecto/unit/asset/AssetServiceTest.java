@@ -40,7 +40,8 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	@Before
 	public void before() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
+			InvalidTradingSessionArgumentException, DBAccessException,
+			InvalidAssetTypeException {
 		storeAsset();
 	}
 
@@ -52,7 +53,8 @@ public class AssetServiceTest extends SpringBaseTest {
 	@Test
 	public void whenAddsTradingSessionToAssetThenTradingSessionIsAdded()
 			throws AssetNotFoundException,
-			InvalidTradingSessionArgumentException, ParseException, InvalidAssetTypeException {
+			InvalidTradingSessionArgumentException, ParseException,
+			InvalidAssetTypeException {
 
 		TradingSessionDTO tradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
@@ -136,7 +138,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		AssetDTO storedStockDTO = assetService.findById(stockDTO.getId());
 		AssetDTO storedBondDTO = assetService.findById(bondDTO.getId());
-		
+
 		Assert.assertTrue(stockDTO.getId().equals(storedStockDTO.getId()));
 		Assert.assertTrue(bondDTO.getId().equals(storedBondDTO.getId()));
 
@@ -149,6 +151,19 @@ public class AssetServiceTest extends SpringBaseTest {
 		Long NOT_EXISTING_ASSET_ID = new Long(1000);
 
 		assetService.findById(NOT_EXISTING_ASSET_ID);
+
+	}
+
+	@Test
+	public void whenCreatesAStockThenStockHasAssetType()
+			throws AssetNotFoundException, ApplicationServiceException {
+
+		AssetDTO storedStockDTO = assetService.findById(stockDTO.getId());
+		AssetDTO storedBondDTO = assetService.findById(bondDTO.getId());
+
+		Assert.assertTrue(stockDTO.getAssetType()
+				.equals(storedStockDTO.getAssetType()));
+		Assert.assertTrue(bondDTO.getAssetType().equals(storedBondDTO.getAssetType()));
 
 	}
 
@@ -246,7 +261,8 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 
 	@Test
-	public void whenAsksForAllTheAssetsThenAllTheAssetsAreRetrieved() throws InvalidAssetTypeException {
+	public void whenAsksForAllTheAssetsThenAllTheAssetsAreRetrieved()
+			throws InvalidAssetTypeException {
 
 		Assert.assertNotNull(assetService.getAllAssets());
 	}
@@ -257,13 +273,11 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		AssetDTO storedStockDTO = assetService.findByTicker(stockDTO
 				.getTicker());
-		AssetDTO storedBondDTO = assetService.findByTicker(bondDTO
-				.getTicker());
+		AssetDTO storedBondDTO = assetService.findByTicker(bondDTO.getTicker());
 
 		Assert.assertTrue(stockDTO.getTicker().equals(
 				storedStockDTO.getTicker()));
-		Assert.assertTrue(bondDTO.getTicker().equals(
-				storedBondDTO.getTicker()));
+		Assert.assertTrue(bondDTO.getTicker().equals(storedBondDTO.getTicker()));
 	}
 
 	@Test(expected = AssetNotFoundException.class)
@@ -275,7 +289,8 @@ public class AssetServiceTest extends SpringBaseTest {
 	}
 
 	private void storeAsset() throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException, DBAccessException, InvalidAssetTypeException {
+			InvalidTradingSessionArgumentException, DBAccessException,
+			InvalidAssetTypeException {
 
 		stockDTO = AssetHelper.createDefaultStockDTO();
 		bondDTO = AssetHelper.createDefaultBondDTO();
