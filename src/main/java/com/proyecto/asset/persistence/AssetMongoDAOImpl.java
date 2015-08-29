@@ -2,7 +2,6 @@ package com.proyecto.asset.persistence;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,10 +10,6 @@ import javax.annotation.Resource;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.jongo.Jongo;
-import org.jongo.MongoCollection;
-import org.jongo.MongoCursor;
-import org.mongojack.JacksonDBCollection;
-import org.mongojack.WriteResult;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
@@ -25,7 +20,6 @@ import com.mongodb.DuplicateKeyException;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.Bond;
 import com.proyecto.asset.domain.Stock;
-import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.config.persistence.MongoAccessConfiguration;
 
@@ -33,7 +27,6 @@ import com.proyecto.config.persistence.MongoAccessConfiguration;
 public class AssetMongoDAOImpl implements AssetDAO {
 
 	private DB dbAccess;
-	private DBCollection persistedAssets;
 	private Jongo jongo;
 	private DBCollection counter;
 	private String dbName = "invertarDB";
@@ -47,7 +40,6 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	public void post() {
 
 		configureDBAccess();
-		persistedAssets = dbAccess.getCollection("assets");
 
 		try {
 			BasicDBObject document = new BasicDBObject();
@@ -84,9 +76,9 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public void flush() {
 
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		assets.remove("{ id: { $gt: 0 } }");
+		// MongoCollection assets = jongo.getCollection("assets");
+		//
+		// assets.remove("{ id: { $gt: 0 } }");
 		stockDAO.flush();
 		bondDAO.flush();
 
@@ -95,19 +87,18 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public Asset store(Asset asset) throws JsonGenerationException,
 			JsonMappingException, IOException {
-		
-		if(asset.getClass().equals(Stock.class)){
+
+		if (asset.getClass().equals(Stock.class)) {
 			asset = stockDAO.store(asset);
-		}
-		else if (asset.getClass().equals(Bond.class)){
+		} else if (asset.getClass().equals(Bond.class)) {
 			asset = bondDAO.store(asset);
 		}
 
-//		JacksonDBCollection<Asset, String> coll = JacksonDBCollection.wrap(
-//				persistedAssets, Asset.class, String.class);
-//
-//		WriteResult<Asset, String> result = coll.insert(asset);
-//		asset = result.getSavedObject();
+		// JacksonDBCollection<Asset, String> coll = JacksonDBCollection.wrap(
+		// persistedAssets, Asset.class, String.class);
+		//
+		// WriteResult<Asset, String> result = coll.insert(asset);
+		// asset = result.getSavedObject();
 		return asset;
 	}
 
@@ -116,13 +107,13 @@ public class AssetMongoDAOImpl implements AssetDAO {
 
 		Asset asset;
 		asset = stockDAO.findById(id);
-		
-		if(asset == null){
+
+		if (asset == null) {
 			asset = bondDAO.findById(id);
 		}
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
+		// MongoCollection assets = jongo.getCollection("assets");
+		//
+		// Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
 
 		if (asset == null) {
 			throw new ObjectNotFoundException("Asset " + id + " not found");
@@ -134,18 +125,8 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public List<Asset> getAll() {
 
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		MongoCursor<Asset> all = assets.find().as(Asset.class);
-//		Iterator<Asset> iterator = all.iterator();
-//
-//		List<Asset> result = new ArrayList<>();
-//		while (iterator.hasNext()) {
-//			Asset next = iterator.next();
-//			result.add(next);
-//		}
 		List<Asset> result = new ArrayList<Asset>();
-		
+
 		result.addAll(stockDAO.getAll());
 		result.addAll(bondDAO.getAll());
 
@@ -155,15 +136,9 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	@Override
 	public void update(Asset asset) {
 
-//		Jongo jongo = new Jongo(dbAccess);
-//
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		assets.update("{id:" + asset.getId() + " }").with(asset);
-		if(asset.getClass().equals(Stock.class)){
+		if (asset.getClass().equals(Stock.class)) {
 			stockDAO.update(asset);
-		}
-		else if (asset.getClass().equals(Bond.class)){
+		} else if (asset.getClass().equals(Bond.class)) {
 			bondDAO.update(asset);
 		}
 	}
@@ -172,30 +147,17 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	public Asset findByTicker(String description)
 			throws ObjectNotFoundException {
 
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		Asset asset = assets.findOne("{ticker:\"" + description + "\"}").as(
-//				Asset.class);
-//
-//		if (asset == null) {
-//			throw new ObjectNotFoundException("Asset " + description
-//					+ " not found");
-//		}
-		
 		Asset asset;
 		asset = stockDAO.findByTicker(description);
-		
-		if(asset == null){
-			asset = bondDAO.findByTicker(description);
-		}
-//		MongoCollection assets = jongo.getCollection("assets");
-//
-//		Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
 
 		if (asset == null) {
-			throw new ObjectNotFoundException("Asset " + description + " not found");
+			asset = bondDAO.findByTicker(description);
 		}
-		
+
+		if (asset == null) {
+			throw new ObjectNotFoundException("Asset " + description
+					+ " not found");
+		}
 
 		return asset;
 	}

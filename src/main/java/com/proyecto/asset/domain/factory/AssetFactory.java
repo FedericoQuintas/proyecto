@@ -1,8 +1,6 @@
 package com.proyecto.asset.domain.factory;
 
 import com.proyecto.asset.domain.Asset;
-import com.proyecto.asset.domain.Bond;
-import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.exception.InvalidAssetArgumentException;
 import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.common.exception.InvalidArgumentException;

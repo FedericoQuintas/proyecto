@@ -10,8 +10,6 @@ import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
 import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
-import com.proyecto.rest.resource.asset.dto.BondDTO;
-import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
 public class AssetDTOFactory {
