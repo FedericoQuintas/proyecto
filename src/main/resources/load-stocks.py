@@ -2,6 +2,8 @@ from yahoo_finance import Share
 from datetime import *
 import json
 import urllib3
+from bs4 import BeautifulSoup
+import urllib.request
 
 class InvertarStock:
 
@@ -11,6 +13,7 @@ class InvertarStock:
     industry = ""
     currency = "ARS"
     tradingSessions = []
+    leader = False
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
@@ -393,6 +396,11 @@ for oneStock in stocks:
     finalStocks.append(myInvertarStock)
 
 for oneInvertarStock in finalStocks:
+    response = urllib.request.urlopen("http://www.ravaonline.com/v2/precios/panel.php?m=LID")
+    soup = BeautifulSoup(response,"html.parser")
+    for row in soup.findAll("td"):
+      if row.get_text()+".BA" == oneInvertarStock.ticker:
+        oneInvertarStock.leader = True
     macd_macd_line = []
     last_ema_9 = 0.0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
