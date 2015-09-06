@@ -5,7 +5,7 @@ import urllib3
 from bs4 import BeautifulSoup
 import urllib.request
 from pymongo import MongoClient
-import json
+import time
 
 client = MongoClient('localhost', 27017)
 
@@ -417,6 +417,7 @@ for oneInvertarStock in finalStocks:
     last_ema_9 = 0.0
     index_2 = 0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
+        oneInvertarTradingSession.tradingDate = int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
         index_2 = index_2 + 1
         if index_2 == len(oneInvertarStock.tradingSessions):
             oneInvertarStock.lastTradingPrice = oneInvertarTradingSession.closingPrice

@@ -1,10 +1,8 @@
-from yahoo_finance import Share
 from datetime import *
 import json
 import urllib.request
 import io
 import csv
-import json
 from pymongo import MongoClient
 from datetime import datetime
 import time
