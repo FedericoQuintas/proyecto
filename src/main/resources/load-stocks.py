@@ -13,13 +13,15 @@ db = client.invertarDB
 
 class InvertarStock:
 
+    id = 0
     ticker = ""
     name = ""
     description = ""
     industry = ""
     currency = "ARS"
     tradingSessions = []
-    leader = "False"
+    leader = False
+    lastTradingPrice = 0
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
@@ -401,16 +403,23 @@ for oneStock in stocks:
 
     finalStocks.append(myInvertarStock)
 
+id = 1
+
 for oneInvertarStock in finalStocks:
-    oneInvertarStock.leader = "False"
+    oneInvertarStock.id = id
+    oneInvertarStock.leader = False
     response = urllib.request.urlopen("http://www.ravaonline.com/v2/precios/panel.php?m=LID")
     soup = BeautifulSoup(response,"html.parser")
     for row in soup.findAll("td"):
       if row.get_text()+".BA" == oneInvertarStock.ticker:
-        oneInvertarStock.leader = "True"
+        oneInvertarStock.leader = True
     macd_macd_line = []
     last_ema_9 = 0.0
+    index_2 = 0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
+        index_2 = index_2 + 1
+        if index_2 == len(oneInvertarStock.tradingSessions):
+            oneInvertarStock.lastTradingPrice = oneInvertarTradingSession.closingPrice
         macd_macd_line.append(oneInvertarTradingSession.macd_macd_line)
         if len(macd_macd_line) >= 9:
             min = len(macd_macd_line) - 9
@@ -428,5 +437,6 @@ for oneInvertarStock in finalStocks:
             oneInvertarTradingSession.macd_signal_line = current_ema
     db.stocks.insert_one(json.loads(oneInvertarStock.to_JSON()))
     print("Cargado",oneInvertarStock.ticker)
+    id = id + 1
 
 print("Fin de Carga de Acciones")
