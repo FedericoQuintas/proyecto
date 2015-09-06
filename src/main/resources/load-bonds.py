@@ -128,7 +128,7 @@ for oneLink in csvsToDownload:
     currentBond.tradingSessions=[]
     for row in datareader:
         if row[4] != "cierre":
-            currentBond.tradingSessions.append(InvertarTradingSession(row[4],row[1],row[2],row[3],row[0],row[5]))
+            currentBond.tradingSessions.append(InvertarTradingSession(float(row[4]),float(row[1]),float(row[2]),float(row[3]),row[0],int(row[5])))
     bonds.append(currentBond)
 
 for oneBond in bonds:

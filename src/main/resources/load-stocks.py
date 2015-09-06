@@ -257,13 +257,13 @@ for oneStock in stocks:
     stocks=[]
     for oneTradingSession in stocksFromYahoo:
         currentTradingSession = InvertarTradingSession()
-        currentTradingSession.closingPrice = oneTradingSession["Close"]
-        currentTradingSession.openingPrice = oneTradingSession["Open"]
-        currentTradingSession.maxPrice = oneTradingSession["High"]
-        currentTradingSession.minPrice = oneTradingSession["Low"]
-        currentTradingSession.volume = oneTradingSession["Volume"]
+        currentTradingSession.closingPrice = float(oneTradingSession["Close"])
+        currentTradingSession.openingPrice = float(oneTradingSession["Open"])
+        currentTradingSession.maxPrice = float(oneTradingSession["High"])
+        currentTradingSession.minPrice = float(oneTradingSession["Low"])
+        currentTradingSession.volume = int(oneTradingSession["Volume"])
         currentTradingSession.tradingDate = oneTradingSession["Date"]
-        currentTradingSession.adjClosingPrice = oneTradingSession["Adj_Close"]
+        currentTradingSession.adjClosingPrice = float(oneTradingSession["Adj_Close"])
 
         currentTradingSession.sma_7= 0.0
         currentTradingSession.sma_21= 0.0
