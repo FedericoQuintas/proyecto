@@ -4,6 +4,12 @@ import json
 import urllib.request
 import io
 import csv
+import json
+from pymongo import MongoClient
+
+client = MongoClient('localhost', 27017)
+
+db = client.invertarDB
 
 class InvertarBond:
 
@@ -292,8 +298,8 @@ for oneInvertarBond in finalBonds:
                                             * (float(2)/float(10)))
             last_ema_9 = current_ema
             oneInvertarTradingSession.macd_signal_line = current_ema
-    print(oneInvertarBond.to_JSON())
-    #http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
-    #             body=myInvertarStock.to_JSON())
+
+    db.bonds.insert_one(json.loads(oneInvertarBond.to_JSON()))
+    print("Cargado:",oneInvertarBond.ticker)
 
 print("Fin de Carga de Bonos")

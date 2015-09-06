@@ -4,6 +4,12 @@ import json
 import urllib3
 from bs4 import BeautifulSoup
 import urllib.request
+from pymongo import MongoClient
+import json
+
+client = MongoClient('localhost', 27017)
+
+db = client.invertarDB
 
 class InvertarStock:
 
@@ -13,7 +19,7 @@ class InvertarStock:
     industry = ""
     currency = "ARS"
     tradingSessions = []
-    leader = False
+    leader = "False"
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
@@ -396,11 +402,12 @@ for oneStock in stocks:
     finalStocks.append(myInvertarStock)
 
 for oneInvertarStock in finalStocks:
+    oneInvertarStock.leader = "False"
     response = urllib.request.urlopen("http://www.ravaonline.com/v2/precios/panel.php?m=LID")
     soup = BeautifulSoup(response,"html.parser")
     for row in soup.findAll("td"):
       if row.get_text()+".BA" == oneInvertarStock.ticker:
-        oneInvertarStock.leader = True
+        oneInvertarStock.leader = "True"
     macd_macd_line = []
     last_ema_9 = 0.0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
@@ -419,8 +426,7 @@ for oneInvertarStock in finalStocks:
                                             * (float(2)/float(10)))
             last_ema_9 = current_ema
             oneInvertarTradingSession.macd_signal_line = current_ema
-    print(oneInvertarStock.to_JSON())
-    #http.urlopen('POST', 'http://localhost:8080/assets', headers={'Content-Type':'application/json'},
-    #             body=myInvertarStock.to_JSON())
+    db.stocks.insert_one(json.loads(oneInvertarStock.to_JSON()))
+    print("Cargado",oneInvertarStock.ticker)
 
 print("Fin de Carga de Acciones")
