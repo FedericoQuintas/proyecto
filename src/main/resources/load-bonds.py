@@ -6,6 +6,8 @@ import io
 import csv
 import json
 from pymongo import MongoClient
+from datetime import datetime
+import time
 
 client = MongoClient('localhost', 27017)
 
@@ -288,6 +290,7 @@ for oneInvertarBond in finalBonds:
     last_ema_9 = 0.0
     index = 0
     for oneInvertarTradingSession in oneInvertarBond.tradingSessions:
+        oneInvertarTradingSession.tradingDate = int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
         oneInvertarTradingSession.adjClosingPrice = 0.0
         index = index +1
         if index == len(oneInvertarBond.tradingSessions)-1:
