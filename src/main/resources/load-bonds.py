@@ -31,6 +31,7 @@ class InvertarBond:
 
 class InvertarTradingSession:
 
+    adjClosingPrice = 0.0
     closingPrice = 0.0
     openingPrice = 0.0
     maxPrice = 0.0
@@ -81,41 +82,39 @@ csvsToDownload.append(Link(19,"NF18",False,"BOGAR 2018","http://www.ravaonline.c
 csvsToDownload.append(Link(20,"NO20",False,"BOGAR 2020","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=NO20&csv=1"))
 csvsToDownload.append(Link(21,"PAP0",False,"Par $ Ley Arg. Canje 2010","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PAP0&csv=1"))
 csvsToDownload.append(Link(22,"PARP",False,"Par $ Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PARP&csv=1"))
-csvsToDownload.append(Link(23,"PR12",False,"Consolidacion Serie 4","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR12&csv=1"))
-csvsToDownload.append(Link(24,"PR13",False,"Consolidacion Serie 6","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR13&csv=1"))
-csvsToDownload.append(Link(25,"RNG21",False,"Rio Negro Bogar 2","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=RNG21&csv=1"))
-csvsToDownload.append(Link(26,"TUCS1",False,"Tucuman Consadep Serie 1","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TUCS1&csv=1"))
-csvsToDownload.append(Link(27,"A2M6",False,"BONAC MARZO 2016","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=A2M6&csv=1"))
-csvsToDownload.append(Link(28,"AS15",False,"BONAR 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AS15&csv=1"))
-csvsToDownload.append(Link(29,"AS16",False,"BONAR 2016","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AS16&csv=1"))
-csvsToDownload.append(Link(30,"PR14",False,"Consolidacion Serie 7","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR14&csv=1"))
-csvsToDownload.append(Link(31,"PR15",False,"Consolidacion Serie 8","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR15&csv=1"))
-csvsToDownload.append(Link(32,"AA17",False,"BONAR X","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AA17&csv=1"))
-csvsToDownload.append(Link(33,"AN18",False,"Bonar 2018","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AN18&csv=1"))
-csvsToDownload.append(Link(34,"AY24",False,"BONAR 2024","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AY24&csv=1"))
-csvsToDownload.append(Link(35,"BADER",False,"BAADE","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BADER&csv=1"))
-csvsToDownload.append(Link(36,"BDED",False,"Bs.As. Discount Largo Plazo U$S","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BDED&csv=1"))
-csvsToDownload.append(Link(37,"BP15",False,"Buenos Aires 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP15&csv=1"))
-csvsToDownload.append(Link(38,"BP18",False,"Buenos Aires 2018","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP18&csv=1"))
-csvsToDownload.append(Link(39,"BP21",False,"Buenos Aires 2021","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP21&csv=1"))
-csvsToDownload.append(Link(40,"BP28",False,"Buenos Aires 2028","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP28&csv=1"))
-csvsToDownload.append(Link(41,"BPLD",False,"Bs.As. Par Largo Plazo u$s","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BPLD&csv=1"))
-csvsToDownload.append(Link(42,"BPMD",False,"Bs.As. Par Mediano Plazo u$s","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BPMD&csv=1"))
-csvsToDownload.append(Link(43,"DIA0",False,"Discount U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DIA0&csv=1"))
-csvsToDownload.append(Link(44,"DICA",False,"Discount U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DICA&csv=1"))
-csvsToDownload.append(Link(45,"DICY",False,"Discount U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DICY&csv=1"))
-csvsToDownload.append(Link(46,"DIY0",False,"Discount U$S Ley NY Canje 2010","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DIY0&csv=1"))
-csvsToDownload.append(Link(47,"GJ17",False,"Global 2017","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=GJ17&csv=1"))
-csvsToDownload.append(Link(48,"PAA0",False,"Par U$S Ley Arg. (Canje 2010)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PAA0&csv=1"))
-csvsToDownload.append(Link(49,"PARA",False,"Par U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PARA&csv=1"))
-csvsToDownload.append(Link(50,"PARY",False,"Par U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PARY&csv=1"))
-csvsToDownload.append(Link(51,"PAY0",False,"Par U$S Ley N.Y. (Canje 2010)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PAY0&csv=1"))
-csvsToDownload.append(Link(52,"RO15",False,"BODEN 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=RO15&csv=1"))
-csvsToDownload.append(Link(53,"TVPA",False,"Cupones PBI U$S Ley Argentina","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPA&csv=1"))
-csvsToDownload.append(Link(54,"TVPE",False,"Cupones PBI en Euros","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPE&csv=1"))
-csvsToDownload.append(Link(55,"TVPP",False,"Cupones PBI en Pesos","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPP&csv=1"))
-csvsToDownload.append(Link(56,"TVPY",False,"Cupones PBI U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPY&csv=1"))
-csvsToDownload.append(Link(57,"TVY0",False,"Cupones PBI U$S 2010 Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVY0&csv=1"))
+csvsToDownload.append(Link(23,"PR13",False,"Consolidacion Serie 6","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR13&csv=1"))
+csvsToDownload.append(Link(24,"RNG21",False,"Rio Negro Bogar 2","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=RNG21&csv=1"))
+csvsToDownload.append(Link(25,"TUCS1",False,"Tucuman Consadep Serie 1","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TUCS1&csv=1"))
+csvsToDownload.append(Link(26,"A2M6",False,"BONAC MARZO 2016","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=A2M6&csv=1"))
+csvsToDownload.append(Link(27,"AS15",False,"BONAR 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AS15&csv=1"))
+csvsToDownload.append(Link(28,"AS16",False,"BONAR 2016","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AS16&csv=1"))
+csvsToDownload.append(Link(29,"PR15",False,"Consolidacion Serie 8","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PR15&csv=1"))
+csvsToDownload.append(Link(30,"AA17",False,"BONAR X","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AA17&csv=1"))
+csvsToDownload.append(Link(31,"AN18",False,"Bonar 2018","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AN18&csv=1"))
+csvsToDownload.append(Link(32,"AY24",False,"BONAR 2024","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=AY24&csv=1"))
+csvsToDownload.append(Link(33,"BADER",False,"BAADE","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BADER&csv=1"))
+csvsToDownload.append(Link(34,"BDED",False,"Bs.As. Discount Largo Plazo U$S","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BDED&csv=1"))
+csvsToDownload.append(Link(35,"BP15",False,"Buenos Aires 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP15&csv=1"))
+csvsToDownload.append(Link(36,"BP18",False,"Buenos Aires 2018","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP18&csv=1"))
+csvsToDownload.append(Link(37,"BP21",False,"Buenos Aires 2021","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP21&csv=1"))
+csvsToDownload.append(Link(38,"BP28",False,"Buenos Aires 2028","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BP28&csv=1"))
+csvsToDownload.append(Link(39,"BPLD",False,"Bs.As. Par Largo Plazo u$s","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BPLD&csv=1"))
+csvsToDownload.append(Link(40,"BPMD",False,"Bs.As. Par Mediano Plazo u$s","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=BPMD&csv=1"))
+csvsToDownload.append(Link(41,"DIA0",False,"Discount U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DIA0&csv=1"))
+csvsToDownload.append(Link(42,"DICA",False,"Discount U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DICA&csv=1"))
+csvsToDownload.append(Link(43,"DICY",False,"Discount U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DICY&csv=1"))
+csvsToDownload.append(Link(44,"DIY0",False,"Discount U$S Ley NY Canje 2010","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=DIY0&csv=1"))
+csvsToDownload.append(Link(45,"GJ17",False,"Global 2017","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=GJ17&csv=1"))
+csvsToDownload.append(Link(46,"PAA0",False,"Par U$S Ley Arg. (Canje 2010)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PAA0&csv=1"))
+csvsToDownload.append(Link(47,"PARA",False,"Par U$S Ley Arg.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PARA&csv=1"))
+csvsToDownload.append(Link(48,"PARY",False,"Par U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PARY&csv=1"))
+csvsToDownload.append(Link(49,"PAY0",False,"Par U$S Ley N.Y. (Canje 2010)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=PAY0&csv=1"))
+csvsToDownload.append(Link(50,"RO15",False,"BODEN 2015","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=RO15&csv=1"))
+csvsToDownload.append(Link(51,"TVPA",False,"Cupones PBI U$S Ley Argentina","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPA&csv=1"))
+csvsToDownload.append(Link(52,"TVPE",False,"Cupones PBI en Euros","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPE&csv=1"))
+csvsToDownload.append(Link(53,"TVPP",False,"Cupones PBI en Pesos","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPP&csv=1"))
+csvsToDownload.append(Link(54,"TVPY",False,"Cupones PBI U$S Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVPY&csv=1"))
+csvsToDownload.append(Link(55,"TVY0",False,"Cupones PBI U$S 2010 Ley N.Y.","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=TVY0&csv=1"))
 
 bonds =[]
 finalBonds = []
@@ -289,6 +288,7 @@ for oneInvertarBond in finalBonds:
     last_ema_9 = 0.0
     index = 0
     for oneInvertarTradingSession in oneInvertarBond.tradingSessions:
+        oneInvertarTradingSession.adjClosingPrice = 0.0
         index = index +1
         if index == len(oneInvertarBond.tradingSessions)-1:
             oneInvertarBond.lastTradingPrice = oneInvertarTradingSession.closingPrice
