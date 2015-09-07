@@ -1,6 +1,7 @@
 package com.proyecto.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.proyecto.asset.exception.AssetNotFoundException;
 import com.proyecto.asset.exception.InvalidAssetTypeException;
@@ -10,6 +11,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.PortfolioHistoryVO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidLoginException;
 import com.proyecto.user.exception.InvalidPasswordException;
@@ -87,7 +89,7 @@ public interface UserService {
 	 * @return Float
 	 * @throws UserNotFoundException
 	 * @throws AssetNotFoundException
-	 * @throws InvalidAssetTypeException 
+	 * @throws InvalidAssetTypeException
 	 */
 
 	Float getPortfoliosPerformance(Long id) throws UserNotFoundException,
@@ -100,7 +102,7 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
 	 * @throws AssetNotFoundException
-	 * @throws InvalidAssetTypeException 
+	 * @throws InvalidAssetTypeException
 	 */
 	Float getPortfolioPerformance(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException,
@@ -113,7 +115,7 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws PortfolioNotFoundException
 	 * @throws AssetNotFoundException
-	 * @throws InvalidAssetTypeException 
+	 * @throws InvalidAssetTypeException
 	 */
 	List<MarketValueVO> getPortfolioMarketValue(Long userId, Long portfolioId)
 			throws UserNotFoundException, PortfolioNotFoundException,
@@ -154,5 +156,8 @@ public interface UserService {
 	 * @return
 	 */
 	List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints);
+
+	Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(Long userId)
+			throws ApplicationServiceException;
 
 }

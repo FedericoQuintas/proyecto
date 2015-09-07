@@ -3,7 +3,11 @@ package com.proyecto.user.service;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -16,14 +20,19 @@ import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.common.exception.DomainException;
 import com.proyecto.common.exception.ObjectNotFoundException;
+import com.proyecto.rest.resource.asset.dto.AssetDTO;
+import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.rest.resource.user.dto.UserAssetDTO;
 import com.proyecto.user.domain.InvertarUser;
 import com.proyecto.user.domain.InvestorProfile;
 import com.proyecto.user.domain.Portfolio;
+import com.proyecto.user.domain.PortfolioHistoryVO;
+import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
 import com.proyecto.user.domain.factory.PortfolioDTOFactory;
@@ -118,7 +127,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Float getPortfoliosPerformance(Long userId)
-			throws UserNotFoundException, AssetNotFoundException, InvalidAssetTypeException {
+			throws UserNotFoundException, AssetNotFoundException,
+			InvalidAssetTypeException {
 
 		try {
 			InvertarUser user = userDAO.findById(userId);
@@ -254,7 +264,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<MarketValueVO> getPortfolioMarketValue(Long userId,
 			Long portfolioId) throws UserNotFoundException,
-			PortfolioNotFoundException, AssetNotFoundException, InvalidAssetTypeException {
+			PortfolioNotFoundException, AssetNotFoundException,
+			InvalidAssetTypeException {
 		try {
 			InvertarUser user = userDAO.findById(userId);
 			Portfolio portfolio = user.getPortfolio(portfolioId);
@@ -323,4 +334,150 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(Long userId)
+			throws ApplicationServiceException {
+
+		List<PortfolioDTO> portfolios = getPortfolios(userId);
+
+		List<PortfolioHistoryVO> portfolioHistoryVOs = new ArrayList<PortfolioHistoryVO>();
+
+		Map<Long, List<PortfolioHistoryVO>> portfoliosByDates = new HashMap<Long, List<PortfolioHistoryVO>>();
+
+		for (PortfolioDTO portfolioDTO : portfolios) {
+
+			portfoliosByDates.put(portfolioDTO.getId(), portfolioHistoryVOs);
+
+			Date specificDate = obtainEarliestTradingDate(portfolioDTO);
+
+			while (!isToday(specificDate)) {
+
+				PortfolioHistoryVO portfolioHistoryVO = new PortfolioHistoryVO();
+
+				portfolioHistoryVO.setDate(specificDate);
+
+				List<UserAssetDTO> userAssets = portfolioDTO.getUserAssets();
+
+				Map<Long, Double> pricesByAsset = obtainPricesByAsset(
+						specificDate, userAssets);
+
+				portfolioHistoryVO.setPricesByAsset(pricesByAsset);
+
+				// Valor del mercado. Recorro todos los precios de los activos
+				// que
+				// reuní, y los multiplico
+				// por la cantidad que tenía el usuario aquel día.
+
+				obtainTransactions(specificDate, userAssets, portfolioHistoryVO);
+
+				portfolioHistoryVOs.add(portfolioHistoryVO);
+
+				incrementDay(specificDate);
+			}
+		}
+
+		return portfoliosByDates;
+	}
+
+	private void incrementDay(Date specificDate) {
+		specificDate.setTime(specificDate.getTime() + 24 * 60 * 60 * 1000);
+	}
+
+	@SuppressWarnings("deprecation")
+	private boolean isToday(Date earliestDate) {
+		return new Date().getDay() == earliestDate.getDay()
+				&& new Date().getYear() == earliestDate.getYear();
+	}
+
+	private Map<Long, Double> obtainPricesByAsset(Date date,
+			List<UserAssetDTO> userAssets) throws AssetNotFoundException,
+			InvalidAssetTypeException {
+		Map<Long, Double> pricesByAsset = new HashMap<Long, Double>();
+
+		for (UserAssetDTO userAssetDTO : userAssets) {
+
+			AssetDTO asset = assetService.findById(userAssetDTO.getAssetId());
+
+			for (TradingSessionDTO tradingSessionDTO : asset
+					.getTradingSessions()) {
+				if (tradingSessionDTO.getTradingDate().equals(date)) {
+					Double closingPrice = tradingSessionDTO.getClosingPrice();
+					pricesByAsset.put(asset.getId(), closingPrice);
+				}
+
+			}
+
+		}
+		return pricesByAsset;
+	}
+
+	private void obtainTransactions(Date earliestDate,
+			List<UserAssetDTO> userAssets, PortfolioHistoryVO portfolioHistoryVO) {
+		for (UserAssetDTO userAssetDTO : userAssets) {
+			List<TransactionDTO> sellingTransactionsByDateAndAsset = obtainSellingTransactionsByDateAndAsset(
+					userAssetDTO, earliestDate);
+			portfolioHistoryVO
+					.setSellingTransactions(sellingTransactionsByDateAndAsset);
+			List<TransactionDTO> purchasingTransactionsByDateAndAsset = obtainPurchasingTransactionsByDateAndAsset(
+					userAssetDTO, earliestDate);
+			portfolioHistoryVO
+					.setPurchasingTransactions(purchasingTransactionsByDateAndAsset);
+		}
+	}
+
+	private List<TransactionDTO> obtainSellingTransactionsByDateAndAsset(
+			UserAssetDTO userAssetDTO, Date specificDate) {
+
+		List<TransactionDTO> sellingTransaction = new ArrayList<TransactionDTO>();
+
+		for (TransactionDTO transactionDTO : userAssetDTO.getTransactions()) {
+			if (transactionDTO.getTradingDate().equals(specificDate)) {
+				if (transactionDTO.getType().equals(TransactionType.SELL)) {
+					sellingTransaction.add(transactionDTO);
+				}
+			}
+		}
+		return sellingTransaction;
+
+	}
+
+	private List<TransactionDTO> obtainPurchasingTransactionsByDateAndAsset(
+			UserAssetDTO userAssetDTO, Date specificDate) {
+
+		List<TransactionDTO> purchasingTransaction = new ArrayList<TransactionDTO>();
+
+		for (TransactionDTO transactionDTO : userAssetDTO.getTransactions()) {
+			if (transactionDTO.getTradingDate().equals(specificDate)) {
+				if (transactionDTO.getType().equals(TransactionType.PURCHASE)) {
+					purchasingTransaction.add(transactionDTO);
+				}
+			}
+		}
+		return purchasingTransaction;
+	}
+
+	private Date obtainEarliestTradingDate(PortfolioDTO portfolioDTO) {
+
+		List<TransactionDTO> transactions = obtainAllTheTransactions(portfolioDTO);
+		Date earliestDate = new Date();
+
+		for (TransactionDTO transactionDTO : transactions) {
+			Date tradingDate = transactionDTO.getTradingDate();
+			if (tradingDate.before(earliestDate)) {
+				earliestDate = tradingDate;
+			}
+
+		}
+		return earliestDate;
+	}
+
+	private List<TransactionDTO> obtainAllTheTransactions(
+			PortfolioDTO portfolioDTO) {
+		List<TransactionDTO> transactions = new ArrayList<TransactionDTO>();
+		List<UserAssetDTO> userAssets = portfolioDTO.getUserAssets();
+		for (UserAssetDTO userAssetDTO : userAssets) {
+			transactions.addAll(userAssetDTO.getTransactions());
+		}
+		return transactions;
+	}
 }

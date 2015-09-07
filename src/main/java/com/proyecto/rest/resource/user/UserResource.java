@@ -1,6 +1,7 @@
 package com.proyecto.rest.resource.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.PortfolioHistoryVO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.UserMailAlreadyExistsException;
@@ -138,8 +140,17 @@ public class UserResource {
 	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TheoreticalPortfolioDTO> getInvestorProfile(
-			HttpSession session, @RequestBody Integer amountOfPoints) {
+			HttpSession session, @RequestBody Integer amountOfPoints,
+			@PathVariable("user_id") Long userId) {
 		return userService.getInvestorProfile(amountOfPoints);
 	}
 
+	@RequestMapping(value = "/{user_id}/portfolios/history", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<Long, List<PortfolioHistoryVO>> getPortfolioHistory(HttpSession session,
+			@PathVariable("user_id") Long userId)
+			throws ApplicationServiceException {
+		checkSession(session, userId);
+		return userService.getPortfoliosHistories(userId);
+	}
 }
