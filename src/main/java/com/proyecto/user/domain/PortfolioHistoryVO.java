@@ -17,6 +17,12 @@ public class PortfolioHistoryVO {
 	private List<TransactionDTO> purchasingTransactions;
 	@JsonProperty("prices_by_asset")
 	private Map<Long, Double> pricesByAsset;
+	@JsonProperty("market_value")
+	private Float marketValue;
+
+	public Float getMarketValue() {
+		return marketValue;
+	}
 
 	public void setDate(Date date) {
 		this.date = date;
@@ -49,6 +55,11 @@ public class PortfolioHistoryVO {
 
 	public Map<Long, Double> getPricesByAsset() {
 		return pricesByAsset;
+	}
+
+	public void setMarketValue(Float marketValue) {
+		this.marketValue = marketValue;
+
 	}
 
 }

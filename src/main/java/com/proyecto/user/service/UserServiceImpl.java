@@ -335,8 +335,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(Long userId)
-			throws ApplicationServiceException {
+	public Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(
+			Long userId) throws ApplicationServiceException {
 
 		List<PortfolioDTO> portfolios = getPortfolios(userId);
 
@@ -349,6 +349,8 @@ public class UserServiceImpl implements UserService {
 			portfoliosByDates.put(portfolioDTO.getId(), portfolioHistoryVOs);
 
 			Date specificDate = obtainEarliestTradingDate(portfolioDTO);
+
+			Float marketValue = new Float(0);
 
 			while (!isToday(specificDate)) {
 
@@ -363,20 +365,54 @@ public class UserServiceImpl implements UserService {
 
 				portfolioHistoryVO.setPricesByAsset(pricesByAsset);
 
-				// Valor del mercado. Recorro todos los precios de los activos
-				// que
-				// reuní, y los multiplico
-				// por la cantidad que tenía el usuario aquel día.
-
 				obtainTransactions(specificDate, userAssets, portfolioHistoryVO);
+
+				marketValue = calculateUpdatedMarketValue(marketValue,
+						portfolioHistoryVO);
 
 				portfolioHistoryVOs.add(portfolioHistoryVO);
 
 				incrementDay(specificDate);
+
+				portfolioHistoryVO.setMarketValue(marketValue);
 			}
 		}
 
 		return portfoliosByDates;
+	}
+
+	private Float calculateUpdatedMarketValue(Float marketValue,
+			PortfolioHistoryVO portfolioHistoryVO) {
+
+		Float valueAccumulated = new Float(0);
+		valueAccumulated = accumulatePurchasingTransactionsValues(
+				portfolioHistoryVO, valueAccumulated);
+
+		valueAccumulated = accumulateSellingTransactionsValues(
+				portfolioHistoryVO, valueAccumulated);
+		return marketValue + valueAccumulated;
+	}
+
+	private Float accumulatePurchasingTransactionsValues(
+			PortfolioHistoryVO portfolioHistoryVO, Float valueAccumulated) {
+		for (TransactionDTO transaction : portfolioHistoryVO
+				.getPurchasingTransactions()) {
+
+			valueAccumulated = valueAccumulated + transaction.getQuantity()
+					* transaction.getPricePaid();
+		}
+		return valueAccumulated;
+	}
+
+	private Float accumulateSellingTransactionsValues(
+			PortfolioHistoryVO portfolioHistoryVO, Float valueAccumulated) {
+		for (TransactionDTO transaction : portfolioHistoryVO
+				.getSellingTransactions()) {
+
+			valueAccumulated = valueAccumulated - transaction.getQuantity()
+					* transaction.getPricePaid();
+		}
+		return valueAccumulated;
 	}
 
 	private void incrementDay(Date specificDate) {
