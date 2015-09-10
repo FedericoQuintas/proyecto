@@ -15,7 +15,6 @@ public class TradingSessionDTOFactory {
 		tradingSessionDTO.setTradingDate(tradingSession.getTradingDate()
 				.getTime());
 		tradingSessionDTO.setVolume(tradingSession.getVolume());
-		tradingSessionDTO.setPayment(tradingSession.getPayment());
 		
 		tradingSessionDTO.setSma_7(tradingSession.getSma_7());
 		tradingSessionDTO.setSma_21(tradingSession.getSma_21());
@@ -36,6 +35,11 @@ public class TradingSessionDTOFactory {
 		tradingSessionDTO.setMomentum_21(tradingSession.getMomentum_21());
 		tradingSessionDTO.setMomentum_50(tradingSession.getMomentum_50());
 		tradingSessionDTO.setMomentum_200(tradingSession.getMomentum_200());
+		
+		tradingSessionDTO.setAdjClosingPrice(tradingSession.getAdjClosingPrice());
+		tradingSessionDTO.setMacd_histogram(tradingSession.getMacd_histogram());
+		tradingSessionDTO.setMacd_macd_line(tradingSession.getMacd_macd_line());
+		tradingSessionDTO.setMacd_signal_line(tradingSession.getMacd_signal_line());
 
 		return tradingSessionDTO;
 	}

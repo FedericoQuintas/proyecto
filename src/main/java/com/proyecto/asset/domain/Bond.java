@@ -12,7 +12,7 @@ public class Bond extends Asset {
 	@MongoObjectId
 	public String objectId;
 	
-	private boolean isPesified = true;
+	private boolean dollarLinked = true;
 	
 	public Bond(){
 		
@@ -33,10 +33,10 @@ public class Bond extends Asset {
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
 	}
-	public boolean isPesified() { 
-		return isPesified;
+	public boolean isDollarLinked() { 
+		return dollarLinked;
 	}
-	public void setPesified(boolean isPesified) {
-		this.isPesified = isPesified;
+	public void setDollarLinked(boolean isPesified) {
+		this.dollarLinked = isPesified;
 	}
 }

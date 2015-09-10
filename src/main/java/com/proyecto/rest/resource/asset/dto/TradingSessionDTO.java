@@ -16,8 +16,6 @@ public class TradingSessionDTO {
 	private Long tradingDate;
 	@JsonProperty("volume")
 	private Integer volume;
-	@JsonProperty("payment")
-	private Double payment;
 	
 	@JsonProperty("sma_7")
 	private Double sma_7;
@@ -54,6 +52,16 @@ public class TradingSessionDTO {
 	private Double rsi_50;
 	@JsonProperty("rsi_200")
 	private Double rsi_200;
+	
+	@JsonProperty("adjClosingPrice")
+	private Double adjClosingPrice;
+	
+	@JsonProperty("macd_macd_line")
+	private Double macd_macd_line;
+	@JsonProperty("macd_signal_line")
+	private Double macd_signal_line;
+	@JsonProperty("macd_histogram")
+	private Double macd_histogram;
 
 	public Double getClosingPrice() {
 		return closingPrice;
@@ -101,13 +109,6 @@ public class TradingSessionDTO {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
-	}
-
-	public Double getPayment() {
-		return payment;
-	}
-	public void setPayment(Double payment) {
-		this.payment = payment;
 	}
 
 	public Double getSma_7() {
@@ -236,5 +237,37 @@ public class TradingSessionDTO {
 
 	public void setRsi_200(Double rsi_200) {
 		this.rsi_200 = rsi_200;
+	}
+
+	public Double getAdjClosingPrice() {
+		return adjClosingPrice;
+	}
+
+	public void setAdjClosingPrice(Double adjClosingPrice) {
+		this.adjClosingPrice = adjClosingPrice;
+	}
+
+	public Double getMacd_macd_line() {
+		return macd_macd_line;
+	}
+
+	public void setMacd_macd_line(Double macd_macd_line) {
+		this.macd_macd_line = macd_macd_line;
+	}
+
+	public Double getMacd_signal_line() {
+		return macd_signal_line;
+	}
+
+	public void setMacd_signal_line(Double macd_signal_line) {
+		this.macd_signal_line = macd_signal_line;
+	}
+
+	public Double getMacd_histogram() {
+		return macd_histogram;
+	}
+
+	public void setMacd_histogram(Double macd_histogram) {
+		this.macd_histogram = macd_histogram;
 	}
 }

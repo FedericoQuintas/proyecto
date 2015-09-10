@@ -11,7 +11,7 @@ public class StockFactory extends AssetFactory {
 		Stock stock = new Stock(id, stockDTO.getDescription(),
 				stockDTO.getTicker(), stockDTO.getCurrency());
 		complete(stock, stockDTO);
-		//TODO: completar los campos especificos de stock
+		stock.setLeader(stockDTO.isLeader());
 		stock.setIndustry(stockDTO.getIndustry());
 		return stock;
 	}

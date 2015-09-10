@@ -17,14 +17,14 @@ public abstract class AssetDTO {
 
 	@JsonProperty("name")
 	private String name;
+	
+	@JsonProperty("assetType")
+	private String assetType;
 
-	@JsonProperty("isLeader")
-	private boolean isLeader = false;
-
-	@JsonProperty("trading_sessions")
+	@JsonProperty("tradingSessions")
 	private List<TradingSessionDTO> tradingSessions = new ArrayList<TradingSessionDTO>();
 
-	@JsonProperty("last_trading_price")
+	@JsonProperty("lastTradingPrice")
 	private Float lastTradingPrice;
 
 	@JsonProperty("ticker")
@@ -33,12 +33,6 @@ public abstract class AssetDTO {
 	@JsonProperty("currency")
 	private InvertarCurrencyCode currency;
 
-	@JsonProperty("asset_type")
-	private String assetType;
-
-	public void setAssetType(String assetType) {
-		this.assetType = assetType;
-	}
 
 	public List<TradingSessionDTO> getTradingSessions() {
 		return tradingSessions;
@@ -91,14 +85,6 @@ public abstract class AssetDTO {
 		return currency;
 	}
 
-	public boolean isLeader() {
-		return isLeader;
-	}
-
-	public void setLeader(boolean isLeader) {
-		this.isLeader = isLeader;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -108,7 +94,11 @@ public abstract class AssetDTO {
 	}
 
 	public String getAssetType() {
-		return this.assetType;
+		return assetType;
+	}
+
+	public void setAssetType(String assetType) {
+		this.assetType = assetType;
 	}
 
 }

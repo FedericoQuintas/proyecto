@@ -9,7 +9,7 @@ public class StockDTOFactory extends AssetDTOFactory {
 
 		StockDTO stockDTO = new StockDTO();
 		complete(stockDTO, stock);
-		//TODO: Completar con los campos especificos de stock
+		stockDTO.setLeader(stock.isLeader());
 		stockDTO.setIndustry(stock.getIndustry());
 
 		return stockDTO;

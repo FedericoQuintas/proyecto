@@ -12,7 +12,7 @@ public class BondFactory extends AssetFactory {
 				bondDTO.getTicker(), bondDTO.getCurrency());
 		complete(bond, bondDTO);
 		
-		bond.setPesified(bondDTO.isPesified());
+		bond.setDollarLinked(bondDTO.isDollarLinked());
 		return bond;
 	}
 }

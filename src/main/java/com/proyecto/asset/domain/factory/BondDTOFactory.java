@@ -9,7 +9,7 @@ public class BondDTOFactory extends AssetDTOFactory {
 		BondDTO bondDTO = new BondDTO();
 		complete(bondDTO, bond);
 		
-		bondDTO.setPesified(bond.isPesified());
+		bondDTO.setDollarLinked(bond.isDollarLinked());
 
 		return bondDTO;
 	}

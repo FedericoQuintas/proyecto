@@ -13,7 +13,7 @@ public class Stock extends Asset {
 	public String objectId;
 	
 	private String industry;
-	private boolean isLeader = false;
+	private boolean leader = false; 
 	
 	public Stock(){
 		
@@ -42,5 +42,13 @@ public class Stock extends Asset {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+
+	public boolean isLeader() {
+		return leader;
+	}
+
+	public void setLeader(boolean leader) {
+		this.leader = leader;
 	}
 }

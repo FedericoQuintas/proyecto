@@ -10,7 +10,6 @@ public class TradingSession {
 	private Double minPrice;
 	private Date tradingDate;
 	private Integer volume;
-	private Double payment;
 	
 	private Double sma_7;
 	private Double sma_21;
@@ -32,6 +31,12 @@ public class TradingSession {
 	private Double rsi_50;
 	private Double rsi_200;	
 
+	private Double adjClosingPrice;
+	
+	private Double macd_macd_line;
+	private Double macd_signal_line;
+	private Double macd_histogram;
+	
 	public TradingSession() {
 	}
 
@@ -81,14 +86,6 @@ public class TradingSession {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
-	}
-
-	public Double getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Double payment) {
-		this.payment = payment;
 	}
 
 	public Double getSma_7() {
@@ -217,6 +214,38 @@ public class TradingSession {
 
 	public void setRsi_200(Double rsi_200) {
 		this.rsi_200 = rsi_200;
+	}
+
+	public Double getAdjClosingPrice() {
+		return adjClosingPrice;
+	}
+
+	public void setAdjClosingPrice(Double adjClosingPrice) {
+		this.adjClosingPrice = adjClosingPrice;
+	}
+
+	public Double getMacd_macd_line() {
+		return macd_macd_line;
+	}
+
+	public void setMacd_macd_line(Double macd_macd_line) {
+		this.macd_macd_line = macd_macd_line;
+	}
+
+	public Double getMacd_signal_line() {
+		return macd_signal_line;
+	}
+
+	public void setMacd_signal_line(Double macd_signal_line) {
+		this.macd_signal_line = macd_signal_line;
+	}
+
+	public Double getMacd_histogram() {
+		return macd_histogram;
+	}
+
+	public void setMacd_histogram(Double macd_histogram) {
+		this.macd_histogram = macd_histogram;
 	}
 	
 }
