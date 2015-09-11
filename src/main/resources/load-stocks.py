@@ -1,19 +1,28 @@
 from yahoo_finance import Share
 from datetime import *
-import json
-import urllib3
 from bs4 import BeautifulSoup
+import urllib3
 import urllib.request
 from pymongo import MongoClient
+import json
 import time
+import requests
 
 client = MongoClient('localhost', 27017)
 
 db = client.invertarDB
 
+# API connection parameters
+login_url = 'http://localhost:8080/login'
+store_url = 'http://localhost:8080/assets/stocks'
+credentials = {
+    "mail": "admin@invertar.com",
+    "password": "admin"
+}
+headers = {'Content-Type': 'application/json'}
+
 class InvertarStock:
 
-    id = 0
     ticker = ""
     name = ""
     description = ""
@@ -60,7 +69,6 @@ class InvertarTradingSession:
     macd_signal_line = 0.0
     macd_histogram = 0.0
 
-http = urllib3.PoolManager()
 
 stocks =[]
 stocks.append('AGRO.BA')
@@ -257,13 +265,13 @@ for oneStock in stocks:
     stocks=[]
     for oneTradingSession in stocksFromYahoo:
         currentTradingSession = InvertarTradingSession()
-        currentTradingSession.closingPrice = float(oneTradingSession["Close"])
-        currentTradingSession.openingPrice = float(oneTradingSession["Open"])
-        currentTradingSession.maxPrice = float(oneTradingSession["High"])
-        currentTradingSession.minPrice = float(oneTradingSession["Low"])
-        currentTradingSession.volume = int(oneTradingSession["Volume"])
+        currentTradingSession.closingPrice = oneTradingSession["Close"]
+        currentTradingSession.openingPrice = oneTradingSession["Open"]
+        currentTradingSession.maxPrice = oneTradingSession["High"]
+        currentTradingSession.minPrice = oneTradingSession["Low"]
+        currentTradingSession.volume = oneTradingSession["Volume"]
         currentTradingSession.tradingDate = oneTradingSession["Date"]
-        currentTradingSession.adjClosingPrice = float(oneTradingSession["Adj_Close"])
+        currentTradingSession.adjClosingPrice = oneTradingSession["Adj_Close"]
 
         currentTradingSession.sma_7= 0.0
         currentTradingSession.sma_21= 0.0
@@ -403,10 +411,11 @@ for oneStock in stocks:
 
     finalStocks.append(myInvertarStock)
 
-id = 1
+# Open connection to API
+conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
+session_cookie = conn.cookies
 
 for oneInvertarStock in finalStocks:
-    oneInvertarStock.id = id
     oneInvertarStock.leader = False
     response = urllib.request.urlopen("http://www.ravaonline.com/v2/precios/panel.php?m=LID")
     soup = BeautifulSoup(response,"html.parser")
@@ -417,7 +426,8 @@ for oneInvertarStock in finalStocks:
     last_ema_9 = 0.0
     index_2 = 0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
-        oneInvertarTradingSession.tradingDate = int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
+        oneInvertarTradingSession.tradingDate = \
+            int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
         index_2 = index_2 + 1
         if index_2 == len(oneInvertarStock.tradingSessions):
             oneInvertarStock.lastTradingPrice = oneInvertarTradingSession.closingPrice
@@ -436,8 +446,18 @@ for oneInvertarStock in finalStocks:
                                             * (float(2)/float(10)))
             last_ema_9 = current_ema
             oneInvertarTradingSession.macd_signal_line = current_ema
-    db.stocks.insert_one(json.loads(oneInvertarStock.to_JSON()))
-    print("Cargado",oneInvertarStock.ticker)
-    id = id + 1
+    #oneInvertarStock.tradingSessions = map(lambda x: x.__dict__, oneInvertarStock.tradingSessions)
 
+    # La linea de arriba deberia andar pero no lo hace, por eso la horripilancia de abajo
+    json_ts = []
+    for ts in oneInvertarStock.tradingSessions:
+        json_ts.append(ts.__dict__)
+    oneInvertarStock.tradingSessions = json_ts
+
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(oneInvertarStock.__dict__))
+
+    if r.status_code == 200:
+        print("Cargado:", oneInvertarStock.ticker)
+    else:
+        print("Error en la carga de la accion {}: {}".format(oneInvertarStock.ticker, r.content))
 print("Fin de Carga de Acciones")

@@ -1,33 +1,42 @@
 from datetime import *
-import json
-import urllib.request
 import io
 import csv
+import json
 from pymongo import MongoClient
 from datetime import datetime
 import time
+import requests
+import urllib
 
 client = MongoClient('localhost', 27017)
 
 db = client.invertarDB
 
+# API connection parameters
+login_url = 'http://localhost:8080/login'
+store_url = 'http://localhost:8080/assets/bonds'
+credentials = {
+    "mail": "admin@invertar.com",
+    "password": "admin"
+}
+headers = {'Content-Type': 'application/json'}
+
 class InvertarBond:
 
-    id=0
     ticker = ""
     name = ""
-    description = ""
     lastTradingPrice = 0.0
     currency = "ARS"
     tradingSessions = []
-    dollar_linked = False
+    dollarLinked = False
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
-    def __init__(self,anID,aTicker,aName):
-         self.id=anID
-         self.ticker = aTicker
-         self.name = aName
+
+    def __init__(self,aTicker,aName):
+        self.ticker = aTicker
+        self.name = aName
+        self.description = "descripcion"
 
 class InvertarTradingSession:
 
@@ -123,8 +132,8 @@ for oneLink in csvsToDownload:
     print("Descargando:",oneLink.ticker)
     webpage = urllib.request.urlopen(oneLink.url)
     datareader = csv.reader(io.TextIOWrapper(webpage))
-    currentBond = InvertarBond(oneLink.id,oneLink.ticker,oneLink.name)
-    currentBond.dollar_linked=oneLink.dollar_linked
+    currentBond = InvertarBond(oneLink.ticker,oneLink.name)
+    currentBond.dollarLinked=oneLink.dollar_linked
     currentBond.tradingSessions=[]
     for row in datareader:
         if row[4] != "cierre":
@@ -134,9 +143,9 @@ for oneLink in csvsToDownload:
 for oneBond in bonds:
 
     print("Procesando:",oneBond.ticker)
-    myInvertarBond = InvertarBond(oneBond.id,oneBond.ticker,oneBond.name)
+    myInvertarBond = InvertarBond(oneBond.ticker,oneBond.name)
     currentBond = oneBond
-    myInvertarBond.dollar_linked = oneBond.dollar_linked
+    myInvertarBond.dollarLinked = oneBond.dollarLinked
     myInvertarBond.currency = "ARS"
     myInvertarBond.tradingSessions = []
 
@@ -277,11 +286,15 @@ for oneBond in bonds:
                     last_ema_26 = current_ema
                     currentTradingSession.macd_macd_line -= current_ema
 
-        #Only inserts last 3 years but we take in consideration for the calculations the last 5 years
+        # Only inserts last 3 years but we take in consideration for the calculations the last 5 years
         if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1085):
             myInvertarBond.tradingSessions.append(currentTradingSession)
 
     finalBonds.append(myInvertarBond)
+
+# Open connection to API
+conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
+session_cookie = conn.cookies
 
 for oneInvertarBond in finalBonds:
     macd_macd_line = []
@@ -309,7 +322,19 @@ for oneInvertarBond in finalBonds:
             last_ema_9 = current_ema
             oneInvertarTradingSession.macd_signal_line = current_ema
 
-    db.bonds.insert_one(json.loads(oneInvertarBond.to_JSON()))
-    print("Cargado:",oneInvertarBond.ticker)
+    #oneInvertarBond.tradingSessions = map(lambda x: x.__dict__, oneInvertarBond.tradingSessions)
+
+    # La linea de arriba deberia andar pero no lo hace, por eso la horripilancia de abajo
+    json_ts = []
+    for ts in oneInvertarBond.tradingSessions:
+        json_ts.append(ts.__dict__)
+    oneInvertarBond.tradingSessions = json_ts
+
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(oneInvertarBond.__dict__))
+
+    if r.status_code == 200:
+        print("Cargado:",oneInvertarBond.ticker)
+    else:
+        print("Error en la carga del bono {}: {}".format(oneInvertarBond.ticker, r.content))
 
 print("Fin de Carga de Bonos")
