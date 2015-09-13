@@ -301,7 +301,7 @@ for oneInvertarBond in finalBonds:
     last_ema_9 = 0.0
     index = 0
     for oneInvertarTradingSession in oneInvertarBond.tradingSessions:
-        oneInvertarTradingSession.tradingDate = int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
+        oneInvertarTradingSession.tradingDate = int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple())) * 1000
         oneInvertarTradingSession.adjClosingPrice = 0.0
         index = index +1
         if index == len(oneInvertarBond.tradingSessions)-1:

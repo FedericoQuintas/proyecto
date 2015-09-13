@@ -85,7 +85,6 @@ stocks.append('CAPX.BA')
 stocks.append('CARC.BA')
 stocks.append('CECO2.BA')
 stocks.append('CELU.BA')
-stocks.append('CEPU2.BA')
 stocks.append('CGPA2.BA')
 stocks.append('COLO.BA')
 stocks.append('COUR.BA')
@@ -112,8 +111,6 @@ stocks.append('METR.BA')
 stocks.append('MIRG.BA')
 stocks.append('MOLI.BA')
 stocks.append('MOLI5.BA')
-stocks.append('MORI.BA')
-stocks.append('MORI5.BA')
 stocks.append('OEST.BA')
 stocks.append('PATA.BA')
 stocks.append('PATY.BA')
@@ -427,7 +424,7 @@ for oneInvertarStock in finalStocks:
     index_2 = 0
     for oneInvertarTradingSession in oneInvertarStock.tradingSessions:
         oneInvertarTradingSession.tradingDate = \
-            int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple()))
+            int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple())) * 1000
         index_2 = index_2 + 1
         if index_2 == len(oneInvertarStock.tradingSessions):
             oneInvertarStock.lastTradingPrice = oneInvertarTradingSession.closingPrice
