@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import yahoofinance.Stock;
@@ -26,7 +25,6 @@ public class YahooFinanceInformationServiceImpl implements
 	@Resource
 	private AssetService assetService;
 
-	@Scheduled(cron = "*/59 * * * * ?")
 	@Override
 	public void update() throws AssetNotFoundException,
 			InvalidAssetArgumentException,
@@ -39,7 +37,7 @@ public class YahooFinanceInformationServiceImpl implements
 			Stock stock = obtainStockInformation(assetDTO);
 			BigDecimal price = stock.getQuote(true).getPrice();
 			assetDTO.setLastTradingPrice(price.floatValue());
-			assetService.update(assetDTO);
+//			assetService.update(assetDTO);
 		}
 
 	}
