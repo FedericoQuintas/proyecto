@@ -60,6 +60,20 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private AssetService assetService;
+	
+	@Override
+	public void removePortfolioById(Long userId, Long portfolioId) throws ApplicationServiceException {
+		InvertarUser user;
+		try {
+			user = userDAO.findById(userId);
+			user.removePortfolio(portfolioId);
+			updateUser(user);
+		} catch (PortfolioNotFoundException e) {
+			throw new PortfolioNotFoundException(e);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		} 
+	}
 
 	@Override
 	public InvertarUserDTO findById(Long id) throws UserNotFoundException {
