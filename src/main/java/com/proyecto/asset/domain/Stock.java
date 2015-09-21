@@ -11,25 +11,25 @@ public class Stock extends Asset {
 	@MongoId
 	@MongoObjectId
 	public String objectId;
-	
+
 	private String industry;
-	private boolean leader = false; 
-	
-	public Stock(){
-		
+	private boolean leader = false;
+
+	public Stock() {
+
 	}
-	
+
 	public Stock(Long id, String description, String ticker,
-			InvertarCurrencyCode invertarCurrency) {
-		super(id, description, ticker, invertarCurrency);
+			InvertarCurrencyCode invertarCurrency, String name) {
+		super(id, description, ticker, invertarCurrency, name);
 	}
-	
+
 	@ObjectId
 	@JsonProperty("_id")
 	public String getObjectId() {
 		return this.objectId;
 	}
-	
+
 	@ObjectId
 	@JsonProperty("_id")
 	public void setObjectId(String objectId) {

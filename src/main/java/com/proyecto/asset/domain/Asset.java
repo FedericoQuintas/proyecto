@@ -34,11 +34,12 @@ public abstract class Asset {
 	// TradingSessions tengan la logica necesaria
 
 	public Asset(Long id, String description, String ticker,
-			InvertarCurrencyCode invertarCurrency) {
+			InvertarCurrencyCode invertarCurrency, String name) {
 		this.id = id;
 		this.description = description;
 		this.ticker = ticker;
 		this.currency = invertarCurrency;
+		this.name = name;
 		tradingSessions = new TreeMap<Long, TradingSession>();
 	}
 
@@ -137,5 +138,4 @@ public abstract class Asset {
 	public void setType(String type) {
 		this.type = type;
 	}
-
 }

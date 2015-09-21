@@ -9,7 +9,7 @@ public class BondFactory extends AssetFactory {
 	public static Bond create(BondDTO bondDTO, Long id) 
 			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
 		Bond bond = new Bond(id, bondDTO.getDescription(),
-				bondDTO.getTicker(), bondDTO.getCurrency());
+				bondDTO.getTicker(), bondDTO.getCurrency(), bondDTO.getName());
 		complete(bond, bondDTO);
 		
 		bond.setDollarLinked(bondDTO.isDollarLinked());
