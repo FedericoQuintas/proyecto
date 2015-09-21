@@ -96,6 +96,16 @@ public class UserResource {
 		checkSession(session, userId);
 		return userService.findPortfolioById(userId, portfolioId);
 	}
+	
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void removeUserPortfolio(HttpSession session,
+			@PathVariable("user_id") Long userId,
+			@PathVariable("portfolio_id") Long portfolioId)
+			throws ApplicationServiceException {
+		checkSession(session, userId);
+		userService.removePortfolioById(userId, portfolioId);
+	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/marketValue", method = RequestMethod.GET)
 	@ResponseBody

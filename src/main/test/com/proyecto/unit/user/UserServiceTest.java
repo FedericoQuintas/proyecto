@@ -170,6 +170,16 @@ public class UserServiceTest extends SpringBaseTest {
 		Assert.assertTrue(retrievedPortfolioDTO.getId().equals(
 				portfolioDTO.getId()));
 	}
+	
+	@Test(expected = PortfolioNotFoundException.class)
+	public void whenDeleteAPortfolioThenPortfolioIsDeleted() 
+			throws ApplicationServiceException {
+		PortfolioDTO portfolioDTO = addPortfolioToUser();
+		
+		userService.removePortfolioById(userDTO.getId(), portfolioDTO.getId());
+		PortfolioDTO retrievedPortfolioDTO = userService.findPortfolioById(
+				userDTO.getId(), portfolioDTO.getId());
+	}
 
 	@Test
 	public void whenAddsAPortfolioThenPortfolioIsAddedWithName()

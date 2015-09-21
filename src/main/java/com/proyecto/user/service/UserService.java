@@ -82,6 +82,14 @@ public interface UserService {
 
 	PortfolioDTO findPortfolioById(Long userId, Long portfolioId)
 			throws ApplicationServiceException;
+	
+	/**
+	 * Removes specified portfolio from the given user
+	 * @param userId
+	 * @param portfolioId
+	 * @throws ApplicationServiceException 
+	 */
+	void removePortfolioById(Long userId, Long portfolioId) throws ApplicationServiceException;
 
 	/**
 	 * Calculates and retrieves de Performance of all the User Portfolios
