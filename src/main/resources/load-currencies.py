@@ -13,39 +13,10 @@ class InvertarCurrency:
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
-class InvertarTradingSession:
-
-    closingPrice = 0.0
-    adjClosingPrice = 0.0
-    openingPrice = 0.0
-    maxPrice = 0.0
-    minPrice = 0.0
-    tradingDate = ""
-    volume = 0
-
-    sma_7 = 0.0
-    sma_21 = 0.0
-    sma_50 = 0.0
-    sma_200 = 0.0
-
-    ema_7 = 0.0
-    ema_21 = 0.0
-    ema_50 = 0.0
-    ema_200 = 0.0
-
-    momentum_7 = 0.0
-    momentum_21 = 0.0
-    momentum_50 = 0.0
-    momentum_200 = 0.0
-
-    rsi_7 = 0.0
-    rsi_21 = 0.0
-    rsi_50 = 0.0
-    rsi_200 = 0.0
-
-    macd_macd_line = 0.0
-    macd_signal_line = 0.0
-    macd_histogram = 0.0
+class InvertarExcangeSession:
+    exchangeDate=""
+    buyPrice = 0.0
+    sellPrice = 0.0
 
 class Link:
     url=""
@@ -77,10 +48,12 @@ for oneLink in links:
         index = 0
         for span in row.findAll("span"):
             if index % 2 == 1:
-                newTradingSession = InvertarTradingSession()
-                newTradingSession.tradingDate = str(row)[111:121]
-                newTradingSession.closingPrice =span.string[1:]
+                newTradingSession.exchangeDate = str(row)[111:121]
+                newTradingSession.sellPrice =span.string[1:]
                 newCurrency.tradingSessions.append(newTradingSession)
+            else:
+                newTradingSession = InvertarExcangeSession()
+                newTradingSession.buyPrice =span.string[1:]
 
             index = index + 1
         print(newCurrency.to_JSON())
