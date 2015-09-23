@@ -11,31 +11,34 @@ public class Bond extends Asset {
 	@MongoId
 	@MongoObjectId
 	public String objectId;
-	
+
 	private boolean dollarLinked = true;
-	
-	public Bond(){
-		
-	}
+
 	public Bond(Long id, String description, String ticker,
-			InvertarCurrencyCode invertarCurrency) {
-		super(id, description, ticker, invertarCurrency);
+			InvertarCurrencyCode invertarCurrency, String name) {
+		super(id, description, ticker, invertarCurrency, name);
 	}
-	
+
+	public Bond() {
+
+	}
+
 	@ObjectId
 	@JsonProperty("_id")
 	public String getObjectId() {
 		return this.objectId;
 	}
-	
+
 	@ObjectId
 	@JsonProperty("_id")
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
 	}
-	public boolean isDollarLinked() { 
+
+	public boolean isDollarLinked() {
 		return dollarLinked;
 	}
+
 	public void setDollarLinked(boolean isPesified) {
 		this.dollarLinked = isPesified;
 	}

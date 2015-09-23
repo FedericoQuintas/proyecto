@@ -6,10 +6,12 @@ import com.proyecto.asset.exception.InvalidTradingSessionArgumentException;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 
 public class StockFactory extends AssetFactory {
-	public static Stock create(StockDTO stockDTO, Long id) 
-			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException {
+	public static Stock create(StockDTO stockDTO, Long id)
+			throws InvalidAssetArgumentException,
+			InvalidTradingSessionArgumentException {
 		Stock stock = new Stock(id, stockDTO.getDescription(),
-				stockDTO.getTicker(), stockDTO.getCurrency());
+				stockDTO.getTicker(), stockDTO.getCurrency(),
+				stockDTO.getName());
 		complete(stock, stockDTO);
 		stock.setLeader(stockDTO.isLeader());
 		stock.setIndustry(stockDTO.getIndustry());

@@ -74,6 +74,10 @@ public class InvertarUser {
 		}
 		throw new PortfolioNotFoundException();
 	}
+	
+	public void removePortfolio(Long portfolioId) throws PortfolioNotFoundException {
+		portfolios.remove(getPortfolio(portfolioId));
+	}
 
 	public void setPassword(String password) {
 		this.password = password;
