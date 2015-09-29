@@ -2,7 +2,9 @@ package com.proyecto.asset.persistence;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import com.mongodb.DuplicateKeyException;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.AssetType;
 import com.proyecto.asset.domain.Bond;
+import com.proyecto.asset.domain.MutualFund;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.common.exception.ObjectNotFoundException;
 import com.proyecto.config.persistence.MongoAccessConfiguration;
@@ -33,6 +36,8 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	private String dbName = "invertarDB";
 	private AssetDAO stockDAO;
 	private AssetDAO bondDAO;
+	private AssetDAO mutualFundDAO;
+	private Map<Class, AssetDAO> assetDAOsMap = new HashMap<Class, AssetDAO>();
 
 	@Resource
 	private MongoAccessConfiguration mongoAccessConfiguration;
@@ -49,6 +54,12 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			counter.insert(document);
 			stockDAO = new StockMongoDAOImpl(counter, jongo, dbAccess);
 			bondDAO = new BondMongoDAOImpl(counter, jongo, dbAccess);
+			mutualFundDAO = new MutualFundMongoDAOImpl(counter, jongo, dbAccess);
+			
+			assetDAOsMap.put(Stock.class, stockDAO);
+			assetDAOsMap.put(Bond.class, bondDAO);
+			assetDAOsMap.put(MutualFund.class, mutualFundDAO);
+			
 		} catch (DuplicateKeyException e) {
 		}
 	}
@@ -76,22 +87,18 @@ public class AssetMongoDAOImpl implements AssetDAO {
 
 	@Override
 	public void flush() {
-		stockDAO.flush();
-		bondDAO.flush();
+		for(AssetDAO assetDAO : assetDAOsMap.values()){
+			assetDAO.flush();
+		}
 
 	}
 
 	@Override
 	public Asset store(Asset asset) throws JsonGenerationException,
 			JsonMappingException, IOException {
-
-		if (asset.getClass().equals(Stock.class)) {
-			asset.setType(AssetType.STOCK.getType());
-			asset = stockDAO.store(asset);
-		} else if (asset.getClass().equals(Bond.class)) {
-			asset.setType(AssetType.BOND.getType());
-			asset = bondDAO.store(asset);
-		}
+		
+		AssetDAO assetDAO = assetDAOsMap.get(asset.getClass());
+		asset = assetDAO.store(asset);
 
 		return asset;
 	}
@@ -100,41 +107,35 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	public Asset findById(Long id) throws ObjectNotFoundException {
 
 		Asset asset;
-		asset = stockDAO.findById(id);
-
-		if (asset == null) {
-			asset = bondDAO.findById(id);
+		
+		for(AssetDAO assetDAO : assetDAOsMap.values()){
+			asset = assetDAO.findById(id);
+			if (asset != null){
+				return asset;
+			}
 		}
-		// MongoCollection assets = jongo.getCollection("assets");
-		//
-		// Asset asset = assets.findOne("{id:" + id + " }").as(Asset.class);
+		
+		//By this point if we couldn't find an asset, we don't have it
+		throw new ObjectNotFoundException("Asset " + id + " not found");
 
-		if (asset == null) {
-			throw new ObjectNotFoundException("Asset " + id + " not found");
-		}
-
-		return asset;
 	}
 
 	@Override
 	public List<Asset> getAll() {
 
 		List<Asset> result = new ArrayList<Asset>();
-
-		result.addAll(stockDAO.getAll());
-		result.addAll(bondDAO.getAll());
+		
+		for(AssetDAO assetDAO : assetDAOsMap.values()){
+			result.addAll(assetDAO.getAll());
+		}
 
 		return result;
 	}
 
 	@Override
 	public void update(Asset asset) {
-
-		if (asset.getClass().equals(Stock.class)) {
-			stockDAO.update(asset);
-		} else if (asset.getClass().equals(Bond.class)) {
-			bondDAO.update(asset);
-		}
+		AssetDAO assetDAO = assetDAOsMap.get(asset.getClass());
+		assetDAO.update(asset);
 	}
 
 	@Override
@@ -142,18 +143,16 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			throws ObjectNotFoundException {
 
 		Asset asset;
-		asset = stockDAO.findByTicker(description);
-
-		if (asset == null) {
-			asset = bondDAO.findByTicker(description);
+		for(AssetDAO assetDAO : assetDAOsMap.values()){
+			asset = assetDAO.findByTicker(description);
+			if (asset != null){
+				return asset;
+			}
 		}
+		
+		throw new ObjectNotFoundException("Asset " + description
+				+ " not found");
 
-		if (asset == null) {
-			throw new ObjectNotFoundException("Asset " + description
-					+ " not found");
-		}
-
-		return asset;
 	}
 
 }

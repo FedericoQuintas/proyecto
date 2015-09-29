@@ -31,6 +31,7 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	private AssetDTO stockDTO;
 	private AssetDTO bondDTO;
+	private AssetDTO mutualFundDTO;
 
 	@Resource
 	private AssetService assetService;
@@ -102,7 +103,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	public void whenCreatesTradingSessionWithNullOrVoidDateThenExceptionIsThrown()
 			throws ParseException, AssetNotFoundException,
 			InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 		TradingSessionDTO incompleteTradingSessionDTO = AssetHelper
 				.createDefaultTradingSession();
 		Asset asset = AssetFactory.create(stockDTO, new Long(1));
@@ -138,9 +139,11 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		AssetDTO storedStockDTO = assetService.findById(stockDTO.getId());
 		AssetDTO storedBondDTO = assetService.findById(bondDTO.getId());
-
+		AssetDTO storedMutualFundDTO = assetService.findById(mutualFundDTO.getId());
+		
 		Assert.assertTrue(stockDTO.getId().equals(storedStockDTO.getId()));
 		Assert.assertTrue(bondDTO.getId().equals(storedBondDTO.getId()));
+		Assert.assertTrue(mutualFundDTO.getId().equals(storedMutualFundDTO.getId()));
 
 	}
 
@@ -160,17 +163,17 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		AssetDTO storedStockDTO = assetService.findById(stockDTO.getId());
 		AssetDTO storedBondDTO = assetService.findById(bondDTO.getId());
+		AssetDTO storedMutualFundDTO = assetService.findById(mutualFundDTO.getId());
 
-		Assert.assertTrue(stockDTO.getAssetType()
-				.equals(storedStockDTO.getAssetType()));
+		Assert.assertTrue(stockDTO.getAssetType().equals(storedStockDTO.getAssetType()));
 		Assert.assertTrue(bondDTO.getAssetType().equals(storedBondDTO.getAssetType()));
-
+		Assert.assertTrue(mutualFundDTO.getAssetType().equals(storedMutualFundDTO.getAssetType()));
 	}
 
 	@Test
 	public void whenGetsPercentageOfChangesTheRightResultsAreReturned()
 			throws ParseException, InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 
 		AssetDTO assetDTO = AssetHelper
 				.createDefaultStockDTOWithTradingSessions();
@@ -218,7 +221,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	@Test
 	public void whenGetsPercentageOfChangesTheRightResultsAreReturned2()
 			throws ParseException, InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 
 		AssetDTO assetDTO = AssetHelper
 				.createDefaultStockDTOWithTradingSessions();
@@ -271,13 +274,13 @@ public class AssetServiceTest extends SpringBaseTest {
 	public void whenSearchAssetByTickerThenIsRetrieved()
 			throws AssetNotFoundException, InvalidAssetTypeException {
 
-		AssetDTO storedStockDTO = assetService.findByTicker(stockDTO
-				.getTicker());
+		AssetDTO storedStockDTO = assetService.findByTicker(stockDTO.getTicker());
 		AssetDTO storedBondDTO = assetService.findByTicker(bondDTO.getTicker());
-
-		Assert.assertTrue(stockDTO.getTicker().equals(
-				storedStockDTO.getTicker()));
+		AssetDTO storedMutualFundDTO = assetService.findByTicker(mutualFundDTO.getTicker());
+		
+		Assert.assertTrue(stockDTO.getTicker().equals(storedStockDTO.getTicker()));
 		Assert.assertTrue(bondDTO.getTicker().equals(storedBondDTO.getTicker()));
+		Assert.assertTrue(mutualFundDTO.getTicker().equals(storedMutualFundDTO.getTicker()));
 	}
 
 	@Test(expected = AssetNotFoundException.class)
@@ -294,9 +297,11 @@ public class AssetServiceTest extends SpringBaseTest {
 
 		stockDTO = AssetHelper.createDefaultStockDTO();
 		bondDTO = AssetHelper.createDefaultBondDTO();
+		mutualFundDTO = AssetHelper.createDefaultMutualFundDTO();
 
 		stockDTO = assetService.store(stockDTO);
 		bondDTO = assetService.store(bondDTO);
+		mutualFundDTO = assetService.store(mutualFundDTO);
 
 	}
 

@@ -18,6 +18,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.proyecto.asset.domain.Asset;
+import com.proyecto.asset.domain.AssetType;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.common.exception.ObjectNotFoundException;
 
@@ -57,7 +58,7 @@ public class StockMongoDAOImpl implements AssetDAO {
 
 	@Override
 	public Asset store(Asset stock) throws JsonGenerationException, JsonMappingException, IOException {
-		
+		stock.setType(AssetType.STOCK.getType());
 		JacksonDBCollection<Stock, String> coll = JacksonDBCollection.wrap(
 				persistedStocks, Stock.class, String.class);
 

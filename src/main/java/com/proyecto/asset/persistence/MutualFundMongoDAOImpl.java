@@ -19,21 +19,21 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.AssetType;
-import com.proyecto.asset.domain.Bond;
+import com.proyecto.asset.domain.MutualFund;
 import com.proyecto.common.exception.ObjectNotFoundException;
 
-public class BondMongoDAOImpl implements AssetDAO{
+public class MutualFundMongoDAOImpl implements AssetDAO {
 	private DBCollection counter;
 	private Jongo jongo;
-	private DBCollection persistedBonds;
+	private DBCollection persistedMutualFunds;
 	private DB dbAccess;
 	
-	public BondMongoDAOImpl(DBCollection counter, Jongo jongo, DB dbAccess) {
+	public MutualFundMongoDAOImpl(DBCollection counter, Jongo jongo, DB dbAccess) {
 		this.counter = counter;
 		this.jongo = jongo;
 		this.dbAccess = dbAccess;
 		
-		persistedBonds = dbAccess.getCollection("bonds");
+		persistedMutualFunds = dbAccess.getCollection("mutualFunds");		
 	}
 
 	@Override
@@ -45,51 +45,45 @@ public class BondMongoDAOImpl implements AssetDAO{
 				updateQuery, true, false);
 
 		return Long.valueOf(result.get("seq").toString());
-
 	}
 
 	@Override
 	public void flush() {
-		MongoCollection bonds = jongo.getCollection("bonds");
+		MongoCollection mutualFunds = jongo.getCollection("mutualFunds");
 
-		bonds.remove("{ id: { $gt: 0 } }");
-
-	}
+		mutualFunds.remove("{ id: { $gt: 0 } }");	}
 
 	@Override
-	public Asset store(Asset bond) throws JsonGenerationException, JsonMappingException, IOException {
-		bond.setType(AssetType.BOND.getType());
+	public Asset store(Asset mutualFund) throws JsonGenerationException, JsonMappingException, IOException {
+		mutualFund.setType(AssetType.MUTUALFUND.getType());
 		
-		JacksonDBCollection<Bond, String> coll = JacksonDBCollection.wrap(
-				persistedBonds, Bond.class, String.class);
+		JacksonDBCollection<MutualFund, String> coll = JacksonDBCollection.wrap(
+				persistedMutualFunds, MutualFund.class, String.class);
 
-		WriteResult<Bond, String> result = coll.insert((Bond)bond);
-		bond = result.getSavedObject();
-		return bond;
+		WriteResult<MutualFund, String> result = coll.insert((MutualFund)mutualFund);
+		mutualFund = result.getSavedObject();
+		return mutualFund;
 	}
 
 	@Override
 	public Asset findById(Long id) throws ObjectNotFoundException {
-		
-		MongoCollection bonds = jongo.getCollection("bonds");
+		MongoCollection mutualFunds = jongo.getCollection("mutualFunds");
 
-		Bond bond = bonds.findOne("{id:" + id + " }").as(Bond.class);
+		MutualFund mutualFund = mutualFunds.findOne("{id:" + id + " }").as(MutualFund.class);
 
-
-		return bond;
+		return mutualFund;
 	}
 
 	@Override
 	public List<Asset> getAll() {
+		MongoCollection mutualFunds = jongo.getCollection("mutualFunds");
 
-		MongoCollection bonds = jongo.getCollection("bonds");
-
-		MongoCursor<Bond> all = bonds.find().as(Bond.class);
-		Iterator<Bond> iterator = all.iterator();
+		MongoCursor<MutualFund> all = mutualFunds.find().as(MutualFund.class);
+		Iterator<MutualFund> iterator = all.iterator();
 
 		List<Asset> result = new ArrayList<>();
 		while (iterator.hasNext()) {
-			Bond next = iterator.next();
+			MutualFund next = iterator.next();
 			result.add(next);
 		}
 
@@ -97,24 +91,23 @@ public class BondMongoDAOImpl implements AssetDAO{
 	}
 
 	@Override
-	public void update(Asset bond) {
+	public void update(Asset mutualFund) {
 		Jongo jongo = new Jongo(dbAccess);
 
-		MongoCollection bonds = jongo.getCollection("bonds");
+		MongoCollection mutualFunds = jongo.getCollection("stocks");
 
-		bonds.update("{id:" + bond.getId() + " }").with((Bond)bond);
-
+		mutualFunds.update("{id:" + mutualFund.getId() + " }").with((MutualFund)mutualFund);
 	}
 
 	@Override
 	public Asset findByTicker(String description) throws ObjectNotFoundException {
-		
-		MongoCollection bonds = jongo.getCollection("bonds");
+		MongoCollection mutualFunds = jongo.getCollection("mutualFunds");
 
-		Bond bond = bonds.findOne("{ticker:\"" + description + "\"}").as(
-				Bond.class);
+		MutualFund mutualFund = mutualFunds.findOne("{ticker:\"" + description + "\"}").as(
+				MutualFund.class);
 
-		return bond;
+		return mutualFund;
 	}
+	
 
 }

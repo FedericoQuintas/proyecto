@@ -81,7 +81,7 @@ public class AssetServiceImpl implements AssetService {
 
 	@Override
 	public void update(AssetDTO assetDTO) throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException {
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException {
 
 		Asset asset = AssetFactory.create(assetDTO, assetDTO.getId());
 		update(asset);
