@@ -5,9 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 import time
-import datetime
-from datetime import date
-from datetime import timedelta
+from datetime import *
 import json
 
 class InvertarMutualFund:
@@ -21,7 +19,7 @@ class InvertarMutualFund:
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
-class tradingMutualFundSession:
+class TradingMutualFundSession:
     date = ""
     netAssetValue = 0.0
     oneThousandSharesPrice = 0.0
@@ -29,7 +27,7 @@ class tradingMutualFundSession:
 
 #I've gotta iterate over these days and keep in mind that there are no working days as well.
 base = date.today()
-date_list = [base - timedelta(days=x) for x in range(0, 15)]
+date_list = [base - timedelta(days=x) for x in range(0, 730)]
 
 fund_types = []
 fund_types.append(1)
@@ -37,7 +35,7 @@ fund_types.append(2)
 fund_types.append(4)
 
 mutualFunds = []
-#Stock Funds
+#Stocks Funds
 mutualFunds.append("1810 Renta Variable Argentina")
 mutualFunds.append("Alpha Acciones - Clase A")
 mutualFunds.append("Alpha Acciones - Clase B")
@@ -122,7 +120,7 @@ mutualFunds.append("Consultatio Renta Variable - Clase A")
 mutualFunds.append("Consultatio Renta Variable - Clase B")
 
 
-#Fixed Incomes Funds
+#Bonds Funds
 mutualFunds.append("1822 Raices Valores Fiduciarios")
 mutualFunds.append("AL Ahorro Plus - Clase A")
 mutualFunds.append("AL Ahorro Plus - Clase B")
@@ -376,7 +374,7 @@ mutualFunds.append("Balanz Capital Renta Fija - Clase A")
 mutualFunds.append("Balanz Capital Renta Fija - Clase B")
 mutualFunds.append("FBA Bonos Globales - Clase B")
 
-#Mixed Income Funds
+#Hybrid Funds
 mutualFunds.append("Pellegrini Agro FCI - Clase A")
 mutualFunds.append("Pellegrini Agro FCI - Clase B")
 mutualFunds.append("Premier Commodities Agrarios - Clase A")
@@ -482,11 +480,26 @@ driver = webdriver.Firefox()
 
 date_list.reverse()
 
+finalMutualFunds = []
+
 for oneFundType in fund_types:
+
+    type = ""
+    if oneFundType==1:
+        type="Stock Fund"
+
+    elif oneFundType==2:
+        type="Bond Fund"
+
+    elif oneFundType==4:
+        type="Hybrid Fund"
+
+    print("Procesando:",type)
+    count = 0
 
     for oneDate in date_list:
 
-        print("Empieza",oneDate.strftime("%d/%m/%Y"))
+        print("Procesando:",oneDate)
 
         driver.get("http://www.cafci.org.ar/scripts/cfn_Estadisticas.html")
 
@@ -523,14 +536,46 @@ for oneFundType in fund_types:
                 for cell in cells:
                     name = cell.string.strip()
                     if index == 3:
-                        print("Date",cell.string.strip())
+                        newTradingMutualFundSession = TradingMutualFundSession()
+                        newTradingMutualFundSession.date = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
                     elif index == 4:
-                        print("One Thousand Shares Price",cell.string.strip().replace(".","").replace(",","."))
+                        newTradingMutualFundSession.oneThousandSharesPrice = cell.string.strip().replace(".","").replace(",",".")
                     elif index == 5:
-                        print("Shares Quantity",cell.string.strip().replace(".",""))
+                        newTradingMutualFundSession.sharesQty = cell.string.strip().replace(".","")
                     elif index == 6:
-                        print("Net Asset Value",cell.string.strip().replace(".","").replace(",","."))
+                        newTradingMutualFundSession.netAssetValue = cell.string.strip().replace(".","").replace(",",".")
+                        count_2 = 0
+                        found = 0
+                        for aMutualFund in finalMutualFunds:
+                            if aMutualFund.name == currentMutualFund.name:
+                                found = 1
+                                break
+                            count_2 = count_2 + 1
+                        if found ==1:
+                            finalMutualFunds.pop(count_2)
+                        currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
+                        finalMutualFunds.append(currentMutualFund)
                     if name in mutualFunds:
+                        if count==0:
+                            newMutualFund = InvertarMutualFund()
+
+                            newMutualFund.name = name
+
+                            newMutualFund.tradingSessions = []
+
+                            newMutualFund.type= type
+
+                            finalMutualFunds.append(newMutualFund)
+                            currentMutualFund = newMutualFund
+                        else:
+                            for aMutualFund in finalMutualFunds:
+                                if aMutualFund.name == name:
+                                    currentMutualFund = aMutualFund
+                                    break
                         index = 1
-                        print(cell.string.strip())
                     index = index+1
+
+        count = count + 1
+
+for oneFund in finalMutualFunds:
+    print(oneFund.to_JSON())
