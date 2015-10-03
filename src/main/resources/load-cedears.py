@@ -3,6 +3,7 @@ from datetime import *
 import json
 import urllib.request
 import io
+import requests
 import csv
 
 class InvertarCedear:
@@ -45,6 +46,15 @@ class Link:
          self.name = aName
          self.url = anUrl
 
+# API connection parameters
+login_url = 'http://localhost:8080/login'
+store_url = 'http://localhost:8080/assets/stocks'
+credentials = {
+    "mail": "admin@invertar.com",
+    "password": "admin"
+}
+headers = {'Content-Type': 'application/json'}
+
 csvsToDownload = []
 csvsToDownload.append(Link("CEDEARAA","Alcoa Inc. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAA&csv=1"))
 csvsToDownload.append(Link("CEDEARAAPL","Apple (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAAPL&csv=1"))
@@ -55,6 +65,8 @@ csvsToDownload.append(Link("CEDEARIBM","IBM Corp. (CEDEAR)","http://www.ravaonli
 csvsToDownload.append(Link("CEDEARKO","Coca-Cola (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARKO&csv=1"))
 csvsToDownload.append(Link("CEDEARWMT","Wal-Mart Stores Inc. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARWMT&csv=1"))
 
+finalCedears = []
+
 for oneLink in csvsToDownload:
     print("Procesando:",oneLink.ticker)
     webpage = urllib.request.urlopen(oneLink.url)
@@ -64,4 +76,23 @@ for oneLink in csvsToDownload:
     for row in datareader:
         if row[4] != "cierre":
             currentCedear.tradingSessions.append(InvertarTradingSession(row[4],row[1],row[2],row[3],row[0],row[5]))
-    print(currentCedear.to_JSON())
+    finalCedears.append(currentCedear)
+
+# Open connection to API
+conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
+session_cookie = conn.cookies
+
+for aCedear in finalCedears:
+    json_ts = []
+    for ts in aCedear.tradingSessions:
+        json_ts.append(ts.__dict__)
+    aCedear.tradingSessions = json_ts
+
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear.__dict__))
+
+    if r.status_code == 200:
+        print("Cargado:", aCedear.ticker)
+    else:
+        print("Error en la carga del CEDEAR {}: {}".format(aCedear.ticker, r.content))
+
+

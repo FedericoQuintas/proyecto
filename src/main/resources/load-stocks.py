@@ -25,8 +25,10 @@ headers = {'Content-Type': 'application/json'}
 class StockData:
     ticker=""
     name=""
-    def __init__(self,aTicker,aName,aDescription):
+    industry=""
+    def __init__(self,aTicker,anIndustry,aName,aDescription):
         self.ticker = aTicker
+        self.industry = anIndustry
         self.name = aName
         self.description = aDescription
 
@@ -36,7 +38,6 @@ class InvertarStock:
     ticker = ""
     name = ""
     description = ""
-    industry = ""
     currency = "ARS"
     tradingSessions = []
     leader = False
@@ -81,74 +82,74 @@ class InvertarTradingSession:
 
 
 stocks =[]
-stocks.append(StockData('AGRO.BA','Agrometal S.A.I.','Agrometal S.A.I. fabrica y vende maquinaria agricola de roturacion y siembra en Argentina.'))
-stocks.append(StockData('APBR.BA','Petroleo Brasileiro S.A.','Petroleo Brasileiro S.A.  Petrobras opera como una compañia de energia integrada en Brasil e internacionalmente'))
-stocks.append(StockData('APSA.BA','Alto Palermo S.A.','Operadores y titulares de participaciones mayoritarias en una cartera de diez centros comerciales en Argentina, cinco de los cuales estan ubicados en la Ciudad de Buenos Aires (Abasto Shopping, Paseo Alcorta, Alto Palermo Shopping, Patio Bullrich y Buenos Aires Design), uno en el Gran Buenos Aires (Alto Avellaneda) y otro en la Ciudad de Salta (Alto NOA).'))
-stocks.append(StockData('AUSO.BA','Autopistas del Sol S.A.','Autopistas del Sol S.A. particupa en la construccion, mejora, expansion, remodelacion, preservacion, mantenimiento, operacion y administracion del Acceso Norte de la Ciudad de Buenos Aires y de la Av. General Paz.'))
-stocks.append(StockData('BHIP.BA','Banco Hipotecario S.A.','Banco Hipotecario S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
-stocks.append(StockData('BOLT.BA','Boldt S.A.','Boldt S.A.provee servicios de artes graficas, imprenta comercial y hardware y software para juegos de azar.'))
-stocks.append(StockData('BPAT.BA','Banco Patagonia S.A.','Banco Patagonia S.A. provee productos y servicios bancarios en Argentina. Esta basada en Buenos Aires, Argentina, y es una subsidiaria de Banco do Brasil S.A.'))
-stocks.append(StockData('BRIO.BA','Banco Santander Río S.A.','Banco Santander S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
-stocks.append(StockData('CADO.BA','Carlos Casado S.A.','Carlos Casado S.A. desarrolla actividades de agricultura y ganaderia en Argentina. Opera en tres segmentos: Inmobiliario, Agricultural, y Financiero.'))
-stocks.append(StockData('CAPU.BA','Caputo S.A.','Caputo Sociedad Anonima, Industrial, Comercial y Financiera opera como una compañia constructora en Argentina.'))
-stocks.append(StockData('CAPX.BA','Capex S.A.','Capex tiene varias lineas de negocios, en America Latina y Portugal, especialmente en Argentina. La principal fuente de recursos es la generacion de electricidad mediante la integracion vertical de produccion de petroleo y gas, obtencion de subproductos del procesamiento del gas y quemado para la generacion electrica.'))
-stocks.append(StockData('CARC.BA','Carboclor S.A.','Carboclor S.A. mantiene una participacion activa en entidades industriales del sector quimico y petroquimico, integrando sus representantes comisiones directivas y comisiones de trabajo, segun el caso.'))
-stocks.append(StockData('CECO2.BA','Endesa Costanera S.A.','Endesa Costanera S.A. es la mayor Compañia de energía electrica vía procesos termicos de Argentina.'))
-stocks.append(StockData('CELU.BA','Celulosa Argentina S.A.','Celulosa Argentina S.A. se dedica a la produccion y comercializacion de papeles para impresion y escritura en Argentina, Uruguay y Chile.'))
-stocks.append(StockData('CGPA2.BA','Camuzzi Gas Pampeana S.A.','Camuzzi Gas Pampeana S.A. distribuye gas natural en Argentina.'))
-stocks.append(StockData('COLO.BA','Colorin S.A.','Colorin Industria de Materiales Sinteticos S.A. manufactura y vende pinturas, barnices, y productos relacionados a individuos y profesionales en Argentina.'))
-stocks.append(StockData('COUR.BA','Continental Urbana S.A.I.','Continental Urbana S.A.I. se dedica a la inversion, el desarrollo y arrendamiento de propiedades de bienes raices en la Argentina. La compañia opera a traves de tres segmentos: Propiedades, Gestion, y Ropa.'))
-stocks.append(StockData('CRES.BA','Cresud S.A.','Cresud Sociedad Anonima Comercial, Inmobiliaria, Financiera y Agropecuaria produce productos agricolas basicos en Brasil y otros paises latinoamericanos.'))
-stocks.append(StockData('CTIO.BA','Consultatio S.A.','El Grupo Consultatio tiene dos grandes areas de negocios: la administracion de fondos liquidos de terceros y el desarrollo inmobiliario, este ultimo siempre ha sido llevado adelante con fondos propios. A su vez dentro de cada area el Grupo ofrece diversos servicios y modelos de negocio.'))
-stocks.append(StockData('DOME.BA','Domec S.A.','DOMEC Compañia de Artefactos Domesticos Sociedad Anonima Industrial Comercial y Financiera manufactura y vende hornos, cocinas a gas, termotanques, calefones y otros productos similares.'))
-stocks.append(StockData('DYCA.BA','Dycasa S.A.','Los negocios de Dycasa se basan en la construccion de obras publicas y privadas y en la explotacion de concesiones de obras y servicios publicos, como obras portuarias, gasoductos, ferroviarias, subterraneas, redes cloacales y de agua potable, entre otras.'))
-stocks.append(StockData('ESME.BA','Bodegas Esmeralda S.A.','Bodegas Esmeralda S.A. participa en la elaboracion de vinos y actividades comerciales, asi como la exportacion de sus productos. Tiene sede en Cordoba, Argentina.'))
-stocks.append(StockData('ESTR.BA','Angel Estrada y Cia. S.A.','Angel Estrada y Compania S.A. produce y vende una variedad de productos escolares y de oficina tanto en Argentina como internacionalmente.'))
-stocks.append(StockData('FERR.BA','Ferrum S.A.','Ferrum Sociedad Anonima de Ceramica y Metalurgia produce, comercializa y distribuye productos para sanitarios.'))
-stocks.append(StockData('FIPL.BA','Fiplasto S.A.','Fiplasto S.A. es un fabricante de productos en madera de revestimiento, como paneles de decoracion interior, y de muebles industriales.'))
-stocks.append(StockData('GARO.BA','Garovaglio y Zorraquin S.A.','Garovaglio y Zorraquin S.A. se dedica a consignaciones, operaciones comerciales, explotacion agropecuaria y participacion en otras empresas.'))
-stocks.append(StockData('GBAN.BA','Gas Natural Ban S.A.','Gas Natural BAN, S.A. ofrece servicios de distribucion de gas natural en Argentina e internacionalmente.'))
-stocks.append(StockData('GCLA.BA','Grupo Clarin S.A.','El Grupo Clarin es una empresa de medios de comunicacion. Participa principalmente en las areas de television por cable y acceso a Internet, publicaciones e impresion, television, radio y programacion, contenidos digitales y otras actividades relacionadas.'))
-stocks.append(StockData('GRIM.BA','Grimoldi S.A.','Grimoldi S.A. se dedica a la fabricacion y comercializacion de calzado, carteras y artículos afines.'))
-stocks.append(StockData('INDU.BA','Solvay Indupa S.A.','Solvay Indupa S.A.I.C. produce y vende PVC (Policloruro de Vinilo) y Soda Caustica.'))
-stocks.append(StockData('INTR.BA','Compañia Introductora De Buenos Aires S.A.','Compañia Introductora de Bs. As. y Dos Anclas S.A. conforman un holding empresario que desde 1901 se dedica a la industrializacion y comercializacion de Sal de mesa, Condimentos, Especias, Vinagres y Aceite de Oliva para ser consumidos en los hogares.'))
-stocks.append(StockData('INVJ.BA','Inversora Juramento S.A.','Inversora Juramento S.A. opera como una compañia agroganadera en el noroeste Argentino e internacionalmente.'))
-stocks.append(StockData('IRSA.BA','IRSA Inversiones y Representaciones S.A.','IRSA Inversiones y Representaciones S.A., adquiere, desarrolla y opera con bienes raices.'))
-stocks.append(StockData('JMIN.BA','Holcim (Argentina) S.A.','Holcim (Argentina) S.A. es una productora y comercializadora de cemento de Argentina, especializada en cementos portland, clinker y hormigon elaborado.'))
-stocks.append(StockData('LEDE.BA','Ledesma S.A.','Ledesma Sociedad Anonima Agricola Industrial produce y vende alimentos naturales renovables en Argentina, mas notablemente azucar.'))
-stocks.append(StockData('LONG.BA','Longvie S.A.','Longvie S.A. se dedica a la fabricacion y venta de cocinas y hornos a gas.'))
-stocks.append(StockData('METR.BA','Metrogas S.A.','MetroGAS S.A. es una compañia dedicada a la distrubucion de gas natural en Argentina.'))
-stocks.append(StockData('MIRG.BA','Mirgor S.A.','Mirgor S.A.C.I.F.I.A. provee sistemas de climatizacion para la industria automotriz en Argentina.'))
-stocks.append(StockData('MOLI.BA','Molinos Rio de la Plata S.A.','Molinos Rio de la Plata S.A. opera en la industria agricola y alimenticia Argentina.'))
-stocks.append(StockData('MOLI5.BA','Molinos Rio de la Plata S.A.','Molinos Rio de la Plata S.A. opera en la industria agricola y alimenticia Argentina.'))
-stocks.append(StockData('OEST.BA','Grupo Concesionario del Oeste S.A.','Grupo Concesionario del Oeste S.A. se dedica a la construccion, remodelacion, reparacion, conservacion, administracion y explotacion del Acceso Oeste de la Ciudad de Buenos Aires.'))
-stocks.append(StockData('PATA.BA','Importadora y Exportadora de la Patagonia S.A.','Sociedad Anonima Importadora y Exportadora de la Patagonia compra, importa, almacena, vende y exporta mercaderia en Argentina.'))
-stocks.append(StockData('PATY.BA','Quickfood S.A.','Quickfood Sociedad Anonima elabora y comercializa productos de origen vacuno y porcino.'))
-stocks.append(StockData('PESA.BA','Petrobras Argentina S.A.','Petrobras Argentina S.A. opera como una compañia de energia integrada.'))
-stocks.append(StockData('PETR.BA','Petrolera Pampa S.A.','Petrolera Pampa S.A. se dedica al estudio, exploracion y explotacion yacimientos hidrocarburos solidos, liquidos y/o gaseosos y sus respectivos derivados y el almacenaje, comercializacion de dichos productos y sus derivados.'))
-stocks.append(StockData('POLL.BA','Polledo S.A.','Polledo S.A.I.C. y F.  es una empresa constructora que desarrolla obras de infraestrutura y servicios, especialmente para el sector publico.'))
-stocks.append(StockData('PSUR.BA','Petrolera del Conosur S.A.','Petrolera del Conosur S.A. es una petrolera dedicada a la explotacion industrial y comercial de petroleo y sus derivados.'))
-stocks.append(StockData('REP.BA','Repsol S.A.','Repsol S.A. es una empresa internacional integrada de petroleo y gas, con actividades en mas de 30 países y lider en España y Argentina.'))
-stocks.append(StockData('RIGO.BA','Rigolleau S.A.','Rigolleau S.A. es una empresa fabricante y comercializadora de vidrios para uso domestico, farmaceutico y cosmetico.'))
-stocks.append(StockData('ROSE.BA','Instituto Rosenbusch S.A.','Instituto Rosenbusch S.A. fabrica y vende productos veterinarios en Argentina.'))
-stocks.append(StockData('SAMI.BA','S.A. San Miguel','S.A. San Miguel A.G.I.C.I. y F. es una empresa fruticola, productora, industrializadora y exportadora de limones.'))
-stocks.append(StockData('SEMI.BA','Molinos Juan Semino S.A.','Molinos Juan Semino, S.A. es una empresa producta y vendedora de derivados de trigo.'))
-stocks.append(StockData('TECO2.BA','Telecom Argentina S.A.','Telecom Argentina es una empresa privada que posee una licencia para la prestacion de los servicios de telefonia fija local, larga distancia nacional e internacional en todo el territorio nacional, licencia que tambien comprende la provision de enlaces punto a punto y el arrendamiento de enlaces de otros prestadores.'))
-stocks.append(StockData('TEF.BA','Telefonica S.A.','Telefonica, S.A. provee servicios de comunicacion fijos y moviles principalmente en Europa y America Latina.'))
-stocks.append(StockData('TGLT.BA','TGLT S.A.','TGLT S.A. esta involucrada en el desarrollo inmobiliario en Argentina y Uruguay.'))
-stocks.append(StockData('TGNO4.BA','Transportadora de Gas del Norte S.A.','Transportadora de Gas del Norte S.A.transporta gas natural a traves de gasoductos de alta presion en el centro y norte de Argentina.'))
-stocks.append(StockData('TGSU2.BA','Transportadora de Gas del Sur S.A.','Transportadora de Gas del Sur S.A. proporciona servicios de transporte de gas natural en Argentina.'))
-stocks.append(StockData('TRAN.BA','Transener Compañia de Transporte de Energia Electrica de Alta Tension','Compañia de Transporte de Energia Electrica en Alta Tension Transener S.A. provee servicios de transmision de energia electrica en Argentina.'))
-stocks.append(StockData('ALUA.BA','Aluminio Argentino S.A.','Aluminio Argentino SAIC es la unica productora de aluminio primario de la Republica Argentina. Es una empresa de origen y capitales argentinos que fue fundada en 1970. Su principal fuente de ingresos deriva de las operaciones de exportacion. Las acciones de Aluar cotizan solamente en la Bolsa de Comercio de Buenos Aires. Cabe destacar que este activo cuenta con ADR.'))
-stocks.append(StockData('BMA.BA','Banco Macro S.A.','Banco Macro S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
-stocks.append(StockData('COME.BA','Sociedad Comercial del Plata S.A.','Sociedad Comercial del Plata S.A.invierte en empresas vinculadas a los sectores de la construccion, entretenimientos, desarrollos urbanos, fertilizantes y agroquimicos.'))
-stocks.append(StockData('EDN.BA','Empresa Distribuidora y Comercializadora Norte S.A.','Empresa Distribuidora y Comercializadora Norte S.A.  es una empresa distribuidora de electricidad de la Argentina, principalmente en el noroeste del Gran Buenos Aires y en la zona norte de la Ciudad de Buenos Aires.'))
-stocks.append(StockData('ERAR.BA','Siderar S.A.','Ternium Siderar es una empresa siderurgica, dedicada principalmente a la fabricacion de distintos tipos de acero en Argentina.'))
-stocks.append(StockData('FRAN.BA','Banco Frances S.A.','BBVA Banco Frances S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
-stocks.append(StockData('GGAL.BA','Grupo Financiero Galicia S.A.','Grupo Financiero Galicia S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
-stocks.append(StockData('PAMP.BA','Pampa Energia S.A.','Pampa Energia S.A., una empresa de electricidad integrada, participa en la generacion, transmision y distribucion de energia electrica en Argentina.'))
-stocks.append(StockData('TS.BA','Tenaris S.A.','Tenaris S.A. fabrica y provee cañerias de acero y servicios relacionados para el sector energetico y otros usos industriales.'))
-stocks.append(StockData('YPFD.BA','YPF S.A.','YPF Sociedad Anonima, una compañia energetica, se dedica a la exploracion y produccion de hidrocarburos, refino y marketing, y quimica, de la Argentina.'))
+stocks.append(StockData('AGRO.BA','Agropecuaria','Agrometal S.A.I.','Agrometal S.A.I. fabrica y vende maquinaria agricola de roturacion y siembra en Argentina.'))
+stocks.append(StockData('APBR.BA','Energetica','Petroleo Brasileiro S.A.','Petroleo Brasileiro S.A.  Petrobras opera como una compañia de energia integrada en Brasil e internacionalmente'))
+stocks.append(StockData('APSA.BA','Bienes y Raices','Alto Palermo S.A.','Operadores y titulares de participaciones mayoritarias en una cartera de diez centros comerciales en Argentina, cinco de los cuales estan ubicados en la Ciudad de Buenos Aires (Abasto Shopping, Paseo Alcorta, Alto Palermo Shopping, Patio Bullrich y Buenos Aires Design), uno en el Gran Buenos Aires (Alto Avellaneda) y otro en la Ciudad de Salta (Alto NOA).'))
+stocks.append(StockData('AUSO.BA','Concesionaria','Autopistas del Sol S.A.','Autopistas del Sol S.A. particupa en la construccion, mejora, expansion, remodelacion, preservacion, mantenimiento, operacion y administracion del Acceso Norte de la Ciudad de Buenos Aires y de la Av. General Paz.'))
+stocks.append(StockData('BHIP.BA','Financiera','Banco Hipotecario S.A.','Banco Hipotecario S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
+stocks.append(StockData('BOLT.BA','Servicios','Boldt S.A.','Boldt S.A.provee servicios de artes graficas, imprenta comercial y hardware y software para juegos de azar.'))
+stocks.append(StockData('BPAT.BA','Financiera','Banco Patagonia S.A.','Banco Patagonia S.A. provee productos y servicios bancarios en Argentina. Esta basada en Buenos Aires, Argentina, y es una subsidiaria de Banco do Brasil S.A.'))
+stocks.append(StockData('BRIO.BA','Financiera','Banco Santander Río S.A.','Banco Santander S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
+stocks.append(StockData('CADO.BA','Agropecuaria','Carlos Casado S.A.','Carlos Casado S.A. desarrolla actividades de agricultura y ganaderia en Argentina. Opera en tres segmentos: Inmobiliario, Agricultural, y Financiero.'))
+stocks.append(StockData('CAPU.BA','Bienes y Raices','Caputo S.A.','Caputo Sociedad Anonima, Industrial, Comercial y Financiera opera como una compañia constructora en Argentina.'))
+stocks.append(StockData('CAPX.BA','Energetica','Capex S.A.','Capex tiene varias lineas de negocios, en America Latina y Portugal, especialmente en Argentina. La principal fuente de recursos es la generacion de electricidad mediante la integracion vertical de produccion de petroleo y gas, obtencion de subproductos del procesamiento del gas y quemado para la generacion electrica.'))
+stocks.append(StockData('CARC.BA','Quimica','Carboclor S.A.','Carboclor S.A. mantiene una participacion activa en entidades industriales del sector quimico y petroquimico, integrando sus representantes comisiones directivas y comisiones de trabajo, segun el caso.'))
+stocks.append(StockData('CECO2.BA','Energetica','Endesa Costanera S.A.','Endesa Costanera S.A. es la mayor Compañia de energía electrica vía procesos termicos de Argentina.'))
+stocks.append(StockData('CELU.BA','Papelera','Celulosa Argentina S.A.','Celulosa Argentina S.A. se dedica a la produccion y comercializacion de papeles para impresion y escritura en Argentina, Uruguay y Chile.'))
+stocks.append(StockData('CGPA2.BA','Energetica','Camuzzi Gas Pampeana S.A.','Camuzzi Gas Pampeana S.A. distribuye gas natural en Argentina.'))
+stocks.append(StockData('COLO.BA','Quimica','Colorin S.A.','Colorin Industria de Materiales Sinteticos S.A. manufactura y vende pinturas, barnices, y productos relacionados a individuos y profesionales en Argentina.'))
+stocks.append(StockData('COUR.BA','Bienes y Raices','Continental Urbana S.A.I.','Continental Urbana S.A.I. se dedica a la inversion, el desarrollo y arrendamiento de propiedades de bienes raices en la Argentina. La compañia opera a traves de tres segmentos: Propiedades, Gestion, y Ropa.'))
+stocks.append(StockData('CRES.BA','Agropecuaria','Cresud S.A.','Cresud Sociedad Anonima Comercial, Inmobiliaria, Financiera y Agropecuaria produce productos agricolas basicos en Brasil y otros paises latinoamericanos.'))
+stocks.append(StockData('CTIO.BA','Bienes y Raices','Consultatio S.A.','El Grupo Consultatio tiene dos grandes areas de negocios: la administracion de fondos liquidos de terceros y el desarrollo inmobiliario, este ultimo siempre ha sido llevado adelante con fondos propios. A su vez dentro de cada area el Grupo ofrece diversos servicios y modelos de negocio.'))
+stocks.append(StockData('DOME.BA','Electrodomesticos','Domec S.A.','DOMEC Compañia de Artefactos Domesticos Sociedad Anonima Industrial Comercial y Financiera manufactura y vende hornos, cocinas a gas, termotanques, calefones y otros productos similares.'))
+stocks.append(StockData('DYCA.BA','Concesionaria','Dycasa S.A.','Los negocios de Dycasa se basan en la construccion de obras publicas y privadas y en la explotacion de concesiones de obras y servicios publicos, como obras portuarias, gasoductos, ferroviarias, subterraneas, redes cloacales y de agua potable, entre otras.'))
+stocks.append(StockData('ESME.BA','Vinicola','Bodegas Esmeralda S.A.','Bodegas Esmeralda S.A. participa en la elaboracion de vinos y actividades comerciales, asi como la exportacion de sus productos. Tiene sede en Cordoba, Argentina.'))
+stocks.append(StockData('ESTR.BA','Escolar','Angel Estrada y Cia. S.A.','Angel Estrada y Compania S.A. produce y vende una variedad de productos escolares y de oficina tanto en Argentina como internacionalmente.'))
+stocks.append(StockData('FERR.BA','Sanitaria','Ferrum S.A.','Ferrum Sociedad Anonima de Ceramica y Metalurgia produce, comercializa y distribuye productos para sanitarios.'))
+stocks.append(StockData('FIPL.BA','Mobiliaria','Fiplasto S.A.','Fiplasto S.A. es un fabricante de productos en madera de revestimiento, como paneles de decoracion interior, y de muebles industriales.'))
+stocks.append(StockData('GARO.BA','Agropecuaria','Garovaglio y Zorraquin S.A.','Garovaglio y Zorraquin S.A. se dedica a consignaciones, operaciones comerciales, explotacion agropecuaria y participacion en otras empresas.'))
+stocks.append(StockData('GBAN.BA','Energetica','Gas Natural Ban S.A.','Gas Natural BAN, S.A. ofrece servicios de distribucion de gas natural en Argentina e internacionalmente.'))
+stocks.append(StockData('GCLA.BA','Editorial','Grupo Clarin S.A.','El Grupo Clarin es una empresa de medios de comunicacion. Participa principalmente en las areas de television por cable y acceso a Internet, publicaciones e impresion, television, radio y programacion, contenidos digitales y otras actividades relacionadas.'))
+stocks.append(StockData('GRIM.BA','Calzado','Grimoldi S.A.','Grimoldi S.A. se dedica a la fabricacion y comercializacion de calzado, carteras y artículos afines.'))
+stocks.append(StockData('INDU.BA','Quimica','Solvay Indupa S.A.','Solvay Indupa S.A.I.C. produce y vende PVC (Policloruro de Vinilo) y Soda Caustica.'))
+stocks.append(StockData('INTR.BA','Financiera','Compañia Introductora De Buenos Aires S.A.','Compañia Introductora de Bs. As. y Dos Anclas S.A. conforman un holding empresario que desde 1901 se dedica a la industrializacion y comercializacion de Sal de mesa, Condimentos, Especias, Vinagres y Aceite de Oliva para ser consumidos en los hogares.'))
+stocks.append(StockData('INVJ.BA','Agropecuaria','Inversora Juramento S.A.','Inversora Juramento S.A. opera como una compañia agroganadera en el noroeste Argentino e internacionalmente.'))
+stocks.append(StockData('IRSA.BA','Bienes y Raices','IRSA Inversiones y Representaciones S.A.','IRSA Inversiones y Representaciones S.A., adquiere, desarrolla y opera con bienes raices.'))
+stocks.append(StockData('JMIN.BA','Cementera','Holcim (Argentina) S.A.','Holcim (Argentina) S.A. es una productora y comercializadora de cemento de Argentina, especializada en cementos portland, clinker y hormigon elaborado.'))
+stocks.append(StockData('LEDE.BA','Alimentaria','Ledesma S.A.','Ledesma Sociedad Anonima Agricola Industrial produce y vende alimentos naturales renovables en Argentina, mas notablemente azucar.'))
+stocks.append(StockData('LONG.BA','Electrodomesticos','Longvie S.A.','Longvie S.A. se dedica a la fabricacion y venta de cocinas y hornos a gas.'))
+stocks.append(StockData('METR.BA','Energetica','Metrogas S.A.','MetroGAS S.A. es una compañia dedicada a la distrubucion de gas natural en Argentina.'))
+stocks.append(StockData('MIRG.BA','Automotriz','Mirgor S.A.','Mirgor S.A.C.I.F.I.A. provee sistemas de climatizacion para la industria automotriz en Argentina.'))
+stocks.append(StockData('MOLI.BA','Alimentaria','Molinos Rio de la Plata S.A.','Molinos Rio de la Plata S.A. opera en la industria agricola y alimenticia Argentina.'))
+stocks.append(StockData('MOLI5.BA','Alimentaria','Molinos Rio de la Plata S.A.','Molinos Rio de la Plata S.A. opera en la industria agricola y alimenticia Argentina.'))
+stocks.append(StockData('OEST.BA','Concesionaria','Grupo Concesionario del Oeste S.A.','Grupo Concesionario del Oeste S.A. se dedica a la construccion, remodelacion, reparacion, conservacion, administracion y explotacion del Acceso Oeste de la Ciudad de Buenos Aires.'))
+stocks.append(StockData('PATA.BA','Importadora/Exportadora','Importadora y Exportadora de la Patagonia S.A.','Sociedad Anonima Importadora y Exportadora de la Patagonia compra, importa, almacena, vende y exporta mercaderia en Argentina.'))
+stocks.append(StockData('PATY.BA','Alimentaria','Quickfood S.A.','Quickfood Sociedad Anonima elabora y comercializa productos de origen vacuno y porcino.'))
+stocks.append(StockData('PESA.BA','Energetica','Petrobras Argentina S.A.','Petrobras Argentina S.A. opera como una compañia de energia integrada.'))
+stocks.append(StockData('PETR.BA','Energetica','Petrolera Pampa S.A.','Petrolera Pampa S.A. se dedica al estudio, exploracion y explotacion yacimientos hidrocarburos solidos, liquidos y/o gaseosos y sus respectivos derivados y el almacenaje, comercializacion de dichos productos y sus derivados.'))
+stocks.append(StockData('POLL.BA','Constructora','Polledo S.A.','Polledo S.A.I.C. y F.  es una empresa constructora que desarrolla obras de infraestrutura y servicios, especialmente para el sector publico.'))
+stocks.append(StockData('PSUR.BA','Energetica','Petrolera del Conosur S.A.','Petrolera del Conosur S.A. es una petrolera dedicada a la explotacion industrial y comercial de petroleo y sus derivados.'))
+stocks.append(StockData('REP.BA','Energetica','Repsol S.A.','Repsol S.A. es una empresa internacional integrada de petroleo y gas, con actividades en mas de 30 países y lider en España y Argentina.'))
+stocks.append(StockData('RIGO.BA','Vidriera','Rigolleau S.A.','Rigolleau S.A. es una empresa fabricante y comercializadora de vidrios para uso domestico, farmaceutico y cosmetico.'))
+stocks.append(StockData('ROSE.BA','Veterinaria','Instituto Rosenbusch S.A.','Instituto Rosenbusch S.A. fabrica y vende productos veterinarios en Argentina.'))
+stocks.append(StockData('SAMI.BA','Agropecuaria','S.A. San Miguel','S.A. San Miguel A.G.I.C.I. y F. es una empresa fruticola, productora, industrializadora y exportadora de limones.'))
+stocks.append(StockData('SEMI.BA','Agropecuaria','Molinos Juan Semino S.A.','Molinos Juan Semino, S.A. es una empresa producta y vendedora de derivados de trigo.'))
+stocks.append(StockData('TECO2.BA','Comunicaciones','Telecom Argentina S.A.','Telecom Argentina es una empresa privada que posee una licencia para la prestacion de los servicios de telefonia fija local, larga distancia nacional e internacional en todo el territorio nacional, licencia que tambien comprende la provision de enlaces punto a punto y el arrendamiento de enlaces de otros prestadores.'))
+stocks.append(StockData('TEF.BA','Comunicaciones','Telefonica S.A.','Telefonica, S.A. provee servicios de comunicacion fijos y moviles principalmente en Europa y America Latina.'))
+stocks.append(StockData('TGLT.BA','Bienes y Raices','TGLT S.A.','TGLT S.A. esta involucrada en el desarrollo inmobiliario en Argentina y Uruguay.'))
+stocks.append(StockData('TGNO4.BA','Energetica','Transportadora de Gas del Norte S.A.','Transportadora de Gas del Norte S.A.transporta gas natural a traves de gasoductos de alta presion en el centro y norte de Argentina.'))
+stocks.append(StockData('TGSU2.BA','Energetica','Transportadora de Gas del Sur S.A.','Transportadora de Gas del Sur S.A. proporciona servicios de transporte de gas natural en Argentina.'))
+stocks.append(StockData('TRAN.BA','Energetica','Transener Compañia de Transporte de Energia Electrica de Alta Tension','Compañia de Transporte de Energia Electrica en Alta Tension Transener S.A. provee servicios de transmision de energia electrica en Argentina.'))
+stocks.append(StockData('ALUA.BA','Aluminio','Aluminio Argentino S.A.','Aluminio Argentino SAIC es la unica productora de aluminio primario de la Republica Argentina. Es una empresa de origen y capitales argentinos que fue fundada en 1970. Su principal fuente de ingresos deriva de las operaciones de exportacion. Las acciones de Aluar cotizan solamente en la Bolsa de Comercio de Buenos Aires. Cabe destacar que este activo cuenta con ADR.'))
+stocks.append(StockData('BMA.BA','Financiera','Banco Macro S.A.','Banco Macro S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
+stocks.append(StockData('COME.BA','Financiera','Sociedad Comercial del Plata S.A.','Sociedad Comercial del Plata S.A.invierte en empresas vinculadas a los sectores de la construccion, entretenimientos, desarrollos urbanos, fertilizantes y agroquimicos.'))
+stocks.append(StockData('EDN.BA','Energetica','Empresa Distribuidora y Comercializadora Norte S.A.','Empresa Distribuidora y Comercializadora Norte S.A.  es una empresa distribuidora de electricidad de la Argentina, principalmente en el noroeste del Gran Buenos Aires y en la zona norte de la Ciudad de Buenos Aires.'))
+stocks.append(StockData('ERAR.BA','Siderurgica','Siderar S.A.','Ternium Siderar es una empresa siderurgica, dedicada principalmente a la fabricacion de distintos tipos de acero en Argentina.'))
+stocks.append(StockData('FRAN.BA','Financiera','Banco Frances S.A.','BBVA Banco Frances S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
+stocks.append(StockData('GGAL.BA','Financiera','Grupo Financiero Galicia S.A.','Grupo Financiero Galicia S.A. provee servicios bancarios a individuos, pequeñas y medianas empresas y grandes corporaciones en Argentina.'))
+stocks.append(StockData('PAMP.BA','Energetica','Pampa Energia S.A.','Pampa Energia S.A., una empresa de electricidad integrada, participa en la generacion, transmision y distribucion de energia electrica en Argentina.'))
+stocks.append(StockData('TS.BA','Metalurgica','Tenaris S.A.','Tenaris S.A. fabrica y provee cañerias de acero y servicios relacionados para el sector energetico y otros usos industriales.'))
+stocks.append(StockData('YPFD.BA','Energetica','YPF S.A.','YPF Sociedad Anonima, una compañia energetica, se dedica a la exploracion y produccion de hidrocarburos, refino y marketing, y quimica, de la Argentina.'))
 
 finalStocks = []
 
@@ -162,7 +163,7 @@ for oneStock in stocks:
     myInvertarStock.name = oneStock.name
     myInvertarStock.ticker = oneStock.ticker
     myInvertarStock.description = oneStock.description
-    myInvertarStock.industry = "Industry"
+    myInvertarStock.industry = oneStock.industry
     myInvertarStock.currency = "ARS"
     myInvertarStock.tradingSessions = []
     stocksFromYahoo = currentStock.get_historical((date.today() - timedelta(days=1825)).strftime("%Y-%m-%d"),
