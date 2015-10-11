@@ -248,4 +248,8 @@ public class TradingSession {
 		this.macd_histogram = macd_histogram;
 	}
 	
+	public Double getTradingSessionVariation() {
+		return this.closingPrice/(this.adjClosingPrice != null? this.adjClosingPrice : this.openingPrice) * 100;
+	}
+	
 }

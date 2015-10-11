@@ -62,6 +62,9 @@ public class TradingSessionDTO {
 	private Double macd_signal_line;
 	@JsonProperty("macd_histogram")
 	private Double macd_histogram;
+	
+	@JsonProperty("tradingSessionVariation")
+	private Double tradingSessionVariation;
 
 	public Double getClosingPrice() {
 		return closingPrice;
@@ -269,5 +272,13 @@ public class TradingSessionDTO {
 
 	public void setMacd_histogram(Double macd_histogram) {
 		this.macd_histogram = macd_histogram;
+	}
+
+	public Double getTradingSessionVariation() {
+		return tradingSessionVariation;
+	}
+
+	public void setTradingSessionVariation(Double tradingSessionVarition) {
+		this.tradingSessionVariation = tradingSessionVarition;
 	}
 }

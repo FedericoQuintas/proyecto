@@ -138,4 +138,9 @@ public abstract class Asset {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public Double getLastTradingSessionVariation() {
+		//la ultima entrada en la lista de trading sessions es la mas reciente(por su timestamp)
+		return this.tradingSessions.get(this.tradingSessions.lastKey()).getTradingSessionVariation();
+	}
 }

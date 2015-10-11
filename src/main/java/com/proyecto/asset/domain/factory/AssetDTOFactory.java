@@ -24,6 +24,7 @@ public class AssetDTOFactory {
 		assetDTO.setLastTradingPrice(asset.getLastTradingPrice());
 		assetDTO.setCurrency(asset.getCurrency());
 		assetDTO.setAssetType(asset.getType());
+		assetDTO.setLastTradingSessionVariation(asset.getLastTradingSessionVariation());
 
 		return assetDTO;
 	}

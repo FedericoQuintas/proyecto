@@ -32,6 +32,9 @@ public abstract class AssetDTO {
 
 	@JsonProperty("currency")
 	private InvertarCurrencyCode currency;
+	
+	@JsonProperty("lastTradingSessionVariation")
+	private Double lastTradingSessionVariation;
 
 
 	public List<TradingSessionDTO> getTradingSessions() {
@@ -99,6 +102,14 @@ public abstract class AssetDTO {
 
 	public void setAssetType(String assetType) {
 		this.assetType = assetType;
+	}
+
+	public Double getLastTradingSessionVariation() {
+		return lastTradingSessionVariation;
+	}
+
+	public void setLastTradingSessionVariation(Double lastTradingSessionVariation) {
+		this.lastTradingSessionVariation = lastTradingSessionVariation;
 	}
 
 }
