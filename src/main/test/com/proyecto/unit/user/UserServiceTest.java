@@ -56,6 +56,7 @@ public class UserServiceTest extends SpringBaseTest {
 	private AssetService assetService;
 
 	private InvertarUserDTO userDTO;
+	private InvertarUserDTO adminDTO;
 
 	private AssetDTO assetDTO;
 
@@ -721,8 +722,10 @@ public class UserServiceTest extends SpringBaseTest {
 			UserMailAlreadyExistsException {
 
 		userDTO = UserHelper.createDefaultUserDTO();
+		adminDTO = UserHelper.createAdminLoginDTO();
 
 		userDTO = userService.store(userDTO);
+		adminDTO = userService.store(adminDTO);
 
 	}
 

@@ -41,7 +41,7 @@ public class AssetServiceTest extends SpringBaseTest {
 	@Before
 	public void before() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException, DBAccessException,
-			InvalidAssetTypeException {
+			InvalidAssetTypeException, ParseException {
 		storeAsset();
 	}
 
@@ -290,13 +290,16 @@ public class AssetServiceTest extends SpringBaseTest {
 
 	private void storeAsset() throws InvalidAssetArgumentException,
 			InvalidTradingSessionArgumentException, DBAccessException,
-			InvalidAssetTypeException {
+			InvalidAssetTypeException, ParseException {
 
 		stockDTO = AssetHelper.createDefaultStockDTO();
 		bondDTO = AssetHelper.createDefaultBondDTO();
+		AssetDTO assetDTOWithTradingSessions = AssetHelper
+				.createDefaultStockDTOWithTradingSessions();
 
 		stockDTO = assetService.store(stockDTO);
 		bondDTO = assetService.store(bondDTO);
+		assetDTOWithTradingSessions = assetService.store(assetDTOWithTradingSessions);
 
 	}
 

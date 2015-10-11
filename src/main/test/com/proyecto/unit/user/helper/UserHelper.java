@@ -5,6 +5,16 @@ import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
 
 public class UserHelper {
 
+	public static InvertarUserDTO createAdminLoginDTO() {
+
+		InvertarUserDTO invertarUserDTO = new InvertarUserDTO();
+		invertarUserDTO.setMail("admin@invertar.com");
+		invertarUserDTO.setPassword("admin");
+		invertarUserDTO.setUsername("Admin");
+		
+		return invertarUserDTO;
+	}
+	
 	public static InvertarUserDTO createDefaultUserDTO() {
 		InvertarUserDTO invertarUserDTO = new InvertarUserDTO();
 		invertarUserDTO.setUsername("Default Name");

@@ -139,8 +139,11 @@ public abstract class Asset {
 		this.type = type;
 	}
 	
-	public Double getLastTradingSessionVariation() {
+	public Double calculateLastTradingSessionVariation() {
 		//la ultima entrada en la lista de trading sessions es la mas reciente(por su timestamp)
+		if (this.tradingSessions.isEmpty()) {
+			return null;
+		}
 		return this.tradingSessions.get(this.tradingSessions.lastKey()).getTradingSessionVariation();
 	}
 	
