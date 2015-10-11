@@ -249,7 +249,8 @@ public class TradingSession {
 	}
 	
 	public Double getTradingSessionVariation() {
-		return this.closingPrice/(this.adjClosingPrice != null? this.adjClosingPrice : this.openingPrice) * 100;
+		Double initialPrice = this.adjClosingPrice != null? this.adjClosingPrice : this.openingPrice;
+		return (this.closingPrice - initialPrice)/initialPrice * 100;
 	}
 	
 }
