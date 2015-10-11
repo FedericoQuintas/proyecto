@@ -37,6 +37,8 @@ public class TradingSession {
 	private Double macd_signal_line;
 	private Double macd_histogram;
 	
+	private Double tradingSessionVariation;
+	
 	public TradingSession() {
 	}
 
@@ -249,8 +251,12 @@ public class TradingSession {
 	}
 	
 	public Double getTradingSessionVariation() {
-		Double initialPrice = this.adjClosingPrice != null? this.adjClosingPrice : this.openingPrice;
-		return (this.closingPrice - initialPrice)/initialPrice * 100;
+		return this.tradingSessionVariation;
+	}
+	
+	public void setTradingSessionVariation(Double lastClosingPrice) {
+		Double initialPrice = lastClosingPrice != null? lastClosingPrice : this.openingPrice;
+		this.tradingSessionVariation = (this.closingPrice - initialPrice)/initialPrice * 100;
 	}
 	
 }

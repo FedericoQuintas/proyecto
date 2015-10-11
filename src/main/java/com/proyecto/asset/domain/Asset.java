@@ -143,4 +143,13 @@ public abstract class Asset {
 		//la ultima entrada en la lista de trading sessions es la mas reciente(por su timestamp)
 		return this.tradingSessions.get(this.tradingSessions.lastKey()).getTradingSessionVariation();
 	}
+	
+	public void resolveTradingSessionsVariations() {
+		Double previousClosingPrice = null;
+		for (Long key: this.tradingSessions.keySet()) {
+			TradingSession tradingSession = this.tradingSessions.get(key);
+			tradingSession.setTradingSessionVariation(previousClosingPrice);
+			previousClosingPrice = tradingSession.getClosingPrice();
+		}
+	}
 }

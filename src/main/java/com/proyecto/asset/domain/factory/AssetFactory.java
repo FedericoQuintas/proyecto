@@ -30,10 +30,14 @@ public class AssetFactory {
 	public static Asset create(AssetDTO assetDTO, Long id) 
 			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException{
 		if(assetDTO.getClass().equals(StockDTO.class)){
-			return StockFactory.create((StockDTO) assetDTO, id);
+			Asset asset = StockFactory.create((StockDTO) assetDTO, id);
+			asset.resolveTradingSessionsVariations();
+			return asset;
 		}
 		else if(assetDTO.getClass().equals(BondDTO.class)){
-			return BondFactory.create((BondDTO) assetDTO, id);
+			Asset asset = BondFactory.create((BondDTO) assetDTO, id);
+			asset.resolveTradingSessionsVariations();
+			return asset;
 		}
 		return null; //TODO: Tirar una excepcion de tipo disconocido
 	}
