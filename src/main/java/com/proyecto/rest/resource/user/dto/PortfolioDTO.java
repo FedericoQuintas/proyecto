@@ -19,6 +19,8 @@ public class PortfolioDTO {
 	private Float lastSessionPerformance;
 	@JsonProperty("user_assets")
 	private List<UserAssetDTO> userAssets = new ArrayList<UserAssetDTO>();
+	@JsonProperty("portfolioInvestorProfile")
+	private InvestorProfileDTO portfolioInvestorProfile;
 
 	public void setPerformance(Float performance) {
 		this.performance = performance;
@@ -66,6 +68,14 @@ public class PortfolioDTO {
 
 	public void setLastSessionPerformance(Float lastSessionPerformance) {
 		this.lastSessionPerformance = lastSessionPerformance;
+	}
+
+	public InvestorProfileDTO getPortfolioInvestorProfile() {
+		return portfolioInvestorProfile;
+	}
+
+	public void setPortfolioInvestorProfile(InvestorProfileDTO portfolioInvestorProfile) {
+		this.portfolioInvestorProfile = portfolioInvestorProfile;
 	}
 
 }

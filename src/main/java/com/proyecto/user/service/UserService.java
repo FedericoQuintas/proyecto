@@ -8,8 +8,8 @@ import com.proyecto.asset.exception.InvalidAssetTypeException;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
+import com.proyecto.rest.resource.user.dto.InvestorProfileDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
-import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.user.domain.PortfolioHistoryVO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
@@ -163,9 +163,29 @@ public interface UserService {
 	 * @param amountOfPoints
 	 * @return
 	 */
-	List<TheoreticalPortfolioDTO> getInvestorProfile(Integer amountOfPoints);
+	InvestorProfileDTO createInvestorProfile(Integer amountOfPoints);
+	
+	/**
+	 * Add an investor profile to a user
+	 * @param userId
+	 * @param investorProfile
+	 * @return
+	 * @throws UserNotFoundException 
+	 */
+	InvestorProfileDTO addInvestorProfile(Long userId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException;
 
 	Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(Long userId)
 			throws ApplicationServiceException;
+
+	/**
+	 * 
+	 * @param userId
+	 * @param portfolioId
+	 * @param investorProfileDTO
+	 * @return
+	 * @throws UserNotFoundException 
+	 * @throws PortfolioNotFoundException 
+	 */
+	InvestorProfileDTO setUserPortfolioInvestorProfile(Long userId, Long portfolioId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException, PortfolioNotFoundException;
 
 }

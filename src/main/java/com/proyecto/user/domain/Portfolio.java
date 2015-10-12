@@ -11,6 +11,7 @@ public class Portfolio {
 	private Float performance;
 	private Float lastSessionPerformance;
 	private List<UserAsset> userAssets = new ArrayList<UserAsset>();
+	private InvestorProfile portfolioInvestorProfile;
 
 	public Portfolio() {
 	}
@@ -57,6 +58,14 @@ public class Portfolio {
 
 	public void addUsserAsset(UserAsset newUserAsset) {
 		this.userAssets.add(newUserAsset);
+	}
+
+	public InvestorProfile getPortfolioInvestorProfile() {
+		return portfolioInvestorProfile;
+	}
+
+	public void setPortfolioInvestorProfile(InvestorProfile portfolioInvestorProfile) {
+		this.portfolioInvestorProfile = portfolioInvestorProfile;
 	}
 
 }

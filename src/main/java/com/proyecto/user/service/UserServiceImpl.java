@@ -24,8 +24,8 @@ import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
 import com.proyecto.rest.resource.user.dto.InvertarUserLoginDTO;
+import com.proyecto.rest.resource.user.dto.InvestorProfileDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
-import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
 import com.proyecto.rest.resource.user.dto.UserAssetDTO;
 import com.proyecto.user.domain.InvertarUser;
@@ -35,6 +35,8 @@ import com.proyecto.user.domain.PortfolioHistoryVO;
 import com.proyecto.user.domain.TransactionType;
 import com.proyecto.user.domain.factory.InvertarUserDTOFactory;
 import com.proyecto.user.domain.factory.InvertarUserFactory;
+import com.proyecto.user.domain.factory.InvestorProfileDTOFactory;
+import com.proyecto.user.domain.factory.InvestorProfileFactory;
 import com.proyecto.user.domain.factory.PortfolioDTOFactory;
 import com.proyecto.user.domain.factory.PortfolioFactory;
 import com.proyecto.user.domain.service.PortfolioDomainService;
@@ -227,16 +229,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<TheoreticalPortfolioDTO> getInvestorProfile(
+	public InvestorProfileDTO createInvestorProfile(
 			Integer amountOfPoints) {
-		InvestorProfile.loadXmlFile();
-		if (amountOfPoints <= 4) {
-			return InvestorProfile.getConservativeInvestor();
-		} else if (amountOfPoints <= 8) {
-			return InvestorProfile.getModerateInvestor();
-		} else {
-			return InvestorProfile.getAgressiveInvestor();
-		}
+		InvestorProfile investorProfile = new InvestorProfile();
+		investorProfile.resolveInvestorProfile(amountOfPoints);
+		
+		return InvestorProfileDTOFactory.create(investorProfile);
 	}
 
 	private void validatePasswordNotNull(String password)
@@ -529,5 +527,36 @@ public class UserServiceImpl implements UserService {
 			transactions.addAll(userAssetDTO.getTransactions());
 		}
 		return transactions;
+	}
+
+	@Override
+	public InvestorProfileDTO addInvestorProfile(Long userId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException {
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			user.addInvestorProfile(InvestorProfileFactory.create(investorProfileDTO));
+			updateUser(user);
+			
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+		return investorProfileDTO;
+	}
+
+	@Override
+	public InvestorProfileDTO setUserPortfolioInvestorProfile(Long userId, Long portfolioId,
+			InvestorProfileDTO investorProfileDTO) throws UserNotFoundException, PortfolioNotFoundException {
+		InvertarUser user;
+		try {
+			user = userDAO.findById(userId);
+			Portfolio portfolio = user.getPortfolio(portfolioId);
+			portfolio.setPortfolioInvestorProfile(InvestorProfileFactory.create(investorProfileDTO));
+			updateUser(user);
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		} catch (PortfolioNotFoundException e) {
+			throw new PortfolioNotFoundException(e);
+		}
+		
+		return investorProfileDTO;
 	}
 }

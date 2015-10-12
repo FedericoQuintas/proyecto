@@ -21,6 +21,8 @@ public class InvertarUser {
 	private String mail;
 	private String username;
 	private String password;
+	
+	private List<InvestorProfile> investorProfiles = new ArrayList<InvestorProfile>();
 
 	public InvertarUser() {
 	}
@@ -98,6 +100,18 @@ public class InvertarUser {
 	@JsonProperty("_id")
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
+	}
+
+	public List<InvestorProfile> getInvestorProfiles() {
+		return investorProfiles;
+	}
+
+	public void setInvestorProfiles(List<InvestorProfile> investorProfiles) {
+		this.investorProfiles = investorProfiles;
+	}
+	
+	public void addInvestorProfile(InvestorProfile investorProfile) {
+		this.investorProfiles.add(investorProfile);
 	}
 
 }

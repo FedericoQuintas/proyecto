@@ -15,6 +15,15 @@ public class InvestorProfile {
 	private static List<TheoreticalPortfolioDTO> moderateInvestor;
 	private static List<TheoreticalPortfolioDTO> conservativeInvestor;
 	
+	private String name;
+	private String description;
+	private Integer amount;
+	private Integer period;
+	private Double yield;
+	private Integer score;
+	private InvestorProfileEnum profile;
+	private String profileString;
+	
 	
 	public static void loadXmlFile(){
 		
@@ -72,5 +81,83 @@ public class InvestorProfile {
 
 	public static List<TheoreticalPortfolioDTO> getConservativeInvestor() {
 		return conservativeInvestor;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
+	public Double getYield() {
+		return yield;
+	}
+
+	public void setYield(Double yield) {
+		this.yield = yield;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public InvestorProfileEnum getProfile() {
+		return profile;
+	}
+
+	public void setProfile(InvestorProfileEnum profile) {
+		this.profile = profile;
+	}
+
+	public String getProfileString() {
+		return profileString;
+	}
+
+	public void setProfileString(String profileString) {
+		this.profileString = profileString;
+	}
+	
+	public void resolveInvestorProfile(Integer score) {
+		this.score = score;
+		if (score <= 4) {
+			this.profile = InvestorProfileEnum.CONSERVATIVE;
+			this.profileString = "Conservative";
+		} else if (score <= 8) {
+			this.profile = InvestorProfileEnum.MODERATE;
+			this.profileString = "Moderate";
+		} else {
+			this.profile = InvestorProfileEnum.AGRESSIVE;
+			this.profileString = "Agressive";
+		}
 	}
 }
