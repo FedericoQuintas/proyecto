@@ -139,20 +139,34 @@ public abstract class Asset {
 		this.type = type;
 	}
 	
-	public Double calculateLastTradingSessionVariation() {
+	public Double calculateLastTradingSessionRelativeVariation() {
 		//la ultima entrada en la lista de trading sessions es la mas reciente(por su timestamp)
 		if (this.tradingSessions.isEmpty()) {
 			return null;
 		}
-		return this.tradingSessions.get(this.tradingSessions.lastKey()).getTradingSessionVariation();
+		return this.tradingSessions.get(this.tradingSessions.lastKey()).getTradingSessionRelativeVariation();
 	}
 	
 	public void resolveTradingSessionsVariations() {
+		this.resolveTradingSessionsAbsoluteVariations();
+		this.resolveTradingSessionsRelativeVariations();
+	}
+	
+	public void resolveTradingSessionsRelativeVariations() {
 		Double previousClosingPrice = null;
 		for (Long key: this.tradingSessions.keySet()) {
 			TradingSession tradingSession = this.tradingSessions.get(key);
-			tradingSession.setTradingSessionVariation(previousClosingPrice);
+			tradingSession.setTradingSessionRelativeVariation(previousClosingPrice);
 			previousClosingPrice = tradingSession.getClosingPrice();
+		}
+	}
+	
+	public void resolveTradingSessionsAbsoluteVariations() {
+		Double firstClosingPrice = this.tradingSessions.get(this.tradingSessions.firstKey()).getClosingPrice();
+		
+		for (Long key: this.tradingSessions.keySet()) {
+			TradingSession tradingSession = this.tradingSessions.get(key);
+			tradingSession.setTradingSessionAbsoluteVariation(firstClosingPrice);
 		}
 	}
 }

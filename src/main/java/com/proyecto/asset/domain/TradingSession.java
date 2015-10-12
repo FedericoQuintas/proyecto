@@ -37,7 +37,11 @@ public class TradingSession {
 	private Double macd_signal_line;
 	private Double macd_histogram;
 	
-	private Double tradingSessionVariation;
+	//Variacion con respecto a la trading session anterior
+	private Double tradingSessionRelativeVariation;
+	
+	// Variacion con respecto a la primer trading session
+	private Double tradingSessionAbsoluteVariation;
 	
 	public TradingSession() {
 	}
@@ -250,13 +254,26 @@ public class TradingSession {
 		this.macd_histogram = macd_histogram;
 	}
 	
-	public Double getTradingSessionVariation() {
-		return this.tradingSessionVariation;
+	public Double getTradingSessionRelativeVariation() {
+		return this.tradingSessionRelativeVariation;
 	}
 	
-	public void setTradingSessionVariation(Double lastClosingPrice) {
+	public void setTradingSessionRelativeVariation(Double lastClosingPrice) {
 		Double initialPrice = lastClosingPrice != null? lastClosingPrice : this.openingPrice;
-		this.tradingSessionVariation = (this.closingPrice - initialPrice)/initialPrice * 100;
+		this.tradingSessionRelativeVariation = (this.closingPrice - initialPrice)/initialPrice * 100;
+	}
+
+	public Double getTradingSessionAbsoluteVariation() {
+		return tradingSessionAbsoluteVariation;
+	}
+
+	public void setTradingSessionAbsoluteVariation(Double firstClosingPrice) {
+		if (firstClosingPrice == null) {
+			this.tradingSessionAbsoluteVariation = 0.0;
+		}
+		else {
+			this.tradingSessionAbsoluteVariation = (this.closingPrice - firstClosingPrice) / firstClosingPrice;
+		}
 	}
 	
 }

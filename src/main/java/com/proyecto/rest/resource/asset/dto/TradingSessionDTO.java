@@ -63,9 +63,12 @@ public class TradingSessionDTO {
 	@JsonProperty("macd_histogram")
 	private Double macd_histogram;
 	
-	@JsonProperty("tradingSessionVariation")
-	private Double tradingSessionVariation;
+	@JsonProperty("tradingSessionRelativeVariation")
+	private Double tradingSessionRelativeVariation;
 
+	@JsonProperty("tradingSessionAbsoluteVariation")
+	private Double tradingSessionAbsoluteVariation;
+	
 	public Double getClosingPrice() {
 		return closingPrice;
 	}
@@ -274,11 +277,19 @@ public class TradingSessionDTO {
 		this.macd_histogram = macd_histogram;
 	}
 
-	public Double getTradingSessionVariation() {
-		return tradingSessionVariation;
+	public Double getTradingSessionRelativeVariation() {
+		return tradingSessionRelativeVariation;
 	}
 
-	public void setTradingSessionVariation(Double tradingSessionVarition) {
-		this.tradingSessionVariation = tradingSessionVarition;
+	public void setTradingSessionRelativeVariation(Double tradingSessionVarition) {
+		this.tradingSessionRelativeVariation = tradingSessionVarition;
+	}
+
+	public Double getTradingSessionAbsoluteVariation() {
+		return tradingSessionAbsoluteVariation;
+	}
+
+	public void setTradingSessionAbsoluteVariation(Double tradingSessionAbsoluteVariation) {
+		this.tradingSessionAbsoluteVariation = tradingSessionAbsoluteVariation;
 	}
 }

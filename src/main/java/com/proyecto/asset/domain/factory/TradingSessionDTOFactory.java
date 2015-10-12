@@ -41,8 +41,9 @@ public class TradingSessionDTOFactory {
 		tradingSessionDTO.setMacd_macd_line(tradingSession.getMacd_macd_line());
 		tradingSessionDTO.setMacd_signal_line(tradingSession.getMacd_signal_line());
 		
-		tradingSessionDTO.setTradingSessionVariation(tradingSession.getTradingSessionVariation());
-
+		tradingSessionDTO.setTradingSessionRelativeVariation(tradingSession.getTradingSessionRelativeVariation());
+		tradingSessionDTO.setTradingSessionAbsoluteVariation(tradingSession.getTradingSessionAbsoluteVariation());
+		
 		return tradingSessionDTO;
 	}
 
