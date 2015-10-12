@@ -16,13 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.user.dto.InvertarUserDTO;
+import com.proyecto.rest.resource.user.dto.InvestorProfileDTO;
 import com.proyecto.rest.resource.user.dto.PortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TheoreticalPortfolioDTO;
 import com.proyecto.rest.resource.user.dto.TransactionDTO;
+import com.proyecto.user.domain.InvestorProfile;
 import com.proyecto.user.domain.PortfolioHistoryVO;
 import com.proyecto.user.domain.valueobject.MarketValueVO;
 import com.proyecto.user.exception.InvalidPasswordException;
 import com.proyecto.user.exception.UserMailAlreadyExistsException;
+import com.proyecto.user.exception.UserNotFoundException;
 import com.proyecto.user.exception.UsernameAlreadyExistsException;
 import com.proyecto.user.service.UserService;
 
@@ -147,12 +150,30 @@ public class UserResource {
 		return userService.getPortfoliosPerformance(userId);
 	}
 
+	@RequestMapping(value = "/{user_id}/portfolios/{portfolio_id}/investorProfile", method = RequestMethod.POST)
+	@ResponseBody
+	public InvestorProfileDTO setUserPortfolioInvestorProfile(HttpSession session,
+			@PathVariable("user_id") Long userId, 
+			@PathVariable("portfolio_id") Long portfolioId, 
+			@RequestBody InvestorProfileDTO investorProfileDTO)
+			throws ApplicationServiceException {
+		checkSession(session, userId);
+		return userService.setUserPortfolioInvestorProfile(userId, portfolioId, investorProfileDTO);
+	}
+	
+	@RequestMapping(value = "/investorProfile", method = RequestMethod.POST)
+	@ResponseBody
+	public InvestorProfileDTO createInvestorProfile(
+			HttpSession session, @RequestBody Integer amountOfPoints) {
+		return userService.createInvestorProfile(amountOfPoints);
+	}
+	
 	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.POST)
 	@ResponseBody
-	public List<TheoreticalPortfolioDTO> getInvestorProfile(
-			HttpSession session, @RequestBody Integer amountOfPoints,
-			@PathVariable("user_id") Long userId) {
-		return userService.getInvestorProfile(amountOfPoints);
+	public InvestorProfileDTO addInvestorProfile(
+			HttpSession session, @RequestBody InvestorProfileDTO investorProfileDTO,
+			@PathVariable("user_id") Long userId) throws UserNotFoundException {
+		return userService.addInvestorProfile(userId, investorProfileDTO);
 	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/history", method = RequestMethod.GET)

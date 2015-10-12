@@ -20,6 +20,9 @@ public class InvertarUserDTO {
 
 	@JsonProperty("password")
 	private String password;
+	
+	@JsonProperty("investorProfiles")
+	private List<InvestorProfileDTO> investorProfilesDTO;
 
 	public Long getId() {
 		return id;
@@ -59,6 +62,14 @@ public class InvertarUserDTO {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public List<InvestorProfileDTO> getInvestorProfilesDTO() {
+		return investorProfilesDTO;
+	}
+
+	public void setInvestorProfileDTO(List<InvestorProfileDTO> investorProfilesDTO) {
+		this.investorProfilesDTO = investorProfilesDTO;
 	}
 
 }
