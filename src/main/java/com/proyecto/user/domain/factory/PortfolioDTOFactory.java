@@ -20,6 +20,8 @@ public class PortfolioDTOFactory {
 		portfolioDTO.setPerformance(portfolio.getPerformance());
 		portfolioDTO.setLastSessionPerformance(portfolio
 				.getLastSessionPerformance());
+		portfolioDTO.setPortfolioInvestorProfile(InvestorProfileDTOFactory
+				.create(portfolio.getPortfolioInvestorProfile()));
 
 		return portfolioDTO;
 
