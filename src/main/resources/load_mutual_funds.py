@@ -553,6 +553,7 @@ for oneFundType in fund_types:
                             count_2 = count_2 + 1
                         if found ==1:
                             finalMutualFunds.pop(count_2)
+                        print(currentMutualFund.name)
                         currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
                         finalMutualFunds.append(currentMutualFund)
                     if name in mutualFunds:
