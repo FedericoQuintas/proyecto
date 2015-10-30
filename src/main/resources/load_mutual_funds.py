@@ -30,6 +30,7 @@ class InvertarMutualFund:
     def to_JSON(self):
         for ts in self.tradingSessions:
             ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
+            self.lastTradingPrice = self.tradingSessions[len(self.tradingSessions) - 1].closingPrice
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
