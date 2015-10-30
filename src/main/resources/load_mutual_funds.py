@@ -5,25 +5,41 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 import time
+import requests
 from datetime import *
 import json
 
+# API connection parameters
+login_url = 'http://localhost:8080/login'
+store_url = 'http://localhost:8080/assets/mutualFunds'
+credentials = {
+    "mail": "admin@invertar.com",
+    "password": "admin"
+}
+headers = {'Content-Type': 'application/json'}
+
 class InvertarMutualFund:
-    type = "" #Bond Fund,Stock Fund or Hybrid Fund
-    name = ""
-    lastTradingPrice = 0.0
-    currency = "ARS"
-    tradingSessions = []
-    dollarLinked = False
+    def __init__(self):
+        self.currency = "ARS"
+        self.name = ""
+        self.ticker = ""
+        self.lastTradingPrice = 0.0
+        self.tradingSessions = []
+        self.description = ""
+
     def to_JSON(self):
+        for ts in self.tradingSessions:
+            ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
 class TradingMutualFundSession:
-    date = ""
-    netAssetValue = 0.0
-    oneThousandSharesPrice = 0.0
-    sharesQty = 0.0
+    def __init__(self):
+        self.tradingDate = ""
+        self.netAssetValue = 0.0
+        self.closingPrice = 0.0
+        self.openingPrice = 0.0
+        self.sharesQty = 0.0
 
 #I've gotta iterate over these days and keep in mind that there are no working days as well.
 base = date.today()
@@ -484,17 +500,17 @@ finalMutualFunds = []
 
 for oneFundType in fund_types:
 
-    type = ""
+    fundType = ""
     if oneFundType==1:
-        type="Stock Fund"
+        fundType = "Stock Fund"
 
     elif oneFundType==2:
-        type="Bond Fund"
+        fundType = "Bond Fund"
 
     elif oneFundType==4:
-        type="Hybrid Fund"
+        fundType = "Hybrid Fund"
 
-    print("Procesando:",type)
+    print("Procesando:",fundType)
     count = 0
 
     for oneDate in date_list:
@@ -537,9 +553,9 @@ for oneFundType in fund_types:
                     name = cell.string.strip()
                     if index == 3:
                         newTradingMutualFundSession = TradingMutualFundSession()
-                        newTradingMutualFundSession.date = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
+                        newTradingMutualFundSession.tradingDate = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
                     elif index == 4:
-                        newTradingMutualFundSession.oneThousandSharesPrice = cell.string.strip().replace(".","").replace(",",".")
+                        newTradingMutualFundSession.closingPrice = cell.string.strip().replace(".","").replace(",",".")
                     elif index == 5:
                         newTradingMutualFundSession.sharesQty = cell.string.strip().replace(".","")
                     elif index == 6:
@@ -554,6 +570,12 @@ for oneFundType in fund_types:
                         if found ==1:
                             finalMutualFunds.pop(count_2)
                         print(currentMutualFund.name)
+                        try:
+                            newTradingMutualFundSession.openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions) - 1].closingPrice
+                        except IndexError:
+                            print("Index error")
+                        del newTradingMutualFundSession.netAssetValue
+                        del newTradingMutualFundSession.sharesQty
                         currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
                         finalMutualFunds.append(currentMutualFund)
                     if name in mutualFunds:
@@ -564,7 +586,10 @@ for oneFundType in fund_types:
 
                             newMutualFund.tradingSessions = []
 
-                            newMutualFund.type= type
+                            newMutualFund.fundType= fundType
+
+                            newMutualFund.ticker = name.replace(' ', '') + '.' + fundType.replace(' ', '')
+                            newMutualFund.description = name
 
                             finalMutualFunds.append(newMutualFund)
                             currentMutualFund = newMutualFund
@@ -578,5 +603,19 @@ for oneFundType in fund_types:
 
         count = count + 1
 
+# Open connection to API
+conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
+session_cookie = conn.cookies
+
 for oneFund in finalMutualFunds:
-    print(oneFund.to_JSON())
+    jsonObject = oneFund.to_JSON()
+    print(jsonObject)
+
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=jsonObject)
+
+    if r.status_code == 200:
+        print("Cargado:", oneFund.ticker)
+    else:
+        print("Error en la carga del FCI {}: {}".format(oneFund.ticker, r.content))
+
+driver.close()
