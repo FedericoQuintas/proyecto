@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import com.proyecto.common.currency.InvertarCurrencyCode;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.MutualFundDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -17,6 +18,9 @@ public class AssetHelper {
 
 	public static final String DEFAULT_BOND_DESCRIPTION = "Bonar 2024";
 	public static final String DEFAULT_BOND_TICKER = "AY24";
+	
+	public static final String DEFAULT_MUTUALFUND_DESCRIPTION = "FCI sarasa";
+	public static final String DEFAULT_MUTUALFUND_TICKER = "FCIS";
 	
 	public static SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -43,6 +47,17 @@ public class AssetHelper {
 		return bondDTO;
 	}
 
+	public static MutualFundDTO createDefaultMutualFundDTO() {
+
+		MutualFundDTO mutualFundDTO = new MutualFundDTO();
+
+		mutualFundDTO.setDescription(DEFAULT_MUTUALFUND_DESCRIPTION);
+		mutualFundDTO.setTicker(DEFAULT_MUTUALFUND_TICKER);
+		mutualFundDTO.setCurrency(InvertarCurrencyCode.US);
+
+		return mutualFundDTO;
+	}
+
 	public static AssetDTO createDefaultStockDTOWithTradingSessions()
 			throws ParseException {
 
@@ -59,6 +74,15 @@ public class AssetHelper {
 		addDefaultTradingSessions(bondDTO);
 		
 		return bondDTO;
+	}
+
+	public static AssetDTO createDefaultMutualFundDTOWithTradingSessions()
+			throws ParseException {
+
+		AssetDTO mutualFundDTO = createDefaultMutualFundDTO();
+		addDefaultTradingSessions(mutualFundDTO);
+		
+		return mutualFundDTO;
 	}
 	
 	public static void addDefaultTradingSessions(AssetDTO assetDTO) throws ParseException{

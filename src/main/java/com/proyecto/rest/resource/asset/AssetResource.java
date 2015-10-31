@@ -23,6 +23,7 @@ import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.MutualFundDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
 
@@ -40,6 +41,17 @@ public class AssetResource {
 			throws ApplicationServiceException {
 		if (isAdmin(session)) {
 			return assetService.store(stockDTO);
+		} else {
+			throw new AccessDeniedException("Invalid Role");
+		}
+	}
+
+	@RequestMapping(value = "/mutualFunds", method = RequestMethod.POST)
+	@ResponseBody
+	public AssetDTO storeMutualFund(HttpSession session, @RequestBody MutualFundDTO mutualFundDTO)
+			throws ApplicationServiceException {
+		if (isAdmin(session)) {
+			return assetService.store(mutualFundDTO);
 		} else {
 			throw new AccessDeniedException("Invalid Role");
 		}

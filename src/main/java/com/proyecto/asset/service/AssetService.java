@@ -53,9 +53,10 @@ public interface AssetService {
 	 * @param id
 	 * @return AssetDTO
 	 * @throws InvalidAssetArgumentException
+	 * @throws InvalidAssetTypeException 
 	 */
 	void update(AssetDTO assetDTO) throws InvalidAssetArgumentException,
-			InvalidTradingSessionArgumentException;
+			InvalidTradingSessionArgumentException, InvalidAssetTypeException;
 
 	/**
 	 * Returns a map of (date, change %) taking as a reference the start date's 
