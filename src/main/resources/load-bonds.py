@@ -7,10 +7,6 @@ import time
 import requests
 import urllib
 
-client = MongoClient('localhost', 27017)
-
-db = client.invertarDB
-
 # API connection parameters
 login_url = 'http://localhost:8080/login'
 store_url = 'http://localhost:8080/assets/bonds'
@@ -128,8 +124,9 @@ for oneLink in csvsToDownload:
     webpage = urllib.request.urlopen(oneLink.url)
     datareader = csv.reader(io.TextIOWrapper(webpage))
     currentBond = InvertarBond(oneLink.ticker,oneLink.name)
-    currentBond.dollarLinked=oneLink.dollar_linked
-    currentBond.tradingSessions=[]
+    currentBond.description = oneLink.description
+    currentBond.dollarLinked = oneLink.dollar_linked
+    currentBond.tradingSessions = []
     for row in datareader:
         if row[4] != "cierre":
             currentBond.tradingSessions.append(InvertarTradingSession(float(row[4]),float(row[1]),float(row[2]),float(row[3]),row[0],int(row[5])))
@@ -140,6 +137,7 @@ for oneBond in bonds:
     print("Procesando:",oneBond.ticker)
     myInvertarBond = InvertarBond(oneBond.ticker,oneBond.name)
     currentBond = oneBond
+    myInvertarBond.description = oneBond.description
     myInvertarBond.dollarLinked = oneBond.dollarLinked
     myInvertarBond.currency = "ARS"
     myInvertarBond.tradingSessions = []
