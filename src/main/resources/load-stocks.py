@@ -2,16 +2,10 @@
 from yahoo_finance import Share
 from datetime import *
 from bs4 import BeautifulSoup
-import urllib3
 import urllib.request
-from pymongo import MongoClient
 import json
 import time
 import requests
-
-client = MongoClient('localhost', 27017)
-
-db = client.invertarDB
 
 # API connection parameters
 login_url = 'http://localhost:8080/login'
