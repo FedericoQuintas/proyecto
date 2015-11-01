@@ -14,8 +14,9 @@ class InvertarCedear:
         self.industry = "Cedear"
         self.currency = "ARS"
         self.lastTradingPrice = 0.0
-        self.description = ""
+        self.description = "descripcion"
         self.tradingSessions = []
+
     def to_JSON(self):
 
         return json.dumps(self, default=lambda o: o.__dict__,
@@ -29,6 +30,7 @@ class InvertarTradingSession:
     minPrice = 0.0
     tradingDate = ""
     volume = 0
+
     def __init__(self, aClosingPrice,anOpeningPrice, aMaxPrice,aMinPrice,aTradingDate,aVolume):
         self.closingPrice = float(aClosingPrice)
         self.openingPrice = float(anOpeningPrice)
@@ -36,6 +38,26 @@ class InvertarTradingSession:
         self.minPrice = float(aMinPrice)
         self.tradingDate = aTradingDate
         self.volume = int(aVolume)
+        self.adjClosingPrice = 0.0
+        self.sma_7 = 0.0
+        self.sma_21 = 0.0
+        self.sma_50 = 0.0
+        self.sma_200 = 0.0
+        self.ema_7 = 0.0
+        self.ema_21 = 0.0
+        self.ema_50 = 0.0
+        self.ema_200 = 0.0
+        self.momentum_7 = 0.0
+        self.momentum_21 = 0.0
+        self.momentum_50 = 0.0
+        self.momentum_200 = 0.0
+        self.rsi_7 = 0.0
+        self.rsi_21 = 0.0
+        self.rsi_50 = 0.0
+        self.rsi_200 = 0.0
+        self.macd_macd_line = 0.0
+        self.macd_signal_line = 0.0
+        self.macd_histogram = 0.0
 
 class Link:
     ticker =""
@@ -90,10 +112,8 @@ for aCedear in finalCedears:
         json_ts.append(ts.__dict__)
     aCedear.tradingSessions = json_ts
 
-    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear, default=lambda o: o.__dict__,
-            sort_keys=True, indent=4))
-    print(json.dumps(aCedear, default=lambda o: o.__dict__,
-            sort_keys=True, indent=4))
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear.__dict__))
+
     if r.status_code == 200:
         print("Cargado:", aCedear.ticker)
     else:
