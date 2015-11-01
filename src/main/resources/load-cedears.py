@@ -14,7 +14,7 @@ class InvertarCedear:
         self.industry = "Cedear"
         self.currency = "ARS"
         self.lastTradingPrice = 0.0
-        self.description = "nm ml"
+        self.description = ""
         self.tradingSessions = []
     def to_JSON(self):
 
