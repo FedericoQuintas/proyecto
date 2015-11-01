@@ -1,7 +1,7 @@
 package com.proyecto.asset.domain;
 
 public enum AssetType {
-	BOND("BOND"), STOCK("STOCK"), MUTUALFUND("MUTUAL_FUND");
+	BOND("BOND"), STOCK("STOCK"), MUTUALFUND("MUTUAL_FUND"), CURRENCY("CURRENCY");
 
 	private String type;
 

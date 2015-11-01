@@ -22,6 +22,7 @@ import com.mongodb.DuplicateKeyException;
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.AssetType;
 import com.proyecto.asset.domain.Bond;
+import com.proyecto.asset.domain.CurrencyAsset;
 import com.proyecto.asset.domain.MutualFund;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.common.exception.ObjectNotFoundException;
@@ -37,6 +38,7 @@ public class AssetMongoDAOImpl implements AssetDAO {
 	private AssetDAO stockDAO;
 	private AssetDAO bondDAO;
 	private AssetDAO mutualFundDAO;
+	private AssetDAO currencyAssetDAO;
 	private Map<Class, AssetDAO> assetDAOsMap = new HashMap<Class, AssetDAO>();
 
 	@Resource
@@ -55,10 +57,12 @@ public class AssetMongoDAOImpl implements AssetDAO {
 			stockDAO = new StockMongoDAOImpl(counter, jongo, dbAccess);
 			bondDAO = new BondMongoDAOImpl(counter, jongo, dbAccess);
 			mutualFundDAO = new MutualFundMongoDAOImpl(counter, jongo, dbAccess);
+			currencyAssetDAO = new CurrencyAssetMongoDAOImpl(counter, jongo, dbAccess);
 			
 			assetDAOsMap.put(Stock.class, stockDAO);
 			assetDAOsMap.put(Bond.class, bondDAO);
 			assetDAOsMap.put(MutualFund.class, mutualFundDAO);
+			assetDAOsMap.put(CurrencyAsset.class, currencyAssetDAO);
 			
 		} catch (DuplicateKeyException e) {
 		}

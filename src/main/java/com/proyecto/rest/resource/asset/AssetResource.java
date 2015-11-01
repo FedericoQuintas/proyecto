@@ -23,6 +23,7 @@ import com.proyecto.asset.service.AssetService;
 import com.proyecto.common.exception.ApplicationServiceException;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.CurrencyAssetDTO;
 import com.proyecto.rest.resource.asset.dto.MutualFundDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
@@ -67,6 +68,18 @@ public class AssetResource {
 			throw new AccessDeniedException("Invalid Role");
 		}
 	}
+	
+	@RequestMapping(value = "/currencies", method = RequestMethod.POST)
+	@ResponseBody
+	public AssetDTO storeCurrency(HttpSession session, @RequestBody CurrencyAssetDTO currencyDTO)
+			throws ApplicationServiceException {
+		if (isAdmin(session)) {
+			return assetService.store(currencyDTO);
+		} else {
+			throw new AccessDeniedException("Invalid Role");
+		}
+	}
+	
 	private boolean isAdmin(HttpSession session) {
 		return session.getAttribute("ROLE") != null
 				&& session.getAttribute("ROLE").equals("admin");

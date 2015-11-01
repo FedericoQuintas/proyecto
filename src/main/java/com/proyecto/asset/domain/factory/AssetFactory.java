@@ -8,6 +8,7 @@ import com.proyecto.common.exception.InvalidArgumentException;
 import com.proyecto.common.validator.FieldValidator;
 import com.proyecto.rest.resource.asset.dto.AssetDTO;
 import com.proyecto.rest.resource.asset.dto.BondDTO;
+import com.proyecto.rest.resource.asset.dto.CurrencyAssetDTO;
 import com.proyecto.rest.resource.asset.dto.MutualFundDTO;
 import com.proyecto.rest.resource.asset.dto.StockDTO;
 import com.proyecto.rest.resource.asset.dto.TradingSessionDTO;
@@ -43,6 +44,9 @@ public class AssetFactory {
 		}
 		else if(assetDTO.getClass().equals(MutualFundDTO.class)){
 			return MutualFundFactory.create((MutualFundDTO)assetDTO, id);
+		}
+		else if(assetDTO.getClass().equals(CurrencyAssetDTO.class)){
+			return CurrencyAssetFactory.create((CurrencyAssetDTO) assetDTO, id);
 		}
 		throw new InvalidAssetTypeException();
 	}

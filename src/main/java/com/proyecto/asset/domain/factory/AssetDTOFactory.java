@@ -6,6 +6,7 @@ import java.util.NavigableMap;
 
 import com.proyecto.asset.domain.Asset;
 import com.proyecto.asset.domain.Bond;
+import com.proyecto.asset.domain.CurrencyAsset;
 import com.proyecto.asset.domain.MutualFund;
 import com.proyecto.asset.domain.Stock;
 import com.proyecto.asset.domain.TradingSession;
@@ -37,6 +38,8 @@ public class AssetDTOFactory {
 			return BondDTOFactory.create((Bond) asset);
 		} else if (asset.getClass().equals(MutualFund.class)) {
 			return MutualFundDTOFactory.create((MutualFund) asset);
+		} else if (asset.getClass().equals(CurrencyAsset.class)) {
+			return CurrencyAssetDTOFactory.create((CurrencyAsset) asset);
 		}
 		
 		throw new InvalidAssetTypeException();
