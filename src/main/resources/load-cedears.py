@@ -8,16 +8,16 @@ import csv
 
 class InvertarCedear:
 
-    ticker = ""
-    name = ""
-    description = ""
-    currency = "ARS"
-    tradingSessions = []
     def __init__(self, aTicker,aName):
-         self.ticker = aTicker
-         self.name = aName
-
+        self.ticker = aTicker
+        self.name = aName
+        self.industry = "Cedear"
+        self.currency = "ARS"
+        self.lastTradingPrice = 0.0
+        self.description = "nm ml"
+        self.tradingSessions = []
     def to_JSON(self):
+
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
@@ -30,12 +30,12 @@ class InvertarTradingSession:
     tradingDate = ""
     volume = 0
     def __init__(self, aClosingPrice,anOpeningPrice, aMaxPrice,aMinPrice,aTradingDate,aVolume):
-        self.closingPrice = aClosingPrice
-        self.openingPrice = anOpeningPrice
-        self.maxPrice = aMaxPrice
-        self.minPrice = aMinPrice
+        self.closingPrice = float(aClosingPrice)
+        self.openingPrice = float(anOpeningPrice)
+        self.maxPrice = float(aMaxPrice)
+        self.minPrice = float(aMinPrice)
         self.tradingDate = aTradingDate
-        self.volume = aVolume
+        self.volume = int(aVolume)
 
 class Link:
     ticker =""
@@ -84,12 +84,16 @@ session_cookie = conn.cookies
 
 for aCedear in finalCedears:
     json_ts = []
+    aCedear.lastTradingPrice = aCedear.tradingSessions[len(aCedear.tradingSessions) -1].closingPrice
     for ts in aCedear.tradingSessions:
+        ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
         json_ts.append(ts.__dict__)
     aCedear.tradingSessions = json_ts
 
-    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear.__dict__))
-
+    r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear, default=lambda o: o.__dict__,
+            sort_keys=True, indent=4))
+    print(json.dumps(aCedear, default=lambda o: o.__dict__,
+            sort_keys=True, indent=4))
     if r.status_code == 200:
         print("Cargado:", aCedear.ticker)
     else:
