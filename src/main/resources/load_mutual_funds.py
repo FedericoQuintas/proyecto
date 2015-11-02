@@ -37,10 +37,9 @@ class InvertarMutualFund:
 class TradingMutualFundSession:
     def __init__(self):
         self.tradingDate = ""
-        self.netAssetValue = 0.0
         self.closingPrice = 0.0
         self.openingPrice = 0.0
-        self.sharesQty = 0.0
+        self.volume = 0.0
 
 #I've gotta iterate over these days and keep in mind that there are no working days as well.
 base = date.today()
@@ -562,9 +561,8 @@ for oneFundType in fund_types:
                         newTradingMutualFundSession.closingPrice = cell.string.strip().replace(".","").replace(",",".")
                         last_closing_price = newTradingMutualFundSession.closingPrice
                     elif index == 5:
-                        newTradingMutualFundSession.sharesQty = cell.string.strip().replace(".","")
+                        newTradingMutualFundSession.volume = cell.string.strip().replace(".","")
                     elif index == 6:
-                        newTradingMutualFundSession.netAssetValue = cell.string.strip().replace(".","").replace(",",".")
                         count_2 = 0
                         found = 0
 
