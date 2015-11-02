@@ -511,12 +511,11 @@ for oneFundType in fund_types:
     elif oneFundType==4:
         fundType = "Hybrid Fund"
 
-    print("Procesando:",fundType)
     count = 0
 
     for oneDate in date_list:
 
-        print("Procesando:",oneDate)
+        print("Procesando:",oneFundType,oneDate)
 
         driver.get("http://www.cafci.org.ar/scripts/cfn_Estadisticas.html")
 
@@ -549,34 +548,37 @@ for oneFundType in fund_types:
             index=99999
 
             for row in rows:
+
                 cells = row.find_all("td")
+
                 for cell in cells:
+
                     name = cell.string.strip()
+
                     if index == 3:
                         newTradingMutualFundSession = TradingMutualFundSession()
                         newTradingMutualFundSession.tradingDate = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
                     elif index == 4:
                         newTradingMutualFundSession.closingPrice = cell.string.strip().replace(".","").replace(",",".")
+                        last_closing_price = newTradingMutualFundSession.closingPrice
                     elif index == 5:
                         newTradingMutualFundSession.sharesQty = cell.string.strip().replace(".","")
                     elif index == 6:
                         newTradingMutualFundSession.netAssetValue = cell.string.strip().replace(".","").replace(",",".")
                         count_2 = 0
                         found = 0
+
                         for aMutualFund in finalMutualFunds:
                             if aMutualFund.name == currentMutualFund.name:
                                 found = 1
                                 break
                             count_2 = count_2 + 1
+
                         if found ==1:
                             finalMutualFunds.pop(count_2)
-                        print(currentMutualFund.name)
-                        try:
-                            newTradingMutualFundSession.openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions) - 1].closingPrice
-                        except IndexError:
-                            print("Index error")
-                        del newTradingMutualFundSession.netAssetValue
-                        del newTradingMutualFundSession.sharesQty
+
+                        newTradingMutualFundSession.closingPrice = last_closing_price
+
                         currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
                         finalMutualFunds.append(currentMutualFund)
                     if name in mutualFunds:
@@ -594,6 +596,7 @@ for oneFundType in fund_types:
 
                             finalMutualFunds.append(newMutualFund)
                             currentMutualFund = newMutualFund
+
                         else:
                             for aMutualFund in finalMutualFunds:
                                 if aMutualFund.name == name:
@@ -602,7 +605,7 @@ for oneFundType in fund_types:
                         index = 1
                     index = index+1
 
-        count = count + 1
+            count = count + 1
 
 # Open connection to API
 conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
@@ -610,7 +613,6 @@ session_cookie = conn.cookies
 
 for oneFund in finalMutualFunds:
     jsonObject = oneFund.to_JSON()
-    print(jsonObject)
 
     r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=jsonObject)
 
