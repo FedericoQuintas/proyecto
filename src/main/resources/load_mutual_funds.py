@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 import time
 import requests
-from datetime import *
+from datetime import datetime, timedelta, date
 import json
 
 # API connection parameters
@@ -29,7 +29,8 @@ class InvertarMutualFund:
 
     def to_JSON(self):
         for ts in self.tradingSessions:
-            ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
+            ts.tradingDate = int(time.mktime(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timetuple())) * 1000 # int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
+            # int(time.mktime(datetime.strptime(oneInvertarTradingSession.tradingDate,"%Y-%m-%d").timetuple())) * 1000
             self.lastTradingPrice = self.tradingSessions[len(self.tradingSessions) - 1].closingPrice
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
