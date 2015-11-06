@@ -18,7 +18,6 @@ class InvertarCedear:
         self.tradingSessions = []
 
     def to_JSON(self):
-
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
 
@@ -77,6 +76,16 @@ credentials = {
 }
 headers = {'Content-Type': 'application/json'}
 
+cedears_text = {"CEDEARAA": "Alcoa Inc. (CEDEAR)",
+               "CEDEARAAPL": "Apple (CEDEAR)",
+               "CEDEARAIG": "American Internat. Group Inc. (CEDEAR)",
+               "CEDEARC":"Citigroup (CEDEAR)",
+               "CEDEARGE":"General Electric (CEDEAR)",
+               "CEDEARIBM": "IBM Corp. (CEDEAR)",
+               "CEDEARKO":"Coca-Cola (CEDEAR)",
+               "CEDEARWMT":"Wal-Mart Stores Inc. (CEDEAR)"
+               }
+
 csvsToDownload = []
 csvsToDownload.append(Link("CEDEARAA","Alcoa Inc. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAA&csv=1"))
 csvsToDownload.append(Link("CEDEARAAPL","Apple (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAAPL&csv=1"))
@@ -94,6 +103,7 @@ for oneLink in csvsToDownload:
     webpage = urllib.request.urlopen(oneLink.url)
     datareader = csv.reader(io.TextIOWrapper(webpage))
     currentCedear = InvertarCedear(oneLink.ticker,oneLink.name)
+    currentCedear.description = cedears_text[oneLink.ticker]
     currentCedear.tradingSessions=[]
     for row in datareader:
         if row[4] != "cierre":
@@ -108,7 +118,7 @@ for aCedear in finalCedears:
     json_ts = []
     aCedear.lastTradingPrice = aCedear.tradingSessions[len(aCedear.tradingSessions) -1].closingPrice
     for ts in aCedear.tradingSessions:
-        ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp())
+        ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp()) * 1000
         json_ts.append(ts.__dict__)
     aCedear.tradingSessions = json_ts
 

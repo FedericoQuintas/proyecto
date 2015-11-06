@@ -25,7 +25,7 @@ class InvertarCurrency:
     def to_JSON(self):
         for ts in self.tradingSessions:
             ts.closingPrice = (ts.buyPrice + ts.sellPrice) / 2
-            ts.tradingDate = int(datetime.strptime(ts.exchangeDate, "%d/%m/%Y").timestamp())
+            ts.tradingDate = int(datetime.strptime(ts.exchangeDate, "%d/%m/%Y").timestamp()) * 1000
 
         openingPrice = self.tradingSessions[0].closingPrice
         for ts in self.tradingSessions:
