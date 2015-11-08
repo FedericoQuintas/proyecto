@@ -579,6 +579,10 @@ for oneFundType in fund_types:
                         newTradingMutualFundSession.closingPrice = last_closing_price
 
                         currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
+
+                        if len(currentMutualFund.tradingSessions)-1 != 0:
+                            currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-1].openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-2].closingPrice
+
                         finalMutualFunds.append(currentMutualFund)
                     if name in mutualFunds:
                         if count==0:
