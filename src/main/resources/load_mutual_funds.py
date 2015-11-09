@@ -18,6 +18,19 @@ credentials = {
 }
 headers = {'Content-Type': 'application/json'}
 
+class AnyEc:
+    """ Use with WebDriverWait to combine expected_conditions
+        in an OR.
+    """
+    def __init__(self, *args):
+        self.ecs = args
+    def __call__(self, driver):
+        for fn in self.ecs:
+            try:
+                if fn(driver): return True
+            except:
+                pass
+
 class InvertarMutualFund:
     def __init__(self):
         self.currency = "ARS"
@@ -117,22 +130,12 @@ mutualFunds.append("Compass Crecimiento II - Clase A")
 mutualFunds.append("Compass Crecimiento II - Clase B")
 mutualFunds.append("FBA Acciones Latinoamericana - Clase A")
 mutualFunds.append("FBA Acciones Latinoamericana - Clase B")
-mutualFunds.append("FBA Mexico - Clase B")
 mutualFunds.append("Alpha Mercosur - Clase A")
 mutualFunds.append("Alpha Mercosur - Clase B")
 mutualFunds.append("Goal Acciones Brasil - Clase A")
 mutualFunds.append("Goal Acciones Brasil - Clase B")
-mutualFunds.append("RJ Delta Latinoamerica - Clase A")
-mutualFunds.append("RJ Delta Latinoamerica - Clase B")
-mutualFunds.append("AL Renta Variable II - Clase A")
-mutualFunds.append("AL Renta Variable II - Clase B")
-mutualFunds.append("FBA Commodities - Clase B")
-mutualFunds.append("RJ Delta Internacional - Clase A")
-mutualFunds.append("RJ Delta Internacional - Clase B")
 mutualFunds.append("Alpha Recursos Naturales - Clase A")
 mutualFunds.append("Alpha Recursos Naturales - Clase B")
-mutualFunds.append("RJ Delta Select - Clase A")
-mutualFunds.append("RJ Delta Select - Clase B")
 mutualFunds.append("Consultatio Renta Variable - Clase A")
 mutualFunds.append("Consultatio Renta Variable - Clase B")
 
@@ -142,8 +145,6 @@ mutualFunds.append("1822 Raices Valores Fiduciarios")
 mutualFunds.append("AL Ahorro Plus - Clase A")
 mutualFunds.append("AL Ahorro Plus - Clase B")
 mutualFunds.append("AL Ahorro Plus - Clase C")
-mutualFunds.append("Alpha Ahorro - Clase A")
-mutualFunds.append("Alpha Ahorro - Clase B")
 mutualFunds.append("Alpha Ahorro - Clase C")
 mutualFunds.append("Axis Ahorro Pesos - Clase A")
 mutualFunds.append("Axis Ahorro Pesos - Clase B")
@@ -152,7 +153,6 @@ mutualFunds.append("Balanz Capital Ahorro - Clase B")
 mutualFunds.append("Cohen Renta Fija - Clase A - Minorista")
 mutualFunds.append("Cohen Renta Fija - Clase B - Institucionales")
 mutualFunds.append("Cohen Renta Fija - Clase C")
-mutualFunds.append("Cohen Renta Fija - Clase D")
 mutualFunds.append("Consultatio Ahorro Plus Argentina F.C.I. - Clase A")
 mutualFunds.append("Consultatio Ahorro Plus Argentina F.C.I. - Clase B")
 mutualFunds.append("Consultatio Ahorro Plus Argentina F.C.I. - Clase C")
@@ -205,7 +205,6 @@ mutualFunds.append("CMA Proteccion - Clase A")
 mutualFunds.append("CMA Proteccion - Clase B")
 mutualFunds.append("Fima Ahorro Plus - Clase A")
 mutualFunds.append("Fima Ahorro Plus - Clase B")
-mutualFunds.append("Fima Ahorro Plus - Clase C")
 mutualFunds.append("Pionero Renta Ahorro")
 mutualFunds.append("Premier Renta Fija Ahorro - Clase A")
 mutualFunds.append("Premier Renta Fija Ahorro - Clase B")
@@ -325,7 +324,6 @@ mutualFunds.append("Optimum Renta Fija Estrategica - Clase A")
 mutualFunds.append("Optimum Renta Fija Estrategica - Clase B")
 mutualFunds.append("Optimum Renta Mixta Flexible - Clase B")
 mutualFunds.append("Pellegrini Renta Fija Ahorro - Clase A")
-mutualFunds.append("Pellegrini Renta Fija Ahorro - Clase B")
 mutualFunds.append("Premier Capital - Clase A")
 mutualFunds.append("Premier Capital - Clase B")
 mutualFunds.append("SBS Renta Capital - Clase B")
@@ -453,14 +451,12 @@ mutualFunds.append("SBS Balanceado - Clase B")
 mutualFunds.append("SC I Renta Mixta - Clase A")
 mutualFunds.append("SC I Renta Mixta - Clase B")
 mutualFunds.append("SC I Renta Mixta - Clase C")
-mutualFunds.append("Schroder Renta Global Dos")
 mutualFunds.append("Schroder Retorno Absoluto")
 mutualFunds.append("Toronto Trust Special Opportunities")
 mutualFunds.append("Alpha Renta Balanceada Global - Clase A")
 mutualFunds.append("Alpha Renta Balanceada Global - Clase B")
 mutualFunds.append("Optimum Global Investment Grade")
 mutualFunds.append("Optimum Global Renta Mixta")
-mutualFunds.append("Schroder Renta Global FCI")
 mutualFunds.append("Super Renta Futura - Clase A")
 mutualFunds.append("Super Renta Futura - Clase B")
 mutualFunds.append("GPS Classic - Clase A")
@@ -515,100 +511,126 @@ for oneFundType in fund_types:
 
     for oneDate in date_list:
 
-        print("Procesando:",oneFundType,oneDate)
+            print("Procesando:",oneFundType,oneDate)
 
-        driver.get("http://www.cafci.org.ar/scripts/cfn_Estadisticas.html")
+            driver.get("http://www.cafci.org.ar/scripts/cfn_Estadisticas.html")
 
-        driver.switch_to.frame("frame_contents")
+            driver.switch_to.frame("frame_contents")
 
-        driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[1]/td[2]/select/option[@value=" + str(oneFundType) + "]").click()
+            driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[1]/td[2]/select/option[@value=" + str(oneFundType) + "]").click()
 
-        driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[2]/td[2]/table/tbody/tr/td/input").send_keys(oneDate.strftime("%d/%m/%Y"))
+            driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[2]/td[2]/table/tbody/tr/td/input").send_keys(oneDate.strftime("%d/%m/%Y"))
 
-        driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[3]/td[2]/div[2]/a").click()
+            driver.find_element_by_xpath("/html/body/div[1]/table/tbody/tr[3]/td[2]/div[2]/a").click()
 
-        driver.implicitly_wait(10)
+            WebDriverWait(driver, 15).until(AnyEc(expected_conditions.element_to_be_clickable((By.ID, "titlePage")),expected_conditions.element_to_be_clickable((By.ID, "errorDiv"))))
 
-        if driver.current_url != "http://www.cafci.org.ar/scripts/cfn_Estadisticas.html":
+            time.sleep(2)
 
-            driver.switch_to_default_content()
+            if driver.current_url != "http://www.cafci.org.ar/scripts/cfn_Estadisticas.html":
 
-            wait = WebDriverWait(driver, 10)
+                html = driver.page_source
 
-            element = wait.until(expected_conditions.element_to_be_clickable((By.NAME,'tablaVCP')))
+                soup = BeautifulSoup(html,"html.parser")
 
-            html = driver.page_source
+                driver.switch_to_default_content()
 
-            soup = BeautifulSoup(html,"html.parser")
+                wait = WebDriverWait(driver, 50)
 
-            table = soup.find("table",{"class":"valores"})
+                wait.until(lambda driver: driver.find_element_by_name('tablaVCP'))
 
-            rows = soup.find("table",{"name":"tablaVCP"}).find_all("tr")
+                wait.until(expected_conditions.presence_of_element_located((By.NAME,'tablaVCP')))
+                wait.until(expected_conditions.presence_of_element_located((By.CLASS_NAME,'tituloTablaEstadisticas')))
 
-            index=99999
+                while soup.find("table",{"name":"tablaVCP"}) is None or len(soup.find("table",{"name":"tablaVCP"}).find_all("tr")) == 1:
 
-            for row in rows:
+                    driver.refresh()
 
-                cells = row.find_all("td")
+                    time.sleep(3)
 
-                for cell in cells:
+                    html = driver.page_source
 
-                    name = cell.string.strip()
+                    soup = BeautifulSoup(html,"html.parser")
 
-                    if index == 3:
-                        newTradingMutualFundSession = TradingMutualFundSession()
-                        newTradingMutualFundSession.tradingDate = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
-                    elif index == 4:
-                        newTradingMutualFundSession.closingPrice = cell.string.strip().replace(".","").replace(",",".")
-                        last_closing_price = newTradingMutualFundSession.closingPrice
-                    elif index == 5:
-                        newTradingMutualFundSession.volume = cell.string.strip().replace(".","")
-                    elif index == 6:
-                        count_2 = 0
-                        found = 0
+                    driver.switch_to_default_content()
 
-                        for aMutualFund in finalMutualFunds:
-                            if aMutualFund.name == currentMutualFund.name:
-                                found = 1
-                                break
-                            count_2 = count_2 + 1
+                    wait = WebDriverWait(driver, 20)
 
-                        if found ==1:
-                            finalMutualFunds.pop(count_2)
+                    wait.until(lambda driver: driver.find_element_by_name('tablaVCP'))
 
-                        newTradingMutualFundSession.closingPrice = last_closing_price
+                    wait.until(expected_conditions.presence_of_element_located((By.NAME,'tablaVCP')))
+                    wait.until(expected_conditions.presence_of_element_located((By.CLASS_NAME,'tituloTablaEstadisticas')))
 
-                        currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
+                table = soup.find("table",{"class":"valores"})
 
-                        if len(currentMutualFund.tradingSessions)-1 != 0:
-                            currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-1].openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-2].closingPrice
+                rows = soup.find("table",{"name":"tablaVCP"}).find_all("tr")
 
-                        finalMutualFunds.append(currentMutualFund)
-                    if name in mutualFunds:
-                        if count==0:
-                            newMutualFund = InvertarMutualFund()
+                index=99999
 
-                            newMutualFund.name = name
+                name = ""
 
-                            newMutualFund.tradingSessions = []
+                for row in rows:
 
-                            newMutualFund.fundType= fundType
+                    cells = row.find_all("td")
 
-                            newMutualFund.ticker = name.replace(' ', '') + '.' + fundType.replace(' ', '')
-                            newMutualFund.description = name
+                    for cell in cells:
+                        name = cell.string.strip()
 
-                            finalMutualFunds.append(newMutualFund)
-                            currentMutualFund = newMutualFund
 
-                        else:
+                        if index == 3:
+                            newTradingMutualFundSession = TradingMutualFundSession()
+                            newTradingMutualFundSession.tradingDate = datetime.strptime(cell.string.strip(),"%d/%m/%Y").date().strftime("%Y-%m-%d")
+                        elif index == 4:
+                            newTradingMutualFundSession.closingPrice = cell.string.strip().replace(".","").replace(",",".")
+                            last_closing_price = newTradingMutualFundSession.closingPrice
+                        elif index == 5:
+                            newTradingMutualFundSession.volume = cell.string.strip().replace(".","")
+                        elif index == 6:
+                            count_2 = 0
+                            found = 0
+
                             for aMutualFund in finalMutualFunds:
-                                if aMutualFund.name == name:
-                                    currentMutualFund = aMutualFund
+                                if aMutualFund.name == currentMutualFund.name:
+                                    found = 1
                                     break
-                        index = 1
-                    index = index+1
+                                count_2 = count_2 + 1
 
-            count = count + 1
+                            if found ==1:
+                                finalMutualFunds.pop(count_2)
+
+                            newTradingMutualFundSession.closingPrice = last_closing_price
+
+                            currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
+
+                            if len(currentMutualFund.tradingSessions)-1 != 0:
+                                currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-1].openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-2].closingPrice
+
+                            finalMutualFunds.append(currentMutualFund)
+                        if name in mutualFunds:
+                            if count==0:
+                                newMutualFund = InvertarMutualFund()
+
+                                newMutualFund.name = name
+
+                                newMutualFund.tradingSessions = []
+
+                                newMutualFund.fundType= fundType
+
+                                newMutualFund.ticker = name.replace(' ', '') + '.' + fundType.replace(' ', '')
+                                newMutualFund.description = name
+
+                                finalMutualFunds.append(newMutualFund)
+                                currentMutualFund = newMutualFund
+
+                            else:
+                                for aMutualFund in finalMutualFunds:
+                                    if aMutualFund.name == name:
+                                        currentMutualFund = aMutualFund
+                                        break
+                            index = 1
+                        index = index+1
+
+                count = count + 1
 
 # Open connection to API
 conn = requests.request('POST', url=login_url, headers=headers, data=json.dumps(credentials))
