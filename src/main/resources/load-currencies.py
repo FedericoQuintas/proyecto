@@ -39,7 +39,7 @@ class InvertarCurrency:
 
         del self.buyValue
         del self.sellValue
-        self.lastTradingPrice = self.tradingSessions[len(self.tradingSessions) - 1].closingPrice
+        self.lastTradingPrice = self.tradingSessions[0].closingPrice
         self.name = self.ticker + ' ' + self.description
         return json.dumps(self, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)
