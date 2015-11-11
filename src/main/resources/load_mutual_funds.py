@@ -510,6 +510,7 @@ for oneFundType in fund_types:
     count = 0
 
     for oneDate in date_list:
+        if str(oneDate) not in ["2014-12-25","2015-01-01","2013-12-25","2014-01-01"]:
 
             print("Procesando:",oneFundType,oneDate)
 
