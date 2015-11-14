@@ -32,21 +32,26 @@ public class AssetFactory {
 	
 	public static Asset create(AssetDTO assetDTO, Long id) 
 			throws InvalidAssetArgumentException, InvalidTradingSessionArgumentException, InvalidAssetTypeException{
+		Asset asset;
 		if(assetDTO.getClass().equals(StockDTO.class)){
-			Asset asset = StockFactory.create((StockDTO) assetDTO, id);
+			asset = StockFactory.create((StockDTO) assetDTO, id);
 			asset.resolveTradingSessionsVariations();
 			return asset;
 		}
 		else if(assetDTO.getClass().equals(BondDTO.class)){
-			Asset asset = BondFactory.create((BondDTO) assetDTO, id);
+			asset = BondFactory.create((BondDTO) assetDTO, id);
 			asset.resolveTradingSessionsVariations();
 			return asset;
 		}
 		else if(assetDTO.getClass().equals(MutualFundDTO.class)){
-			return MutualFundFactory.create((MutualFundDTO)assetDTO, id);
+			asset = MutualFundFactory.create((MutualFundDTO)assetDTO, id);
+			asset.resolveTradingSessionsVariations();
+			return asset;
 		}
 		else if(assetDTO.getClass().equals(CurrencyAssetDTO.class)){
-			return CurrencyAssetFactory.create((CurrencyAssetDTO) assetDTO, id);
+			asset = CurrencyAssetFactory.create((CurrencyAssetDTO) assetDTO, id);
+			asset.resolveTradingSessionsVariations();
+			return asset;
 		}
 		throw new InvalidAssetTypeException();
 	}
