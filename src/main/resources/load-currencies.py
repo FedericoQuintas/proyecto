@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
+import time
 import json
 from datetime import datetime
 import requests
@@ -89,6 +90,30 @@ for oneLink in links:
                 newTradingSession.exchangeDate = str(row)[111:121]
                 newTradingSession.sellPrice = float(span.string[1:])
                 newCurrency.tradingSessions.append(newTradingSession)
+                if str(newTradingSession.exchangeDate) in ["13/06/2014","30/03/2015","27/10/2015"]:
+                    if str(newTradingSession.exchangeDate)== "13/06/2014":
+                        specialTradingSession = InvertarExchangeSession()
+                        specialTradingSession.buyPrice = newTradingSession.buyPrice
+                        specialTradingSession.sellPrice = newTradingSession.sellPrice
+                        specialTradingSession.exchangeDate = "16/06/2014"
+                        newCurrency.tradingSessions.append(specialTradingSession)
+                    if str(newTradingSession.exchangeDate)== "30/03/2015":
+                        specialTradingSession = InvertarExchangeSession()
+                        specialTradingSession.buyPrice = newTradingSession.buyPrice
+                        specialTradingSession.sellPrice = newTradingSession.sellPrice
+                        specialTradingSession.exchangeDate = "31/03/2015"
+                        newCurrency.tradingSessions.append(specialTradingSession)
+                    if str(newTradingSession.exchangeDate)== "27/10/2015":
+                        specialTradingSession = InvertarExchangeSession()
+                        specialTradingSession.buyPrice = newTradingSession.buyPrice
+                        specialTradingSession.sellPrice = newTradingSession.sellPrice
+                        specialTradingSession.exchangeDate = "28/10/2015"
+                        newCurrency.tradingSessions.append(specialTradingSession)
+                        specialTradingSession2 = InvertarExchangeSession()
+                        specialTradingSession2.buyPrice = newTradingSession.buyPrice
+                        specialTradingSession2.sellPrice = newTradingSession.sellPrice
+                        specialTradingSession2.exchangeDate = "29/10/2015"
+                        newCurrency.tradingSessions.append(specialTradingSession2)
             else:
                 newTradingSession = InvertarExchangeSession()
                 newTradingSession.buyPrice = float(span.string[1:])

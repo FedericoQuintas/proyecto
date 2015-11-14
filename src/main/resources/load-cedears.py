@@ -118,8 +118,9 @@ for aCedear in finalCedears:
     json_ts = []
     aCedear.lastTradingPrice = aCedear.tradingSessions[len(aCedear.tradingSessions) -1].closingPrice
     for ts in aCedear.tradingSessions:
-        ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp()) * 1000
-        json_ts.append(ts.__dict__)
+        if str(ts.tradingDate) != "2015-10-12":
+            ts.tradingDate = int(datetime.strptime(ts.tradingDate, "%Y-%m-%d").timestamp()) * 1000
+            json_ts.append(ts.__dict__)
     aCedear.tradingSessions = json_ts
 
     r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(aCedear.__dict__))

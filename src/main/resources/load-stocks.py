@@ -455,6 +455,36 @@ for oneInvertarStock in finalStocks:
     json_ts = []
     for ts in oneInvertarStock.tradingSessions:
         json_ts.append(ts.__dict__)
+        if int(ts.tradingDate) == int(time.mktime(datetime.strptime("2014-08-19","%Y-%m-%d").timetuple())) * 1000:
+            newTs = InvertarTradingSession()
+            newTs.tradingDate = int(time.mktime(datetime.strptime("2014-08-20","%Y-%m-%d").timetuple())) * 1000
+            newTs.closingPrice = ts.closingPrice
+            newTs.adjClosingPrice = ts.adjClosingPrice
+            newTs.openingPrice = ts.openingPrice
+            newTs.maxPrice = ts.maxPrice
+            newTs.minPrice = ts.minPrice
+            newTs.volume = ts.volume
+            newTs.sma_7 = ts.sma_7
+            newTs.sma_21 = ts.sma_21
+            newTs.sma_50 = ts.sma_50
+            newTs.sma_200 = ts.sma_200
+            newTs.ema_7 = ts.ema_7
+            newTs.ema_21 = ts.ema_21
+            newTs.ema_50 = ts.ema_50
+            newTs.ema_200 = ts.ema_200
+            newTs.momentum_7 = ts.momentum_7
+            newTs.momentum_21 = ts.momentum_21
+            newTs.momentum_50 = ts.momentum_50
+            newTs.momentum_200 = ts.momentum_200
+            newTs.rsi_7 = ts.rsi_7
+            newTs.rsi_21 = ts.rsi_21
+            newTs.rsi_50 = ts.rsi_50
+            newTs.rsi_200 = ts.rsi_200
+            newTs.macd_macd_line = ts.macd_macd_line
+            newTs.macd_signal_line = ts.macd_signal_line
+            newTs.macd_histogram = ts.macd_histogram
+            json_ts.append(newTs.__dict__)
+
     oneInvertarStock.tradingSessions = json_ts
 
     r =requests.request('POST', url=store_url, headers=headers, cookies=session_cookie, data=json.dumps(oneInvertarStock.__dict__))

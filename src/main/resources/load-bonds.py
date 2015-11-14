@@ -146,142 +146,143 @@ for oneBond in bonds:
 
     bonds=[]
     for oneTradingSession in oneBond.tradingSessions:
-        currentTradingSession = InvertarTradingSession(oneTradingSession.closingPrice, oneTradingSession.openingPrice,
-                                                       oneTradingSession.maxPrice,oneTradingSession.minPrice,
-                                                       oneTradingSession.tradingDate,oneTradingSession.volume)
+        if str(oneTradingSession.tradingDate)!="2015-10-12":
+            currentTradingSession = InvertarTradingSession(oneTradingSession.closingPrice, oneTradingSession.openingPrice,
+                                                           oneTradingSession.maxPrice,oneTradingSession.minPrice,
+                                                           oneTradingSession.tradingDate,oneTradingSession.volume)
 
-        currentTradingSession.sma_7= 0.0
-        currentTradingSession.sma_21= 0.0
-        currentTradingSession.sma_50= 0.0
-        currentTradingSession.sma_200= 0.0
+            currentTradingSession.sma_7= 0.0
+            currentTradingSession.sma_21= 0.0
+            currentTradingSession.sma_50= 0.0
+            currentTradingSession.sma_200= 0.0
 
-        currentTradingSession.ema_7= 0.0
-        currentTradingSession.ema_21= 0.0
-        currentTradingSession.ema_50= 0.0
-        currentTradingSession.ema_200= 0.0
+            currentTradingSession.ema_7= 0.0
+            currentTradingSession.ema_21= 0.0
+            currentTradingSession.ema_50= 0.0
+            currentTradingSession.ema_200= 0.0
 
-        currentTradingSession.momentum_7= 0.0
-        currentTradingSession.momentum_21= 0.0
-        currentTradingSession.momentum_50= 0.0
-        currentTradingSession.momentum_200= 0.0
+            currentTradingSession.momentum_7= 0.0
+            currentTradingSession.momentum_21= 0.0
+            currentTradingSession.momentum_50= 0.0
+            currentTradingSession.momentum_200= 0.0
 
-        currentTradingSession.rsi_7 = 0.0
-        currentTradingSession.rsi_21 = 0.0
-        currentTradingSession.rsi_50 = 0.0
-        currentTradingSession.rsi_200 = 0.0
+            currentTradingSession.rsi_7 = 0.0
+            currentTradingSession.rsi_21 = 0.0
+            currentTradingSession.rsi_50 = 0.0
+            currentTradingSession.rsi_200 = 0.0
 
-        currentTradingSession.macd_macd_line = 0.0
-        currentTradingSession.macd_signal_line = 0.0
-        currentTradingSession.macd_histogram = 0.0
+            currentTradingSession.macd_macd_line = 0.0
+            currentTradingSession.macd_signal_line = 0.0
+            currentTradingSession.macd_histogram = 0.0
 
-        periods = [7,12,21,26,50,200]
+            periods = [7,12,21,26,50,200]
 
-        for period in periods:
-            if len(myInvertarBond.tradingSessions) >= period-1:
+            for period in periods:
+                if len(myInvertarBond.tradingSessions) >= period-1:
 
-                min = len(myInvertarBond.tradingSessions) - (period-1)
-                max = len(myInvertarBond.tradingSessions)
+                    min = len(myInvertarBond.tradingSessions) - (period-1)
+                    max = len(myInvertarBond.tradingSessions)
 
-                cumulativeCloses = 0.0
+                    cumulativeCloses = 0.0
 
-                upward_movements = 0.0
-                downward_movements = 0.0
+                    upward_movements = 0.0
+                    downward_movements = 0.0
 
-                last_closing_price = 0.0
+                    last_closing_price = 0.0
 
-                for index in range(min,max):
-                    if float(myInvertarBond.tradingSessions[index].closingPrice)>=float(myInvertarBond.tradingSessions[index-1].closingPrice):
-                        upward_movements += (float(myInvertarBond.tradingSessions[index].closingPrice)-float(myInvertarBond.tradingSessions[index-1].closingPrice))
+                    for index in range(min,max):
+                        if float(myInvertarBond.tradingSessions[index].closingPrice)>=float(myInvertarBond.tradingSessions[index-1].closingPrice):
+                            upward_movements += (float(myInvertarBond.tradingSessions[index].closingPrice)-float(myInvertarBond.tradingSessions[index-1].closingPrice))
+                        else:
+                            downward_movements += (float(myInvertarBond.tradingSessions[index-1].closingPrice)-float(myInvertarBond.tradingSessions[index].closingPrice))
+                        last_closing_price = myInvertarBond.tradingSessions[index].closingPrice
+                        cumulativeCloses += float(myInvertarBond.tradingSessions[index].closingPrice)
+
+                    if float(currentTradingSession.closingPrice)>=float(last_closing_price):
+                        upward_movements += (float(currentTradingSession.closingPrice)-float(last_closing_price))
                     else:
-                        downward_movements += (float(myInvertarBond.tradingSessions[index-1].closingPrice)-float(myInvertarBond.tradingSessions[index].closingPrice))
-                    last_closing_price = myInvertarBond.tradingSessions[index].closingPrice
-                    cumulativeCloses += float(myInvertarBond.tradingSessions[index].closingPrice)
+                        downward_movements += (float(last_closing_price)-float(currentTradingSession.closingPrice))
 
-                if float(currentTradingSession.closingPrice)>=float(last_closing_price):
-                    upward_movements += (float(currentTradingSession.closingPrice)-float(last_closing_price))
-                else:
-                    downward_movements += (float(last_closing_price)-float(currentTradingSession.closingPrice))
+                    current_sma = (cumulativeCloses + float(currentTradingSession.closingPrice)) / period
+                    current_momentum = round(float(currentTradingSession.closingPrice) - float(myInvertarBond.tradingSessions[min].closingPrice),2)
 
-                current_sma = (cumulativeCloses + float(currentTradingSession.closingPrice)) / period
-                current_momentum = round(float(currentTradingSession.closingPrice) - float(myInvertarBond.tradingSessions[min].closingPrice),2)
+                    if downward_movements==0.0:
+                        current_rsi=100.0
+                    else:
+                        current_rsi = 100 - (100 / ((upward_movements/period)/(downward_movements/period)+1))
 
-                if downward_movements==0.0:
-                    current_rsi=100.0
-                else:
-                    current_rsi = 100 - (100 / ((upward_movements/period)/(downward_movements/period)+1))
+                    current_ema = 0.0
 
-                current_ema = 0.0
+                    if period==7:
+                        currentTradingSession.sma_7 = round(current_sma,2)
+                        currentTradingSession.momentum_7 = round(current_momentum,2)
+                        currentTradingSession.rsi_7 = round(current_rsi,2)
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_7 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        currentTradingSession.ema_7 = round(current_ema,2)
+                        last_ema_7 = current_ema
+                    elif period==21:
+                        currentTradingSession.sma_21 = round(current_sma,2)
+                        currentTradingSession.momentum_21 = round(current_momentum,2)
+                        currentTradingSession.rsi_21 = round(current_rsi,2)
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_21 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        currentTradingSession.ema_21 = round(current_ema,2)
+                        last_ema_21 = current_ema
+                    elif period==50:
+                        currentTradingSession.sma_50 = round(current_sma,2)
+                        currentTradingSession.momentum_50 = round(current_momentum,2)
+                        currentTradingSession.rsi_50 = round(current_rsi,2)
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_50 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        currentTradingSession.ema_50 = round(current_ema,2)
+                        last_ema_50 = current_ema
+                    elif period==200:
+                        currentTradingSession.sma_200 = round(current_sma,2)
+                        currentTradingSession.momentum_200 = round(current_momentum,2)
+                        currentTradingSession.rsi_200 = round(current_rsi,2)
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_200 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        currentTradingSession.ema_200 = round(current_ema,2)
+                        last_ema_200 = current_ema
+                    elif period==12:
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_12 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        last_ema_12 = current_ema
+                        currentTradingSession.macd_macd_line = current_ema
+                    elif period==26:
+                        if min== 0:
+                            current_ema = current_sma
+                        else:
+                            current_ema = last_ema_26 * (1-(float(2) / float(period+1))) + (
+                                                        float(currentTradingSession.closingPrice)
+                                                        * (float(2)/float(period+1)))
+                        last_ema_26 = current_ema
+                        currentTradingSession.macd_macd_line -= current_ema
 
-                if period==7:
-                    currentTradingSession.sma_7 = round(current_sma,2)
-                    currentTradingSession.momentum_7 = round(current_momentum,2)
-                    currentTradingSession.rsi_7 = round(current_rsi,2)
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_7 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    currentTradingSession.ema_7 = round(current_ema,2)
-                    last_ema_7 = current_ema
-                elif period==21:
-                    currentTradingSession.sma_21 = round(current_sma,2)
-                    currentTradingSession.momentum_21 = round(current_momentum,2)
-                    currentTradingSession.rsi_21 = round(current_rsi,2)
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_21 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    currentTradingSession.ema_21 = round(current_ema,2)
-                    last_ema_21 = current_ema
-                elif period==50:
-                    currentTradingSession.sma_50 = round(current_sma,2)
-                    currentTradingSession.momentum_50 = round(current_momentum,2)
-                    currentTradingSession.rsi_50 = round(current_rsi,2)
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_50 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    currentTradingSession.ema_50 = round(current_ema,2)
-                    last_ema_50 = current_ema
-                elif period==200:
-                    currentTradingSession.sma_200 = round(current_sma,2)
-                    currentTradingSession.momentum_200 = round(current_momentum,2)
-                    currentTradingSession.rsi_200 = round(current_rsi,2)
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_200 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    currentTradingSession.ema_200 = round(current_ema,2)
-                    last_ema_200 = current_ema
-                elif period==12:
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_12 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    last_ema_12 = current_ema
-                    currentTradingSession.macd_macd_line = current_ema
-                elif period==26:
-                    if min== 0:
-                        current_ema = current_sma
-                    else:
-                        current_ema = last_ema_26 * (1-(float(2) / float(period+1))) + (
-                                                    float(currentTradingSession.closingPrice)
-                                                    * (float(2)/float(period+1)))
-                    last_ema_26 = current_ema
-                    currentTradingSession.macd_macd_line -= current_ema
-
-        # Only inserts last 3 years but we take in consideration for the calculations the last 5 years
-        if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1085):
-            myInvertarBond.tradingSessions.append(currentTradingSession)
+            # Only inserts last 3 years but we take in consideration for the calculations the last 5 years
+            if datetime.strptime(currentTradingSession.tradingDate,"%Y-%m-%d").date()>=date.today() - timedelta(days=1085):
+                myInvertarBond.tradingSessions.append(currentTradingSession)
 
     finalBonds.append(myInvertarBond)
 
