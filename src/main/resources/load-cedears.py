@@ -79,11 +79,7 @@ headers = {'Content-Type': 'application/json'}
 cedears_text = {"CEDEARAA": "Alcoa Inc. (CEDEAR)",
                "CEDEARAAPL": "Apple (CEDEAR)",
                "CEDEARAIG": "American Internat. Group Inc. (CEDEAR)",
-               "CEDEARC":"Citigroup (CEDEAR)",
-               "CEDEARGE":"General Electric (CEDEAR)",
-               "CEDEARIBM": "IBM Corp. (CEDEAR)",
-               "CEDEARKO":"Coca-Cola (CEDEAR)",
-               "CEDEARWMT":"Wal-Mart Stores Inc. (CEDEAR)"
+               "CEDEARC":"Citigroup (CEDEAR)"
                }
 
 csvsToDownload = []
@@ -91,10 +87,6 @@ csvsToDownload.append(Link("CEDEARAA","Alcoa Inc. (CEDEAR)","http://www.ravaonli
 csvsToDownload.append(Link("CEDEARAAPL","Apple (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAAPL&csv=1"))
 csvsToDownload.append(Link("CEDEARAIG","American Internat. Group Inc. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARAIG&csv=1"))
 csvsToDownload.append(Link("CEDEARC","Citigroup (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARC&csv=1"))
-csvsToDownload.append(Link("CEDEARGE","General Electric (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARGE&csv=1"))
-csvsToDownload.append(Link("CEDEARIBM","IBM Corp. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARIBM&csv=1"))
-csvsToDownload.append(Link("CEDEARKO","Coca-Cola (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARKO&csv=1"))
-csvsToDownload.append(Link("CEDEARWMT","Wal-Mart Stores Inc. (CEDEAR)","http://www.ravaonline.com/v2/empresas/precioshistoricos.php?e=CEDEARWMT&csv=1"))
 
 finalCedears = []
 
