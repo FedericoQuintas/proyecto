@@ -526,7 +526,7 @@ for oneFundType in fund_types:
 
             WebDriverWait(driver, 15).until(AnyEc(expected_conditions.element_to_be_clickable((By.ID, "titlePage")),expected_conditions.element_to_be_clickable((By.ID, "errorDiv"))))
 
-            time.sleep(2)
+            time.sleep(1)
 
             if driver.current_url != "http://www.cafci.org.ar/scripts/cfn_Estadisticas.html":
 
@@ -602,6 +602,19 @@ for oneFundType in fund_types:
                             newTradingMutualFundSession.closingPrice = last_closing_price
 
                             currentMutualFund.tradingSessions.append(newTradingMutualFundSession)
+
+                            if str(newTradingMutualFundSession.tradingDate) in ["2014-11-05","2015-11-05"]:
+
+                                specialTradingMutualFundSession = TradingMutualFundSession()
+                                specialTradingMutualFundSession.closingPrice = newTradingMutualFundSession.closingPrice
+                                specialTradingMutualFundSession.volume= newTradingMutualFundSession.volume
+
+                                if str(newTradingMutualFundSession.tradingDate) == "2014-11-05":
+                                    specialTradingMutualFundSession.tradingDate =datetime.strptime("06/11/2014","%d/%m/%Y").date().strftime("%Y-%m-%d")
+                                else:
+                                    specialTradingMutualFundSession.tradingDate =datetime.strptime("06/11/2015","%d/%m/%Y").date().strftime("%Y-%m-%d")
+
+                                currentMutualFund.tradingSessions.append(specialTradingMutualFundSession)
 
                             if len(currentMutualFund.tradingSessions)-1 != 0:
                                 currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-1].openingPrice = currentMutualFund.tradingSessions[len(currentMutualFund.tradingSessions)-2].closingPrice
