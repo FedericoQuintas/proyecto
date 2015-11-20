@@ -111,7 +111,23 @@ public class InvertarUser {
 	}
 	
 	public void addInvestorProfile(InvestorProfile investorProfile) {
+		deleteInvestorProfile(investorProfile);
 		this.investorProfiles.add(investorProfile);
 	}
-
+	
+	public void deleteInvestorProfile(InvestorProfile investorProfile) {
+		InvestorProfile profile = this.getInvestorProfileFromName(investorProfile.getName());
+		if(profile == null)
+			return;
+		this.investorProfiles.remove(profile);
+	}
+	
+	private InvestorProfile getInvestorProfileFromName(String name) {
+		for(InvestorProfile profile : this.investorProfiles){
+			if(profile.getName().equals(name)){
+				return profile;
+			}
+		}
+		return null;
+	}
 }

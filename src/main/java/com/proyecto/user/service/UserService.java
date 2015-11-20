@@ -174,6 +174,7 @@ public interface UserService {
 	 */
 	InvestorProfileDTO addInvestorProfile(Long userId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException;
 
+	void deleteInvestorProfile(Long userId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException;
 	Map<Long, List<PortfolioHistoryVO>> getPortfoliosHistories(Long userId)
 			throws ApplicationServiceException;
 

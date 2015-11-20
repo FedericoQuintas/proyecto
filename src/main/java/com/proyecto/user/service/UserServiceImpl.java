@@ -543,6 +543,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void deleteInvestorProfile(Long userId, InvestorProfileDTO investorProfileDTO) throws UserNotFoundException {
+		try {
+			InvertarUser user = userDAO.findById(userId);
+			user.deleteInvestorProfile(InvestorProfileFactory.create(investorProfileDTO));
+			updateUser(user);
+			
+		} catch (ObjectNotFoundException e) {
+			throw new UserNotFoundException(e);
+		}
+		
+	}
+	@Override
 	public InvestorProfileDTO setUserPortfolioInvestorProfile(Long userId, Long portfolioId,
 			InvestorProfileDTO investorProfileDTO) throws UserNotFoundException, PortfolioNotFoundException {
 		InvertarUser user;

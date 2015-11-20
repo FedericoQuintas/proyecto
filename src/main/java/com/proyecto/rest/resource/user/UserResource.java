@@ -175,6 +175,14 @@ public class UserResource {
 			@PathVariable("user_id") Long userId) throws UserNotFoundException {
 		return userService.addInvestorProfile(userId, investorProfileDTO);
 	}
+	
+	@RequestMapping(value = "/{user_id}/investorProfile", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void deleteInvestorProfile(
+			HttpSession session, @RequestBody InvestorProfileDTO investorProfileDTO,
+			@PathVariable("user_id") Long userId) throws UserNotFoundException {
+		userService.deleteInvestorProfile(userId, investorProfileDTO);
+	}
 
 	@RequestMapping(value = "/{user_id}/portfolios/history", method = RequestMethod.GET)
 	@ResponseBody
